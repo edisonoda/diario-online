@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TurmasComponent } from './turmas/turmas.component';
 import { DisciplinasComponent } from './disciplinas/disciplinas.component';
+import { DivisoesComponent } from './divisoes/divisoes.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'disciplina',
     component: DisciplinasComponent
+  },
+  {
+    path: 'divisao',
+    component: DivisoesComponent
   },
   {
     path: '**',

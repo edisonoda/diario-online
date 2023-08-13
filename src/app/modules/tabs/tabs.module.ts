@@ -6,6 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabRoutingModule } from './tabs-routing.module';
 import { TabsComponent } from './tabs.component';
 import { TurmasComponent } from './turmas/turmas.component';
+import { DisciplinasComponent } from './disciplinas/disciplinas.component';
+import { DivisoesComponent } from './divisoes/divisoes.component';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { DisciplinasComponent } from './disciplinas/disciplinas.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DisciplinasComponent } from './disciplinas/disciplinas.component';
 
     TurmasComponent,
     DisciplinasComponent,
+    DivisoesComponent,
   ],
   imports: [
     CommonModule,

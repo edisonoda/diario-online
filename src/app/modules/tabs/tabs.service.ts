@@ -77,6 +77,12 @@ export class TabsService {
     });
   }
 
+  obterDivisoes(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
+    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
+      params: { idTurma, idDisciplina, idEtapa }
+    });
+  }
+
   deveExibirCiOrientadora(idInstituicao: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-ci-orientadora`);
   }

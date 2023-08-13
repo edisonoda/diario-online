@@ -1,0 +1,10 @@
+<div class="md-padding card-overflow">
+    <div class="tab-content">
+        <mat-grid-list rowHeight="2:2" class="vertical-scroll clicavel" [cols]="getCols()"
+            gutterSize="10px">
+            <mat-grid-tile *ngFor="let item of divisoes" [class]="item.color" (click)="divisaoClick(item)">
+                <span>{{ item.nome }}</span>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>

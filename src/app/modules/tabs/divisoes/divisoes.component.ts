@@ -4,16 +4,17 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
 import { TabsService } from '../tabs.service';
 
 @Component({
-  selector: 'app-disciplinas',
-  templateUrl: './disciplinas.component.html',
-  styleUrls: ['./disciplinas.component.css'],
+  selector: 'app-divisoes',
+  templateUrl: './divisoes.component.html',
+  styleUrls: ['./divisoes.component.css'],
 })
-export class DisciplinasComponent implements OnInit, OnDestroy {
+export class DivisoesComponent implements OnInit, OnDestroy {
   idInstituicao: any;
   idTurma: any;
+  idDisciplina: any;
   idEtapa: any;
 
-  disciplinas: any[] = [];
+  divisoes: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,31 +24,29 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
   ) {
     this.idInstituicao = this.route.snapshot.queryParamMap.get('idInstituicao') ?? this.sessaoService.idInstituicao;
     this.idTurma = this.route.snapshot.queryParamMap.get('turma');
+    this.idDisciplina = this.route.snapshot.queryParamMap.get('disciplina');
     this.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
 
-    if (!this.idTurma || !this.idEtapa)
+    if (!this.idTurma || !this.idDisciplina || !this.idEtapa)
       this.router.navigate(['turma']);
   }
 
   ngOnInit() {
-    this.tabsService.obterDisciplinas(this.idInstituicao, this.idTurma, this.idEtapa).subscribe(res => {
-      if (res.error)
-        return;
-
+    this.tabsService.obterDivisoes(this.idInstituicao, this.idTurma, this.idDisciplina, this.idEtapa).subscribe(res => {
       if (Array.isArray(res.data))
         this.tabsService.randomizarCores(res.data);
       else
         res.data = [];
 
-      this.disciplinas = res.data;
+      this.divisoes = res.data;
 
-      if (this.disciplinas.length === -1)
-        this.disciplinaClick(this.disciplinas[0]);
+      if (this.divisoes.length === -1)
+        this.divisaoClick(this.divisoes[0]);
     });
   }
 
-  disciplinaClick(disciplina: any): void {
-    this.tabsService.passarEtapa('disciplina', 'divisao', disciplina, `turma=${this.idTurma}&etapa=${this.idEtapa}&disciplina=${disciplina.id}`);
+  divisaoClick(divisao: any): void {
+    
   }
 
   getCols(): number {
