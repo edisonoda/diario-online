@@ -12,6 +12,10 @@ export class TabsComponent implements OnInit, OnDestroy {
     { link: 'divisao', label: 'Divisão'}
   ];
 
+  instituicao: any;
+  periodo: any;
+  abas: any;
+
   constructor() { }
 
   ngOnInit() { }

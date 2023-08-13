@@ -1,3 +1,18 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center mt-4">
+    <div class="d-flex text-muted">
+        <h4>{{ instituicao?.nome }}</h4>
+        <h4>&nbsp;/&nbsp;{{ periodo?.nome }}</h4>
+        <h4 *ngIf="abas?.turma.selecao.nome">&nbsp;/&nbsp;{{ abas.turma.selecao.nome }}</h4>
+        <h4 *ngIf="abas?.disciplina.selecao.nome">&nbsp;/&nbsp;{{ abas.disciplina.selecao.nome }}</h4>
+        <h4 *ngIf="abas?.divisao.selecao.nome">&nbsp;/&nbsp;{{ abas.divisao.selecao.nome }}</h4>
+    </div>
+    <div class="d-flex">
+        <button *ngIf="abas?.turma.selecao.nome" mat-icon-button matTooltip="Pendências de Avaliação">
+            <mat-icon class="material-icons">notifications_active</mat-icon>
+        </button>
+    </div>
+</div>
+
 <nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" mat-align-tabs="start">
     <a mat-tab-link
         *ngFor="let link of navLinks"
