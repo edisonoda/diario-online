@@ -12,8 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './core/header/header.component';
-import { FooterComponent } from './core/footer/footer.component';
+import { HeaderComponent } from './core/layout/header/header.component';
+import { FooterComponent } from './core/layout/footer/footer.component';
 import { AuthComponent } from './core/auth/auth.component';
 
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';

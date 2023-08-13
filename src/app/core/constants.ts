@@ -16,3 +16,9 @@ export const CRYPTO_CONST = {
     keySize: 128,
     iterationCount: 1000
 };
+
+export const CONFIGURACOES = {
+    REST_ADDRESS: 'http://localhost:8080/sislame/rest/',
+    IS_PRODUCAO: false,
+    DATA_VERSAO: 'PARAM_DATA_BUILD'
+}
