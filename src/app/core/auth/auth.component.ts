@@ -22,27 +22,22 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     try {
       const decodedEntry = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(this.activatedRoute.snapshot.params['entry'])));
-
-      if (decodedEntry.token !== this.sessaoService.token) {
-        this.sessaoService.buscarUser().subscribe(res => {
-          this.sessaoService.setUserInfo({
-            user: res.user,
-            token: decodedEntry.token,
-            backendServerURL: decodedEntry.backendServerURL,
-            logoutURL: decodedEntry.logoutURL ? `${decodedEntry.logoutURL}/inicio.faces` : `${decodedEntry.backendServerURL.split('/rest')[0]}/inicio.faces`,
-            idGrupoAcesso: decodedEntry.idGrupoAcesso,
-          });
-
-          this.router.navigate(['turmas'], {
-            queryParams: {
-              idInstituicao: decodedEntry.idInstituicao,
-              idPeriodoLetivo: decodedEntry.idPeriodoLetivo
-            }
-          });
+      this.sessaoService.buscarUser().subscribe(res => {
+        this.sessaoService.setUserInfo({
+          user: res.user,
+          token: decodedEntry.token,
+          backendServerURL: decodedEntry.backendServerURL,
+          logoutURL: decodedEntry.logoutURL ? `${decodedEntry.logoutURL}/inicio.faces` : `${decodedEntry.backendServerURL.split('/rest')[0]}/inicio.faces`,
+          idGrupoAcesso: decodedEntry.idGrupoAcesso,
         });
-      } else {
-        this.sessaoService.logout();
-      }
+
+        this.router.navigate(['turmas'], {
+          queryParams: {
+            idInstituicao: decodedEntry.idInstituicao,
+            idPeriodoLetivo: decodedEntry.idPeriodoLetivo
+          }
+        });
+      });
     } catch {
       this.sessaoService.logout();
     }
