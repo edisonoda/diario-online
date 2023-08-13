@@ -1,4 +1,4 @@
-enum AUTH_EVENTS {
+export enum AUTH_EVENTS {
     loginSuccess = 'auth-login-success',
     loginFailed = 'auth-login-failed',
     logoutSuccess = 'auth-logout-success',
@@ -7,12 +7,12 @@ enum AUTH_EVENTS {
     notAuthorized = 'auth-not-authorized'
 };
 
-const CONSTANTS = {
+export const CONSTANTS = {
     KEY: 'C@Ed',
     IVSA: 'dc0da04af8fee58593442bf834b30739'
 };
 
-const CRYPTO_CONST = {
+export const CRYPTO_CONST = {
     keySize: 128,
     iterationCount: 1000
 };
