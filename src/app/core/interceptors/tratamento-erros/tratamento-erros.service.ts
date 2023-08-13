@@ -1,20 +1,28 @@
 import { Observable, throwError } from 'rxjs';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { SessaoService } from '../../services/sessao.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TratamentoErrosService implements HttpInterceptor {
   constructor(
-    private sessaoService: SessaoService
+    private sessaoService: SessaoService,
+    private snackBar: MatSnackBar,
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request)
       .pipe(
+        tap(evt => {
+          if (evt instanceof HttpResponse && evt.body.erro)
+              this.snackBar.open(evt.body.erro, '', {
+                duration: 5000
+              });
+        }),
         catchError(error => {
           return this.handleResponseError(error);
         })
