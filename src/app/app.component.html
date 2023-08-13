@@ -1,1 +1,5 @@
 <app-header></app-header>
+<div [@routeAnimations]="prepareRoute(outlet)" class="w-100">
+    <router-outlet #outlet="outlet"></router-outlet>
+</div>
+<app-footer></app-footer>

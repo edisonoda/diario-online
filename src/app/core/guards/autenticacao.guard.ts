@@ -1,28 +1,27 @@
-import { Observable } from 'rxjs';
-import { AesUtilService } from '../services/aes-util.service';
-import { SessaoService } from './../services/sessao.service';
 import { Injectable, inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { SessaoService } from '../services/sessao.service';
 
 @Injectable({ providedIn: 'root' })
 export class AutenticacaoGuard {
-  constructor(
-    private sessaoService: SessaoService,
-    private aesUtilService: AesUtilService
-  ) { }
+  constructor(private sessaoService: SessaoService, private router: Router) { }
 
-  canActivate(entry: any): boolean {
-    try {
-      const decodedEntry = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(entry)));
-      return decodedEntry.token !== this.sessaoService.token;
-    } catch { }
+  canActivate(): boolean {
+    if (this.sessaoService.token)
+      this.router.navigate(['turmas'], {
+        queryParams: {
+          idInstituicao: this.sessaoService.idInstituicao,
+          idPeriodoLetivo: this.sessaoService.idPeriodoLetivo
+        }
+      });
+    else if (this.sessaoService.logoutURL)
+      window.location.href = this.sessaoService.logoutURL;
 
-    this.sessaoService.logout();
-    return false;
+    return !!this.sessaoService.token;
   }
 }
 
-const canActivateLogin: CanActivateFn =
+export const canActivateLogin: CanActivateFn =
     (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-      return inject(AutenticacaoGuard).canActivate(route.params['entry']);
+      return inject(AutenticacaoGuard).canActivate();
     };

@@ -2,29 +2,38 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-interface UserInfo {
-  token: any;
-  backendServerURL: string;
-  logoutURL: string;
-  idGrupoAcesso: any;
-};
-
 @Injectable({
   providedIn: 'root'
 })
 export class SessaoService {
 
+  private _user: any;
+  get user() {
+    return this._user;
+  }
+
   get token() { return localStorage.getItem('token') }
   get backendServerURL() { return localStorage.getItem('backendServerURL') }
   get logoutURL() { return localStorage.getItem('logoutURL') }
   get idGrupoAcesso() { return localStorage.getItem('idGrupoAcesso') }
+  get idInstituicao() { return localStorage.getItem('idInstituicao') }
+  get idPeriodoLetivo() { return localStorage.getItem('idPeriodoLetivo') }
 
   constructor(private http: HttpClient) { }
 
-  setUserInfo(info: UserInfo): void {
-    Object.entries(info).forEach(([key, value]) => {
-      localStorage.setItem(key, value);
-    });
+  buscarUser(): Observable<any> {
+    return this.http.get(`${this.backendServerURL}/usuario`);
+  }
+
+  setUserInfo(info: any): void {
+    this._user = info.user;
+
+    localStorage.setItem('token', info.token);
+    localStorage.setItem('backendServerURL', info.backendServerURL);
+    localStorage.setItem('logoutURL', info.logoutURL);
+    localStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);
+    localStorage.setItem('idInstituicao', info.idInstituicao);
+    localStorage.setItem('idPeriodoLetivo', info.idPeriodoLetivo);
   }
 
   logout(): any {

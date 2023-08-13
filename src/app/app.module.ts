@@ -3,34 +3,58 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthComponent } from './core/auth/auth.component';
+
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+const MY_FORMATS = {
+  parse: {
+    dateInput: 'YYYY-MM-DD',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    NgbModule,
 
     MatToolbarModule,
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
-    NgbModule,
+    MatCardModule,
   ],
-  providers: [],
+  providers: [
+    [
+      { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+      { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    ]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
