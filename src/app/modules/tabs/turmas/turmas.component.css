@@ -1,0 +1,26 @@
+.card-turma {
+    display: flex;
+    flex-direction: column;
+    font-family: Roboto, sans-serif;
+    height: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.card-turma h3 {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 10px;
+}
+
+.card-turma h3:last-child {
+    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.card-turma:hover h3:last-child {
+    transform: scale(1.25);
+}

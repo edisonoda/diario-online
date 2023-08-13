@@ -51,6 +51,21 @@ export class TabsComponent implements OnInit, OnDestroy {
     }));
   }
 
+  resetTab(tab: string): void {
+    switch(tab) {
+      case "disciplina":
+        this.breadcrumb.disciplina = null;
+        this.breadcrumb.divisao = null;
+        break;
+      default:
+        this.breadcrumb = {
+          turma: null,
+          disciplina: null,
+          divisao: null
+        };
+    }
+  }
+
   abrirPendenciasAvaliacao(ev: Event): void {
 
   }

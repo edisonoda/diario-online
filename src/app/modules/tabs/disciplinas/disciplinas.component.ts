@@ -25,7 +25,7 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
     this.idTurma = this.route.snapshot.queryParamMap.get('turma');
     this.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
 
-    if (!this.idTurma || !this.idEtapa)
+    if (this.idTurma == 'undefined' || this.idEtapa == 'undefined')
       this.router.navigate(['turma']);
   }
 

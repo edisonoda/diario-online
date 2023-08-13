@@ -27,7 +27,7 @@ export class DivisoesComponent implements OnInit, OnDestroy {
     this.idDisciplina = this.route.snapshot.queryParamMap.get('disciplina');
     this.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
 
-    if (!this.idTurma || !this.idDisciplina || !this.idEtapa)
+    if (this.idTurma == 'undefined' || this.idDisciplina == 'undefined' || this.idEtapa == 'undefined')
       this.router.navigate(['turma']);
   }
 
@@ -46,7 +46,7 @@ export class DivisoesComponent implements OnInit, OnDestroy {
   }
 
   divisaoClick(divisao: any): void {
-    
+
   }
 
   getCols(): number {

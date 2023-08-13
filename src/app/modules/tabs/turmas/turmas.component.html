@@ -7,17 +7,13 @@
         <mat-grid-list rowHeight="2:2" class="vertical-scroll clicavel" [cols]="getCols()"
             gutterSize="10px">
             <mat-grid-tile *ngFor="let item of turmasF" [class]="item.color" (click)="turmaClick(item)">
-                <h3>{{ item.etapa.nivel.nome }}</h3>
-                <span>
-                    {{ item.nome }}
-                    <br />
-                    <br />
-                    <pre>{{ item.etapa.nome }}</pre>
-                </span>
-                <div>
-                    <h3>
-                        {{ item.turno.nome }}
-                    </h3>
+                <div class="card-turma">
+                    <h3>{{ item.etapa.nivel.nome }}</h3>
+                    <div class="d-flex flex-column justify-content-between flex-grow-1">
+                        {{ item.nome }}
+                        <pre>{{ item.etapa.nome }}</pre>
+                    </div>
+                    <h3>{{ item.turno.nome }}</h3>
                 </div>
             </mat-grid-tile>
         </mat-grid-list>
