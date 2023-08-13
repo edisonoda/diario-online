@@ -1,0 +1,27 @@
+<!-- <md-tab-label>{{abas.turma.descricao}}</md-tab-label> -->
+<mat-form-field class="mt-4 w-100">
+    <mat-label>Filtro da Turma</mat-label>
+    <input type="text" placeholder="Pesquisar" aria-label="Filtro da Turma" matInput [formControl]="filtroControl">
+</mat-form-field>
+<div class="md-padding card-overflow">
+    <div class="tab-content">
+        <mat-grid-list rowHeight="2:2" class="vertical-scroll clicavel" [cols]="getCols()"
+            gutterSize="10px">
+            <mat-grid-tile *ngFor="let item of turmasF" [class]="item.color" (click)="turmaClick(item)"
+                (mouseenter)="overFooter($event)" (mouseleave)="outFooter($event)">
+                <h3>{{ item.etapa.nivel.nome }}</h3>
+                <span>
+                    {{ item.nome }}
+                    <br />
+                    <br />
+                    <pre>{{ item.etapa.nome }}</pre>
+                </span>
+                <div>
+                    <h3>
+                        {{ item.turno.nome }}
+                    </h3>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>

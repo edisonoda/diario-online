@@ -7,11 +7,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 })
 export class TabsComponent implements OnInit, OnDestroy {
   navLinks = [
-    { link: 'turmas', label: 'Turmas' },
+    { link: 'turma', label: 'Turmas' },
     { link: 'disciplina', label: 'Disciplina' },
     { link: 'divisao', label: 'Divisão'}
   ];
-  
+
   constructor() { }
 
   ngOnInit() { }

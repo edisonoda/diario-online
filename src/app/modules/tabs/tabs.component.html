@@ -1,4 +1,4 @@
-<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" mat-align-tabs="start">
     <a mat-tab-link
         *ngFor="let link of navLinks"
         [routerLink]="link.link"

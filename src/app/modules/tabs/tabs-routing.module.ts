@@ -4,12 +4,12 @@ import { TurmasComponent } from './turmas/turmas.component';
 
 const routes: Routes = [
   {
-    path: 'turmas',
+    path: 'turma',
     component: TurmasComponent
   },
   {
     path: '**',
-    redirectTo: 'turmas',
+    redirectTo: 'turma',
   },
 ];
 @NgModule({
