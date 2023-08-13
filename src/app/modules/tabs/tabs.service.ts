@@ -1,13 +1,46 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TurmasService {
-  constructor(private http: HttpClient, private sessaoService: SessaoService) { }
+export class TabsService {
+  private _selecionar = new Subject<{ etapa: string, dados: any }>();
+  selecionar$: Observable<{ etapa: string, dados: any }> = this._selecionar.asObservable();
+  
+  constructor(
+    private http: HttpClient,
+    private sessaoService: SessaoService,
+    private router: Router,
+  ) { }
+
+  passarEtapa(etapa: string, proxEtapa: string, dados: any, params: string): void {
+    this._selecionar.next({ etapa, dados });
+    this.router.navigate([proxEtapa], {
+      queryParams: params.split('&').reduce((params: any, param) => {
+        const [key, value] = param.split('=');
+        params[key] = value;
+        
+        return params;
+      }, {})
+    });
+  }
+
+  getCols(): number {
+    const width = window.innerWidth;
+
+    if (width < 576)
+      return 1;
+    else if (width < 768)
+      return 3;
+    else if (width < 992)
+      return 4;
+    else
+      return 6;
+  }
 
   obterInstituicao(idInstituicao: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/instituicao/get`, {
@@ -24,6 +57,12 @@ export class TurmasService {
   obterTurmas(idInstituicao: any, idPeriodoLetivo: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}`, {
       params: { idPeriodoLetivo }
+    });
+  }
+
+  obterDisciplinas(idInstituicao: any, idTurma: any, idEtapa: any): Observable<any> {
+    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
+      params: { idTurma, idEtapa }
     });
   }
 

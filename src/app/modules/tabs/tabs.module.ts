@@ -14,12 +14,15 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DisciplinasComponent } from './disciplinas/disciplinas.component';
 
 @NgModule({
   declarations: [
     TabsComponent,
 
     TurmasComponent,
+    DisciplinasComponent,
   ],
   imports: [
     CommonModule,
@@ -35,6 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
   exports: [TabsComponent]
 })
