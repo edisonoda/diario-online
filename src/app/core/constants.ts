@@ -22,3 +22,5 @@ export const CONFIGURACOES = {
     IS_PRODUCAO: false,
     DATA_VERSAO: 'PARAM_DATA_BUILD'
 }
+
+export const CORES = ['liquidGreen', 'yellow', 'blue', 'purple', 'red', 'green', 'brown', 'pink', 'oragenBackground', 'gold'];

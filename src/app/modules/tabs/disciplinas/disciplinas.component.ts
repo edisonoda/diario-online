@@ -33,6 +33,11 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.tabsService.obterDisciplinas(this.idInstituicao, this.idTurma, this.idEtapa).subscribe(res => {
+      if (Array.isArray(res.data))
+        this.tabsService.randomizarCores(res.data);
+      else
+        res.data = [];
+        
       this.disciplinas = res.data;
     });
   }

@@ -36,6 +36,11 @@ export class TurmasComponent implements OnInit, OnDestroy {
       this.turmasF = this._filter(value);
     }));
     this.tabsService.obterTurmas(this.idInstituicao, this.idPeriodoLetivo).subscribe(res => {
+      if (Array.isArray(res.data))
+        this.tabsService.randomizarCores(res.data);
+      else
+        res.data = [];
+
       this.turmas = res.data;
       this.turmasF = res.data;
     });

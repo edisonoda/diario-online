@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
+import { CORES } from 'src/app/core/constants';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 
 @Injectable({
@@ -10,7 +11,7 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
 export class TabsService {
   private _selecionar = new Subject<{ etapa: string, dados: any }>();
   selecionar$: Observable<{ etapa: string, dados: any }> = this._selecionar.asObservable();
-  
+
   constructor(
     private http: HttpClient,
     private sessaoService: SessaoService,
@@ -23,7 +24,7 @@ export class TabsService {
       queryParams: params.split('&').reduce((params: any, param) => {
         const [key, value] = param.split('=');
         params[key] = value;
-        
+
         return params;
       }, {})
     });
@@ -41,6 +42,16 @@ export class TabsService {
     else
       return 6;
   }
+
+  randomizarCores(list: any[]) {
+    list.forEach(item => {
+      if (!item.color) {
+        // usa o id do item para definir a cor, sendo as cores um array com a quantidade de numeros decimais
+        // possíveis [0...9]
+        item.color = CORES[parseInt(`${item.ordem ? item.ordem : item.id}`.slice(-1))];
+      }
+    });
+  };
 
   obterInstituicao(idInstituicao: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/instituicao/get`, {
