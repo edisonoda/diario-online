@@ -1,0 +1,437 @@
+html {
+  font-size: 14px;
+}
+
+/* Modificações no BODY para mostrar o overlay */
+body {
+  &::after, &::before {
+    content: "";
+  }
+}
+
+body::after {
+  /* dark overlay layer - visible when we fire .janela-modal */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(71, 55, 78, 0.8);
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+  -moz-transition: opacity .3s 0s, visibility 0s .3s;
+  transition: opacity .3s 0s, visibility 0s .3s;
+  z-index: 1000;
+}
+
+body.overlay-layer {
+  overflow-y: hidden;
+  padding-right: 17px;
+  &::after {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+    -moz-transition: opacity .3s 0s, visibility 0s 0s;
+    transition: opacity .3s 0s, visibility 0s 0s;
+
+    &.fade-out {
+      opacity: 0;
+    }
+  }
+}
+
+md-toast {
+  position: fixed;
+}
+
+#conteudo-principal {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+.content-padding {
+  padding-top: 8px;
+}
+
+.container-externo {
+  overflow: visible;
+}
+
+.padding-turmas md-tabs-content-wrapper md-tab-content {
+  padding: 17px;
+}
+
+/* Contém um botão da chamada */
+div.container-lancamento {
+  &.lanc-freq {
+    width: 25px;
+    height: 40px;
+  }
+  padding: 0 5px;
+  align-items: center;
+  display: flex; /* Colocar todos os outros flex aqui. Copiar de alguma coisa do material */
+  background-color: transparent;
+
+  &.lanc-aval {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.aula-ativa {
+    background-color: #DDDDDD;
+    -webkit-transition: background-color .5s 0s;
+    -moz-transition: background-color .5s 0s;
+    transition: background-color .5s 0s;
+  }
+
+}
+
+div.cabecalho-vertical {
+  transform: rotateZ(-90deg) translateX(-9px);
+
+  &.lanc-freq .md-button.md-icon-button {
+    width: 48px;
+  }
+  &.lanc-aval .md-button.md-icon-button {
+    max-width: 110px;
+    width: inherit;
+  }
+  .md-button.md-icon-button {
+    margin: 0;
+    height: 48px;
+    min-width: 0;
+    line-height: 48px;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0;
+  }
+}
+
+.nota-maxima {
+  font-weight: normal;
+  line-height: 1rem;
+  margin-top: 8px;
+}
+
+/* Botão de chamada */
+button.botao-novo {
+  z-index: 1;
+  border: none;
+  border-radius: 50%;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  min-height: 25px;
+  line-height: 25px;
+
+  &:focus {
+    outline: 1px dotted #999999;
+    outline-offset: 2px;
+  }
+
+  &.vazio {
+    background-color: #FFFF5A;
+  }
+
+  &.presente {
+    background-color: #00D400;
+  }
+
+  &.falta {
+    background-color: #FF8F8F;
+  }
+  &[disabled] {
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.gray {
+  background: #f5f5f5;
+}
+
+.green {
+  background: #b9f6ca;
+}
+
+.yellow {
+  background: #ffff8d;
+}
+
+.blue {
+  background: #84ffff;
+}
+
+.purple {
+  background: #b388ff;
+}
+
+.red {
+  background: #ff8a80;
+}
+
+.container-selecao-turma {
+  height: 600px;
+  md-tabs {
+    height: 600px;
+  }
+
+}
+
+.altura-padrao {
+  height: 650px;
+  md-grid-tile {
+    font-size: 6rem;
+  }
+}
+
+button.botao-salvar {
+  min-width: 120px;
+}
+
+/* Mostra as aulas na vertical */
+div.texto-vertical {
+  transform: rotateZ(-90deg);
+  font-weight: normal;
+}
+
+/* Icones dos menus */
+md-menu-item > .md-button md-icon.icone-menu {
+  margin: auto 0;
+}
+
+@corBordas: #999;
+
+table.tabela-alunos {
+  table-layout: fixed;
+  font-size: 1rem;
+  border: 1px solid @corBordas;
+  width: 100%;
+
+  &.tabela-dialog-avaliacao thead tr th {
+    line-height: 1rem;
+  }
+
+  thead {
+    tr {
+      th {
+        line-height: 2.5rem;
+        padding: 0 5px;
+        background-color: #AAE6AA;
+        border-right: 1px solid @corBordas;
+        border-bottom: 1px solid @corBordas;
+
+        -webkit-transition: background-color .5s 0s;
+        -moz-transition: background-color .5s 0s;
+        transition: background-color .5s 0s;
+
+        &:last-child {
+          border-right: none;
+        }
+        &.data-aula {
+          padding-top: 8px;
+          padding-bottom: 8px;
+          height: 42px;
+        }
+        &.avaliacao {
+          position: relative;
+          background-clip: padding-box;
+          padding: 8px 0;
+          max-height: 150px;
+          line-height: 1.5rem;
+          font-weight: normal;
+          cursor: pointer;
+
+          .nome-aval {
+            text-align: left;
+          }
+
+          .nota-maxima {
+            position: absolute;
+            height: 20px;
+            bottom: 0px;
+            text-align: center;
+            width: 100%;
+          }
+        }
+        &.hover {
+          background-color: #7FC57F;
+        }
+        &.ativo {
+          background-color: #7FC57F;
+        }
+        /* Botão adicionar aula */
+        &.nome-aluno-header {
+          position: relative;
+          background-clip: padding-box;
+          div.adicionar-aula {
+            position: absolute;
+            top: 2px;
+            right: 0;
+
+            .md-button {
+              margin-left: 4px;
+              margin-right: 4px;
+            }
+          }
+          div.gerenciar-avaliacoes {
+            position: absolute;
+            top: 4px;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  tbody {
+
+    tr {
+      background-color: #ffffff;
+      &:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      td {
+        border-right: 1px solid @corBordas;
+        /*border-bottom: 1px solid @corBordas;*/
+        line-height: 2.5rem;
+        padding: 0 5px;
+
+        -webkit-transition: background-color .5s 0s;
+        -moz-transition: background-color .5s 0s;
+        transition: background-color .5s 0s;
+
+        &:last-child {
+          border-right: none;
+        }
+
+        &.hover {
+          background-color: #f5f5f5;
+        }
+
+        /* coluna ativa para edição */
+        &.ativo {
+          background-color: #D6D6D6;
+        }
+      }
+
+      &:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+md-content.container-descricao {
+  overflow: visible;
+  background-color: #AAE6AA;
+
+  div.linha {
+    padding: 0;
+
+    md-input-container {
+      margin-bottom: 0;
+      padding-left: 6px;
+      padding-right: 6px;
+
+      &:first-child {
+        padding-left: 2px;
+      }
+      &:last-child {
+        padding-right: 2px;
+      }
+
+      input {
+        font-weight: 400;
+        font-size: 1.1rem;
+        color: #000 !important;
+      }
+    }
+
+  }
+}
+
+.diario {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Título dos modais */
+md-toolbar.cabecalho-dialog {
+  min-height: inherit;
+  div.md-toolbar-tools {
+    font-size: 1.2rem;
+    height: inherit;
+    max-height: inherit;
+  }
+}
+
+/* Modal com conteudo centralizado */
+.conteuddo-centralizado {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  .md-dialog-content {
+    margin: 0 auto;
+  }
+}
+
+/* Textarea com altura predefinida */
+md-input-container textarea.plano-aula.md-input {
+  min-height: 106px;
+}
+
+input.nota {
+  width: 100%;
+  border-radius: 2px;
+  padding: 3px 4px;
+  border: 1px solid rgb(204, 204, 204);
+  box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+  transition-duration: 0.15s, 0.15s;
+  transition-timing-function: ease-in-out, ease-in-out;
+  transition-property: border-color, box-shadow;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+
+  text-align: right;
+}
+
+.nome-aluno {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.checkbox-selecao-tabela {
+  padding-left: 2px;
+  margin: 8px 0;
+}
+
