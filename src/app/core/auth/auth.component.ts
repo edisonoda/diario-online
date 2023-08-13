@@ -5,11 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
-  template: `
-    <mat-card>
-      <mat-card-content>Aguarde... Redirecionando para o Diário Online</mat-card-content>
-    </mat-card>
-  `
+  templateUrl: 'auth.component.html',
+  styleUrls: ['auth.component.css']
 })
 export class AuthComponent implements OnInit {
   constructor(
