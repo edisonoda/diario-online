@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SessaoService } from '../services/sessao.service';
 
 @Component({
   selector: 'app-header',
@@ -6,11 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() { }
+  constructor(private sessaoService: SessaoService) { }
 
   ngOnInit(): void { }
 
   sair(): void {
-    
+    this.sessaoService.logout();
   }
 }
