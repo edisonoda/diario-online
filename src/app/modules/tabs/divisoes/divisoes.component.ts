@@ -4,6 +4,8 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
 import { TabsService } from '../tabs.service';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { DiarioService } from 'src/app/core/services/diario.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DiarioComponent } from '../../diario/diario.component';
 
 @Component({
   selector: 'app-divisoes',
@@ -18,6 +20,7 @@ export class DivisoesComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private filtrosService: FiltrosService,
     private router: Router,
+    public dialog: MatDialog,
   ) {
     if (this.filtrosService.idTurma == 'undefined' || this.filtrosService.idDisciplina == 'undefined' || this.filtrosService.idEtapa == 'undefined')
       this.router.navigate(['turma']);
@@ -38,7 +41,10 @@ export class DivisoesComponent implements OnInit, OnDestroy {
   }
 
   divisaoClick(divisao: any): void {
-
+    const dialogRef = this.dialog.open(DiarioComponent, {
+      data: { divisao },
+      width: '100%'
+    });
   }
 
   getCols(): number {

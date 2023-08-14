@@ -1,0 +1,19 @@
+<div class="p-3">
+    <div class="row">
+        <div class="col-6 d-flex flex-column justify-content-center">
+            <span class="text-muted">Aulas previstas</span>
+            <p class="mb-0">{{ divisao?.aulasPrevistas|notNull }}</p>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <div class="d-flex flex-column justify-content-center">
+                <span class="text-muted">Aulas lecionadas</span>
+                <p class="mb-0">{{ divisao?.aulasLecionadas|notNull }}</p>
+            </div>
+            <button mat-icon-button
+                matTooltip="Clique para corrigir o total de aulas lecionadas conforme os lançamento do diário online."
+                (click)="corrigirTotalAulasLancadas($event)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

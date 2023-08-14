@@ -1,0 +1,41 @@
+<div mat-dialog-content>
+    <div class="container-descricao">
+        <div class="row linha">
+            <div class="col-12 col-md-4">
+                <span class="text-muted">Escola</span>
+                <p>{{ instituicao?.nome|notNull }}</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span class="text-muted">Período Letivo</span>
+                <p>{{ periodo?.nome|notNull }}</p>
+            </div>
+            <div class="col-12 col-md-2">
+                <span class="text-muted">Turma</span>
+                <p>{{ turma?.nome|notNull }}</p>
+            </div>
+            <div class="col-12 col-md-2">
+                <span class="text-muted">Turno</span>
+                <p>{{ turma?.turno?.nome|notNull }}</p>
+            </div>
+        </div>
+        <div class="row linha">
+            <div class="col-12 col-md-4">
+                <span class="text-muted">Etapa</span>
+                <p>{{ turma?.etapa?.nome|notNull }}</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span class="text-muted">Disciplina</span>
+                <p>{{ disciplina?.nome|notNull }}</p>
+            </div>
+            <div class="col-12 col-md-4">
+                <span class="text-muted">Divisão</span>
+                <p>{{ divisao?.nome|notNull }}</p>
+            </div>
+        </div>
+    </div>
+
+    <mat-tab-group>
+        <mat-tab label="FREQUÊNCIA"><app-frequencia></app-frequencia></mat-tab>
+        <mat-tab label="AVALIAÇÕES"><app-avaliacoes></app-avaliacoes></mat-tab>
+    </mat-tab-group>
+</div>
