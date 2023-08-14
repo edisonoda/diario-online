@@ -9,6 +9,8 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
   providedIn: 'root'
 })
 export class TabsService {
+  backendServerURL: string;
+
   private _selecionar = new Subject<{ etapa: string, dados: any }>();
   selecionar$: Observable<{ etapa: string, dados: any }> = this._selecionar.asObservable();
 
@@ -16,7 +18,9 @@ export class TabsService {
     private http: HttpClient,
     private sessaoService: SessaoService,
     private router: Router,
-  ) { }
+  ) {
+    this.backendServerURL = this.sessaoService.backendServerURL ?? '';
+  }
 
   passarEtapa(etapa: string, proxEtapa: string, dados: any, params: string): void {
     this._selecionar.next({ etapa, dados });
@@ -52,133 +56,4 @@ export class TabsService {
       }
     });
   };
-
-  obterInstituicao(idInstituicao: any): Observable<any> {
-    return of({
-      data: {
-        nome: "Instituição"
-      }
-    });
-
-    return this.http.get(`${this.sessaoService.backendServerURL}/instituicao/get`, {
-      params: { idInstituicao }
-    });
-  }
-
-  obterPeriodo(idPeriodoLetivo: any): Observable<any> {
-    return of({
-      data: {
-        nome: "Período letivo"
-      }
-    });
-
-    return this.http.get(`${this.sessaoService.backendServerURL}/periodoletivo/get`, {
-      params: { idPeriodoLetivo }
-    });
-  }
-
-  obterTurmas(idInstituicao: any, idPeriodoLetivo: any): Observable<any> {
-    return of({
-      data: [
-        {
-          id: "1",
-          nome: "Turma 1",
-          etapa: {
-            id: 1,
-            nivel: {
-              nome: "Nível 1"
-            },
-            nome: "Etapa 1"
-          },
-          turno: {
-            nome: "Turno 1"
-          }
-        },
-        {
-          id: "2",
-          nome: "Turma 2",
-          etapa: {
-            id: 2,
-            nivel: {
-              nome: "Nível 2"
-            },
-            nome: "Etapa 2"
-          },
-          turno: {
-            nome: "Turno 2"
-          }
-        }
-      ]
-    });
-    
-    return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}`, {
-      params: { idPeriodoLetivo }
-    });
-  }
-
-  obterDisciplinas(idInstituicao: any, idTurma: any, idEtapa: any): Observable<any> {
-    return of({
-      data: [
-        {
-          id: "1",
-          nome: "Disciplina 1",
-        },
-        {
-          id: "2",
-          nome: "Disciplina 2",
-        },
-      ]
-    });
-
-    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
-      params: { idTurma, idEtapa }
-    });
-  }
-
-  obterDivisoes(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
-    return of({
-      data: [
-        {
-          id: "1",
-          nome: "Divisão 1",
-        },
-        {
-          id: "2",
-          nome: "Divisão 2",
-        },
-      ]
-    });
-
-    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
-      params: { idTurma, idDisciplina, idEtapa }
-    });
-  }
-
-  obterTurma(idTurma: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/turma/get`, {
-      params: { idTurma, idEtapa }
-    });
-  }
-
-  obterDisciplina(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
-      params: { idTurma, idDisciplina, idEtapa }
-    });
-  }
-
-  deveExibirCiOrientadora(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-ci-orientadora`);
-  }
-
-  deveExibirRegistroModulo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-registro-modulo`);
-  }
-
-  deveExibirRecuperacaoParalela(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-recuperacao-paralela`);
-  }
-
-  deveValidarLancamentoFrequenciaDomingo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}/frequencia/domingo/validar`);
-  }
 }

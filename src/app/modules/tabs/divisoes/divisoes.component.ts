@@ -2,6 +2,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 import { TabsService } from '../tabs.service';
+import { FiltrosService } from 'src/app/core/services/filtros.service';
+import { DiarioService } from 'src/app/core/services/diario.service';
 
 @Component({
   selector: 'app-divisoes',
@@ -9,30 +11,20 @@ import { TabsService } from '../tabs.service';
   styleUrls: ['./divisoes.component.css'],
 })
 export class DivisoesComponent implements OnInit, OnDestroy {
-  idInstituicao: any;
-  idTurma: any;
-  idDisciplina: any;
-  idEtapa: any;
-
   divisoes: any[] = [];
 
   constructor(
-    private route: ActivatedRoute,
-    private sessaoService: SessaoService,
     private tabsService: TabsService,
-    private router: Router
+    private diarioService: DiarioService,
+    private filtrosService: FiltrosService,
+    private router: Router,
   ) {
-    this.idInstituicao = this.route.snapshot.queryParamMap.get('idInstituicao') ?? this.sessaoService.idInstituicao;
-    this.idTurma = this.route.snapshot.queryParamMap.get('turma');
-    this.idDisciplina = this.route.snapshot.queryParamMap.get('disciplina');
-    this.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
-
-    if (this.idTurma == 'undefined' || this.idDisciplina == 'undefined' || this.idEtapa == 'undefined')
+    if (this.filtrosService.idTurma == 'undefined' || this.filtrosService.idDisciplina == 'undefined' || this.filtrosService.idEtapa == 'undefined')
       this.router.navigate(['turma']);
   }
 
   ngOnInit() {
-    this.tabsService.obterDivisoes(this.idInstituicao, this.idTurma, this.idDisciplina, this.idEtapa).subscribe(res => {
+    this.diarioService.obterDivisoes(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idEtapa).subscribe(res => {
       if (Array.isArray(res.data))
         this.tabsService.randomizarCores(res.data);
       else

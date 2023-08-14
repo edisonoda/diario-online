@@ -1,7 +1,8 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SessaoService } from 'src/app/core/services/sessao.service';
 import { TabsService } from '../tabs.service';
+import { FiltrosService } from 'src/app/core/services/filtros.service';
+import { DiarioService } from 'src/app/core/services/diario.service';
 
 @Component({
   selector: 'app-disciplinas',
@@ -9,28 +10,20 @@ import { TabsService } from '../tabs.service';
   styleUrls: ['./disciplinas.component.css'],
 })
 export class DisciplinasComponent implements OnInit, OnDestroy {
-  idInstituicao: any;
-  idTurma: any;
-  idEtapa: any;
-
   disciplinas: any[] = [];
 
   constructor(
-    private route: ActivatedRoute,
-    private sessaoService: SessaoService,
     private tabsService: TabsService,
-    private router: Router
+    private diarioService: DiarioService,
+    private filtrosService: FiltrosService,
+    private router: Router,
   ) {
-    this.idInstituicao = this.route.snapshot.queryParamMap.get('idInstituicao') ?? this.sessaoService.idInstituicao;
-    this.idTurma = this.route.snapshot.queryParamMap.get('turma');
-    this.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
-
-    if (this.idTurma == 'undefined' || this.idEtapa == 'undefined')
+    if (this.filtrosService.idTurma == 'undefined' || this.filtrosService.idEtapa == 'undefined')
       this.router.navigate(['turma']);
   }
 
   ngOnInit() {
-    this.tabsService.obterDisciplinas(this.idInstituicao, this.idTurma, this.idEtapa).subscribe(res => {
+    this.diarioService.obterDisciplinas(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idEtapa).subscribe(res => {
       if (res.error)
         return;
 
@@ -47,7 +40,7 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
   }
 
   disciplinaClick(disciplina: any): void {
-    this.tabsService.passarEtapa('disciplina', 'divisao', disciplina, `turma=${this.idTurma}&etapa=${this.idEtapa}&disciplina=${disciplina.id}`);
+    this.tabsService.passarEtapa('disciplina', 'divisao', disciplina, `turma=${this.filtrosService.idTurma}&etapa=${this.filtrosService.idEtapa}&disciplina=${disciplina.id}`);
   }
 
   getCols(): number {
