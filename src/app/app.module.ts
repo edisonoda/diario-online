@@ -20,6 +20,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { HeaderInterceptorModule } from './core/interceptors/header/header.module';
 import { TratamentoErrosModule } from './core/interceptors/tratamento-erros/tratamento-erros.module';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { InterceptorLoaderModule } from './core/interceptors/loader/loader.module';
 
 const MY_FORMATS = {
   parse: {
@@ -50,6 +51,7 @@ const MY_FORMATS = {
 
     HeaderInterceptorModule,
     TratamentoErrosModule,
+    InterceptorLoaderModule,
 
     MatToolbarModule,
     MatButtonModule,
