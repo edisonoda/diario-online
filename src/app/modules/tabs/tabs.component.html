@@ -20,7 +20,8 @@
         [routerLink]="link.link"
         routerLinkActive #rla="routerLinkActive"
         [active]="rla.isActive"
-        [disabled]="!breadcrumb[link.link] && !rla.isActive">
+        [disabled]="!breadcrumb[link.link] && !rla.isActive"
+        (click)="resetTab(link.link)">
         {{ link.label }}
     </a>
 </nav>
