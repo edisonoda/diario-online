@@ -9,12 +9,8 @@ const routes: Routes = [
   {
     path: '',
     component: TabsComponent,
-    // canActivate: [canActivateLogin],
+    canActivate: [canActivateLogin],
     loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)
-  },
-  {
-    path: 'login/:entry',
-    component: AuthComponent,
   },
   {
     path: 'login',

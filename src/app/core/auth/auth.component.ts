@@ -9,16 +9,30 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['auth.component.css']
 })
 export class AuthComponent implements OnInit {
+  entry: any;
+
   constructor(
     private sessaoService: SessaoService,
     private aesUtilService: AesUtilService,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+    this.entry = this.activatedRoute.snapshot.queryParamMap.get('entry');
+
+    if (!this.entry)
+      this.sessaoService.logout();
+  }
 
   ngOnInit(): void {
+    let decodedEntry: any;
+
     try {
-      const decodedEntry = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(this.activatedRoute.snapshot.params['entry'])));
+      decodedEntry = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(this.entry)));
+    } catch {
+      this.sessaoService.logout();
+    }
+
+    if (decodedEntry) {
       this.sessaoService.buscarUser().subscribe(res => {
         this.sessaoService.setUserInfo({
           user: res.user,
@@ -35,8 +49,6 @@ export class AuthComponent implements OnInit {
           }
         });
       });
-    } catch {
-      this.sessaoService.logout();
     }
   }
 }
