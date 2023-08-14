@@ -1,6 +1,5 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SessaoService } from 'src/app/core/services/sessao.service';
 import { TabsService } from '../tabs.service';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { DiarioService } from 'src/app/core/services/diario.service';
