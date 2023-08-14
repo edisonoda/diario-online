@@ -21,6 +21,7 @@ import { HeaderInterceptorModule } from './core/interceptors/header/header.modul
 import { TratamentoErrosModule } from './core/interceptors/tratamento-erros/tratamento-erros.module';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { InterceptorLoaderModule } from './core/interceptors/loader/loader.module';
+import { GetFiltroModule } from './core/interceptors/get-filtros/get-filtro.module';
 
 const MY_FORMATS = {
   parse: {
@@ -52,6 +53,7 @@ const MY_FORMATS = {
     HeaderInterceptorModule,
     TratamentoErrosModule,
     InterceptorLoaderModule,
+    GetFiltroModule,
 
     MatToolbarModule,
     MatButtonModule,

@@ -11,8 +11,8 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
 export class TabsService {
   backendServerURL: string;
 
-  private _selecionar = new Subject<{ etapa: string, dados: any }>();
-  selecionar$: Observable<{ etapa: string, dados: any }> = this._selecionar.asObservable();
+  private _selecionar = new Subject<{ etapa: string, proxEtapa: string, dados: any }>();
+  selecionar$: Observable<{ etapa: string, proxEtapa: string, dados: any }> = this._selecionar.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -23,7 +23,7 @@ export class TabsService {
   }
 
   passarEtapa(etapa: string, proxEtapa: string, dados: any, params: string): void {
-    this._selecionar.next({ etapa, dados });
+    this._selecionar.next({ etapa, proxEtapa, dados });
     this.router.navigate([proxEtapa], {
       queryParams: params.split('&').reduce((params: any, param) => {
         const [key, value] = param.split('=');

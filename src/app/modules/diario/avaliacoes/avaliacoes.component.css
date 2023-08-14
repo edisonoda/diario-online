@@ -1,0 +1,12 @@
+.tab-aval {
+    padding: 1rem;
+}
+
+.tab-aval span.text-muted {
+    font-size: 12px;
+}
+
+.tab-aval p {
+    font-size: 16px;
+    text-transform: uppercase;
+}

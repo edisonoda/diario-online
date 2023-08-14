@@ -1,0 +1,12 @@
+.tab-freq {
+    padding: 1rem;
+}
+
+.tab-freq span.text-muted {
+    font-size: 12px;
+}
+
+.tab-freq p {
+    font-size: 16px;
+    text-transform: uppercase;
+}

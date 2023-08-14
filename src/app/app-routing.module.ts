@@ -7,7 +7,7 @@ import { TabsComponent } from './modules/tabs/tabs.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':tab',
     component: TabsComponent,
     // canActivate: [canActivateLogin],
     loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)

@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 import { TabsService } from './tabs.service';
 import { Subscription } from 'rxjs';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-tabs',
@@ -11,11 +12,12 @@ import { FiltrosService } from 'src/app/core/services/filtros.service';
   styleUrls: ['./tabs.component.css'],
 })
 export class TabsComponent implements OnInit, OnDestroy {
-  navLinks = [
-    { link: 'turma', label: '1 - Turma' },
-    { link: 'disciplina', label: '2 - Disciplina' },
-    { link: 'divisao', label: '3 - Divisão' }
-  ];
+  tabs: any = {
+    turma: 0,
+    disciplina: 1,
+    divisao: 2,
+  };
+  tab: number = 0;
 
   instituicao: any;
   periodo: any;
@@ -28,11 +30,30 @@ export class TabsComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private sessaoService: SessaoService,
     private tabsService: TabsService,
     private filtrosService: FiltrosService,
   ) {
+    this.subs.push(this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const tab = this.route.snapshot.params['tab'];
+        this.tab = this.tabs[tab];
+        this.atualizarFiltros();
+
+        this.resetTab(tab);
+      }
+    }));
+  }
+
+  ngOnInit() {
+    this.subs.push(this.tabsService.selecionar$.subscribe(tab => {
+      this.breadcrumb[tab.etapa] = tab.dados?.nome;
+    }));
+  }
+
+  atualizarFiltros(): void {
     this.filtrosService.idInstituicao = this.route.snapshot.queryParamMap.get('idInstituicao') ?? this.sessaoService.idInstituicao;
     this.filtrosService.idPeriodoLetivo = this.route.snapshot.queryParamMap.get('idPeriodoLetivo') ?? this.sessaoService.idPeriodoLetivo;
     this.filtrosService.idTurma = this.route.snapshot.queryParamMap.get('turma');
@@ -53,25 +74,32 @@ export class TabsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.subs.push(this.tabsService.selecionar$.subscribe(tab => {
-      this.breadcrumb[tab.etapa] = tab.dados?.nome;
-    }));
+  alterarTab(ev: MatTabChangeEvent): void {
+    const tab = Object.entries(this.tabs).find(([tab, index]) => index === ev.index);
+
+    if (tab) {
+      this.resetTab(tab[0]);
+      this.router.navigate([tab[0]]);
+    }
   }
 
   resetTab(tab: string): void {
     switch(tab) {
-      case "disciplina":
-        this.breadcrumb.disciplina = null;
-        this.breadcrumb.divisao = null;
-        break;
-      default:
+      case "turma":
         this.breadcrumb = {
           turma: null,
           disciplina: null,
           divisao: null
         };
+        break;
+      case "disciplina":
+        this.breadcrumb.disciplina = null;
+        this.breadcrumb.divisao = null;
+        break;
+      default:
     }
+
+    this.tab = this.tabs[tab];
   }
 
   abrirPendenciasAvaliacao(ev: Event): void {

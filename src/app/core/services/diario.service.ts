@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { SessaoService } from 'src/app/core/services/sessao.service';
+import { GET_FILTRO_TOKEN } from '../interceptors/get-filtros/get-filtros.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,6 @@ export class DiarioService {
   constructor(
     private http: HttpClient,
     private sessaoService: SessaoService,
-    private router: Router,
   ) {
     this.backendServerURL = this.sessaoService.backendServerURL ?? '';
   }
@@ -26,7 +25,8 @@ export class DiarioService {
     });
 
     return this.http.get(`${this.backendServerURL}/instituicao/get`, {
-      params: { idInstituicao }
+      params: { idInstituicao },
+      context: new HttpContext().set(GET_FILTRO_TOKEN, 'instituicao'),
     });
   }
 
@@ -38,31 +38,35 @@ export class DiarioService {
     });
 
     return this.http.get(`${this.backendServerURL}/periodoletivo/get`, {
-      params: { idPeriodoLetivo }
+      params: { idPeriodoLetivo },
+      context: new HttpContext().set(GET_FILTRO_TOKEN, 'periodo'),
     });
   }
 
   obterTurma(idTurma: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.backendServerURL}/turma/get`, {
-      params: { idTurma, idEtapa }
+      params: { idTurma, idEtapa },
+      context: new HttpContext().set(GET_FILTRO_TOKEN, 'turma'),
     });
   }
 
   obterDisciplina(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
-      params: { idTurma, idDisciplina, idEtapa }
+      params: { idTurma, idDisciplina, idEtapa },
+      context: new HttpContext().set(GET_FILTRO_TOKEN, 'disciplina'),
     });
   }
 
   obterDivisao(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
-      params: { idTurma, idDisciplina, idDivisao, idEtapa }
+      params: { idTurma, idDisciplina, idDivisao, idEtapa },
+      context: new HttpContext().set(GET_FILTRO_TOKEN, 'divisao'),
     });
   }
 
   obterAlunos(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/aluno/instituicao/${idInstituicao}`, {
-      params: { idPeriodoLetivo, idTurma, idDisciplina, idDivisao, idEtapa }
+      params: { idPeriodoLetivo, idTurma, idDisciplina, idDivisao, idEtapa },
     });
   }
 

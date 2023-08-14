@@ -1,0 +1,13 @@
+.card-info-diario {
+    background-color: #AAE6AA;
+    padding: 1rem;
+}
+
+.card-info-diario span.text-muted {
+    font-size: 12px;
+}
+
+.card-info-diario p {
+    font-size: 16px;
+    text-transform: uppercase;
+}

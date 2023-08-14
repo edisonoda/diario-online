@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { TabRoutingModule } from './tabs-routing.module';
 import { DiarioModule } from '../diario/diario.module';
 import { TabsComponent } from './tabs.component';
 import { TurmasComponent } from './turmas/turmas.component';
@@ -31,7 +30,6 @@ import { MatDialogModule } from '@angular/material/dialog';
   imports: [
     CommonModule,
     RouterModule,
-    TabRoutingModule,
     FormsModule,
     ReactiveFormsModule,
 
