@@ -18,6 +18,9 @@ export class TabsComponent implements OnInit, OnDestroy {
 
   idInstituicao: any;
   idPeriodoLetivo: any;
+  idTurma: any;
+  idDisciplina: any;
+  idEtapa: any;
 
   instituicao: any;
   periodo: any;
@@ -36,6 +39,9 @@ export class TabsComponent implements OnInit, OnDestroy {
   ) {
     this.idInstituicao = this.route.snapshot.queryParamMap.get('idInstituicao') ?? this.sessaoService.idInstituicao;
     this.idPeriodoLetivo = this.route.snapshot.queryParamMap.get('idPeriodoLetivo') ?? this.sessaoService.idPeriodoLetivo;
+    this.idTurma = this.route.snapshot.queryParamMap.get('turma');
+    this.idDisciplina = this.route.snapshot.queryParamMap.get('disciplina');
+    this.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
   }
 
   ngOnInit() {
@@ -45,6 +51,17 @@ export class TabsComponent implements OnInit, OnDestroy {
     this.tabsService.obterPeriodo(this.idPeriodoLetivo).subscribe(res => {
       this.periodo = res.data;
     });
+
+    if (this.idTurma != undefined && this.idEtapa != undefined) {
+      this.tabsService.obterTurma(this.idTurma, this.idEtapa).subscribe(res => {
+        this.breadcrumb.turma = res.nome;
+      });
+
+      if (this.idDisciplina != undefined)
+        this.tabsService.obterDisciplina(this.idInstituicao, this.idTurma, this.idDisciplina, this.idEtapa).subscribe(res => {
+          this.breadcrumb.disciplina = res.nome;
+        });
+    }
 
     this.subs.push(this.tabsService.selecionar$.subscribe(tab => {
       this.breadcrumb[tab.etapa] = tab.dados?.nome;

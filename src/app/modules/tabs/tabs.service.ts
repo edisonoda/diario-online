@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { CORES } from 'src/app/core/constants';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 
@@ -54,31 +54,114 @@ export class TabsService {
   };
 
   obterInstituicao(idInstituicao: any): Observable<any> {
+    return of({
+      data: {
+        nome: "Instituição"
+      }
+    });
+
     return this.http.get(`${this.sessaoService.backendServerURL}/instituicao/get`, {
       params: { idInstituicao }
     });
   }
 
   obterPeriodo(idPeriodoLetivo: any): Observable<any> {
+    return of({
+      data: {
+        nome: "Período letivo"
+      }
+    });
+
     return this.http.get(`${this.sessaoService.backendServerURL}/periodoletivo/get`, {
       params: { idPeriodoLetivo }
     });
   }
 
   obterTurmas(idInstituicao: any, idPeriodoLetivo: any): Observable<any> {
+    return of({
+      data: [
+        {
+          id: "1",
+          nome: "Turma 1",
+          etapa: {
+            id: 1,
+            nivel: {
+              nome: "Nível 1"
+            },
+            nome: "Etapa 1"
+          },
+          turno: {
+            nome: "Turno 1"
+          }
+        },
+        {
+          id: "2",
+          nome: "Turma 2",
+          etapa: {
+            id: 2,
+            nivel: {
+              nome: "Nível 2"
+            },
+            nome: "Etapa 2"
+          },
+          turno: {
+            nome: "Turno 2"
+          }
+        }
+      ]
+    });
+    
     return this.http.get(`${this.sessaoService.backendServerURL}/turma/instituicao/${idInstituicao}`, {
       params: { idPeriodoLetivo }
     });
   }
 
   obterDisciplinas(idInstituicao: any, idTurma: any, idEtapa: any): Observable<any> {
+    return of({
+      data: [
+        {
+          id: "1",
+          nome: "Disciplina 1",
+        },
+        {
+          id: "2",
+          nome: "Disciplina 2",
+        },
+      ]
+    });
+
     return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
       params: { idTurma, idEtapa }
     });
   }
 
   obterDivisoes(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
+    return of({
+      data: [
+        {
+          id: "1",
+          nome: "Divisão 1",
+        },
+        {
+          id: "2",
+          nome: "Divisão 2",
+        },
+      ]
+    });
+
     return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
+      params: { idTurma, idDisciplina, idEtapa }
+    });
+  }
+
+  obterTurma(idTurma: any, idEtapa: any): Observable<any> {
+    return this.http.get(`${this.sessaoService.backendServerURL}/turma/get`, {
+      params: { idTurma, idEtapa }
+    });
+  }
+
+  obterDisciplina(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
+    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
       params: { idTurma, idDisciplina, idEtapa }
     });
   }
