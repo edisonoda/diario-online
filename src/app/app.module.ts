@@ -31,6 +31,7 @@ import { TratamentoErrosModule } from './core/interceptors/tratamento-erros/trat
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { InterceptorLoaderModule } from './core/interceptors/loader/loader.module';
 import { GetFiltroModule } from './core/interceptors/get-filtros/get-filtro.module';
+import { LoaderGeralComponent } from './shared/components/loader-geral/loader-geral.component';
 
 const MY_FORMATS = {
   parse: {
@@ -50,6 +51,7 @@ const MY_FORMATS = {
     HeaderComponent,
     FooterComponent,
     AuthComponent,
+    LoaderGeralComponent,
   ],
   imports: [
     BrowserModule,
