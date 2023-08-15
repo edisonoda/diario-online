@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 import { GET_FILTRO_TOKEN } from '../interceptors/get-filtros/get-filtros.service';
+import { HeaderService } from './header.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class DiarioService {
   constructor(
     private http: HttpClient,
     private sessaoService: SessaoService,
+    private headerService: HeaderService,
   ) {
     this.backendServerURL = this.sessaoService.backendServerURL ?? '';
   }
@@ -27,6 +29,7 @@ export class DiarioService {
     return this.http.get(`${this.backendServerURL}/instituicao/get`, {
       params: { idInstituicao },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'instituicao'),
+      headers: this.headerService.getHeader()
     });
   }
 
