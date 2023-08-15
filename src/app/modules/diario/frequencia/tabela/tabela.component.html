@@ -4,10 +4,10 @@
             (click)="houveModificacao ? focarPersistencia() : trocarDivisao($event)">
             <mat-icon>view_week</mat-icon>
         </button>
-        <button mat-icon-button class="md-fab md-mini" matTooltip="Adiciona novo dia de aula"
+        <button *ngIf="permissoes.indexOf('frequenciaDiariaBBean.salvar') > -1"
+            mat-icon-button class="md-fab md-mini" matTooltip="Adiciona novo dia de aula"
             (click)="houveModificacao ? focarPersistencia() : adicionarAulaNovoDia($event)"
-            [disabled]="deveDesabilitarBotaoNovoDiaDeAula" permission
-            permission-only="'frequenciaDiariaBBean.salvar'">
+            [disabled]="deveDesabilitarBotaoNovoDiaDeAula">
             <mat-icon>add_to_photos</mat-icon>
         </button>
         <button mat-icon-button class="md-fab md-mini" matTooltip="Aulas anteriores"
@@ -47,27 +47,27 @@
                                 (click)="houveModificacao ? focarPersistencia() : trocarDivisao($event)">
                                 <mat-icon class="material-icons">view_week</mat-icon>
                             </button>
-                            <button class="md-fab md-mini" matTooltip="Adiciona novo dia de aula"
+                            <button *ngIf="permissoes.indexOf('frequenciaDiariaBBean.salvar') > -1"
+                                class="md-fab md-mini" matTooltip="Adiciona novo dia de aula"
                                 (click)="houveModificacao ? focarPersistencia() : adicionarAulaNovoDia($event)"
-                                ng-disabled="deveDesabilitarBotaoNovoDiaDeAula" permission
-                                permission-only="'frequenciaDiariaBBean.salvar'">
+                                [disabled]="deveDesabilitarBotaoNovoDiaDeAula">
                                 <mat-icon class="material-icons">add_to_photos</mat-icon>
                             </button>
                         </div>
                         <div class="col">
                             <button class="md-fab md-mini" matTooltip="Aulas anteriores"
                                 (click)="houveModificacao ? focarPersistencia() : rolarFrequencia('esq')"
-                                ng-disabled="!botaoEsquerda">
+                                [disabled]="!botaoEsquerda">
                                 <mat-icon class="material-icons">arrow_back</mat-icon>
                             </button>
                             <button class="md-fab md-mini" matTooltip="Ir para data"
                                 (click)="houveModificacao ? focarPersistencia() : irParaData($event)"
-                                ng-disabled="!(botaoEsquerda || botaoDireita)">
+                                [disabled]="!(botaoEsquerda || botaoDireita)">
                                 <mat-icon class="material-icons">today</mat-icon>
                             </button>
                             <button class="md-fab md-mini" matTooltip="Próximas aulas"
                                 (click)="houveModificacao ? focarPersistencia() : rolarFrequencia('dir')"
-                                ng-disabled="!botaoDireita">
+                                [disabled]="!botaoDireita">
                                 <mat-icon class="material-icons">arrow_forward</mat-icon>
                             </button>
                         </div>
@@ -85,10 +85,11 @@
                             </button>
                         </div>
 
-                        <button mat-button matTooltip="Ações" class="mat-icon-button"
+                        <button *ngIf="permissoes.indexOf('frequenciaDiariaBBean.salvar') > -1"
+                            mat-button matTooltip="Ações" class="mat-icon-button"
                             #trigger="matMenuTrigger" [matMenuTriggerFor]="menu"
                             (click)="houveModificacao ? focarPersistencia() : trigger.closeMenu()"
-                            style="width: 50px;" permission permission-only="'frequenciaDiariaBBean.salvar'">
+                            style="width: 50px;">
                             {{aula.data | date:'dd/MM'}}
                             <br />
                             <sup>{{ aula.ordem > 1 ? aula.ordem : ''}}</sup>
@@ -183,7 +184,7 @@
     </table>
     <div class="text-right" *ngIf="houveModificacao">
         <button mat-raised-button id="botaoSalvarFrequencia" class="md-raised md-primary botao-salvar" (click)="salvarDiaAula()"
-            permission permission-only="'frequenciaDiariaBBean.salvar'">
+            *ngIf="permissoes.indexOf('frequenciaDiariaBBean.salvar') > -1">
             <mat-icon class="material-icons">done_all</mat-icon>
             &nbsp; SALVAR FREQUÊNCIA
         </button>

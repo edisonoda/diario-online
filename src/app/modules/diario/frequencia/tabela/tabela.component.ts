@@ -8,6 +8,7 @@ import { ModalTrocaDivisaoComponent } from '../../modal-troca-divisao/modal-troc
 import { ModalParaDataComponent } from '../modal-para-data/modal-para-data.component';
 import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/dialog-confirmacao.component';
 import { ModalNovoDiaComponent } from '../modal-novo-dia/modal-novo-dia.component';
+import { SessaoService } from 'src/app/core/services/sessao.service';
 
 @Component({
   selector: 'app-tabela-frequencia',
@@ -35,6 +36,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   lista: any[] = [];
   aulas: any[] = [];
 
+  permissoes: string[] = [];
+
   divisao: any;
 
   @HostListener('window:resize', ['$event'])
@@ -45,6 +48,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private filtrosService: FiltrosService,
+    private sessaoService: SessaoService,
     private diarioService: DiarioService,
     private snackBar: MatSnackBar
   ) {
@@ -54,6 +58,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     this.idFreq = this.aulas !== null && this.aulas !== undefined ? this.aulas.length : 0;
+    if (this.sessaoService.permissoes)
+      this.permissoes = JSON.parse(this.sessaoService.permissoes);
   }
 
   ngOnInit() {
