@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 import { GET_FILTRO_TOKEN } from '../interceptors/get-filtros/get-filtros.service';
+import { CONFIGURACOES } from '../constants';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,9 @@ export class DiarioService {
 
   constructor(
     private http: HttpClient,
-    private sessaoService: SessaoService,
+    private sessaoService: SessaoService
   ) {
-    this.backendServerURL = this.sessaoService.backendServerURL ?? '';
+    this.backendServerURL = CONFIGURACOES.REST_ADDRESS;
   }
 
   obterInstituicao(idInstituicao: any): Observable<any> {
@@ -23,10 +25,15 @@ export class DiarioService {
     //     nome: "Instituição"
     //   }
     // });
+    console.log(this.sessaoService)
 
     return this.http.get(`${this.backendServerURL}/instituicao/get`, {
       params: { idInstituicao },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'instituicao'),
+      headers: {
+        'X-Auth-Token': sessionStorage.getItem("token")!,
+        'X-Auth-Acess-Group': sessionStorage.getItem("idGrupoAcesso")!,
+      }
     });
   }
 
@@ -40,6 +47,10 @@ export class DiarioService {
     return this.http.get(`${this.backendServerURL}/periodoletivo/get`, {
       params: { idPeriodoLetivo },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'periodo'),
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
@@ -47,6 +58,10 @@ export class DiarioService {
     return this.http.get(`${this.backendServerURL}/turma/get`, {
       params: { idTurma, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'turma'),
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
@@ -54,6 +69,10 @@ export class DiarioService {
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
       params: { idTurma, idDisciplina, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'disciplina'),
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
@@ -61,12 +80,20 @@ export class DiarioService {
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
       params: { idTurma, idDisciplina, idDivisao, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'divisao'),
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
   obterAlunos(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/aluno/instituicao/${idInstituicao}`, {
       params: { idPeriodoLetivo, idTurma, idDisciplina, idDivisao, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
@@ -103,9 +130,14 @@ export class DiarioService {
     //     }
     //   ]
     // });
-    
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}`, {
-      params: { idPeriodoLetivo }
+
+    console.log(this.sessaoService)
+    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/`, {
+      params: { idPeriodoLetivo },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
@@ -124,7 +156,11 @@ export class DiarioService {
     // });
 
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
-      params: { idTurma, idEtapa }
+      params: { idTurma, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
@@ -143,50 +179,96 @@ export class DiarioService {
     // });
 
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
-      params: { idTurma, idDisciplina, idEtapa }
+      params: { idTurma, idDisciplina, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
   obterDiasAula(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/programacaoaula/instituicao/${idInstituicao}`, {
-      params: { idTurma, idDisciplina, idDivisao, idEtapa }
+      params: { idTurma, idDisciplina, idDivisao, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
   obterAvaliacoes(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/programacaoaula/instituicao/${idInstituicao}`, {
-      params: { idTurma, idDisciplina, idDivisao, idEtapa }
+      params: { idTurma, idDisciplina, idDivisao, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
   obterListaConceitoDisciplina(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
     return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}/listaConceito`, {
-      params: { idTurma, idDisciplina, idEtapa }
+      params: { idTurma, idDisciplina, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
     });
   }
 
   buscarNumeroMaxDeAulasPorDia(): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/diario/instituicao/numero-max-aulas-dia`);
+    return this.http.get(`${this.sessaoService.backendServerURL}/diario/instituicao/numero-max-aulas-dia`, {
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 
   deveExibirCiOrientadora(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-ci-orientadora`);
+    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-ci-orientadora`, {
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 
   deveExibirRegistroModulo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-registro-modulo`);
+    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-registro-modulo`, {
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 
   deveExibirRecuperacaoParalela(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-recuperacao-paralela`);
+    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-recuperacao-paralela`, {
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 
   deveValidarLancamentoFrequenciaDomingo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/frequencia/domingo/validar`);
+    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/frequencia/domingo/validar`, {
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 
   removerDiaAula(idInstituicao: any, idProgramacaoDivisaoAula: any, idTurma: any, idDisciplina: any, idEtapa: any, idDivisao: any): Observable<any> {
-    return this.http.delete(`${this.backendServerURL}/programacaoaula/remover/${idProgramacaoDivisaoAula}/turma/${idTurma}\/disciplina/${idDisciplina}/instituicao/${idInstituicao}/etapa/${idEtapa}/divisao/${idDivisao}`);
+    return this.http.delete(`${this.backendServerURL}/programacaoaula/remover/${idProgramacaoDivisaoAula}/turma/${idTurma}\/disciplina/${idDisciplina}/instituicao/${idInstituicao}/etapa/${idEtapa}/divisao/${idDivisao}`, {
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 
   criarNovoDiaAula(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, dataAula: any, idEtapa: any): Observable<any> {

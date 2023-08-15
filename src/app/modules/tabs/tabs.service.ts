@@ -24,7 +24,7 @@ export class TabsService {
 
   passarEtapa(etapa: string, proxEtapa: string, dados: any, params: string): void {
     this._selecionar.next({ etapa, proxEtapa, dados });
-    this.router.navigate([proxEtapa], {
+    this.router.navigate(['site', proxEtapa], {
       queryParams: params.split('&').reduce((params: any, param) => {
         const [key, value] = param.split('=');
         params[key] = value;

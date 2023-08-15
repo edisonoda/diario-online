@@ -68,14 +68,19 @@ export class TabsComponent implements OnInit, OnDestroy {
       this.periodo = res.data;
       this.filtrosService.periodo = this.periodo;
     });
-    this.filtrosService.obterTurma().subscribe(res => {
-      this.breadcrumb.turma = res.data?.nome;
-      this.filtrosService.turma = res.data;
-    });
-    this.filtrosService.obterDisciplina().subscribe(res => {
-      this.breadcrumb.disciplina = res.data?.nome;
-      this.filtrosService.disciplina = res.data;
-    });
+
+    if(this.filtrosService.idTurma) {
+      this.filtrosService.obterTurma().subscribe(res => {
+        this.breadcrumb.turma = res.data?.nome;
+        this.filtrosService.turma = res.data;
+      });
+    }
+    if(this.filtrosService.idDisciplina) {
+      this.filtrosService.obterDisciplina().subscribe(res => {
+        this.breadcrumb.disciplina = res.data?.nome;
+        this.filtrosService.disciplina = res.data;
+      });
+    }
   }
 
   alterarTab(ev: MatTabChangeEvent): void {

@@ -25,7 +25,6 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     let decodedEntry: any = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(this.entry)));
-
     if (decodedEntry) {
       this.sessaoService.buscarUser(decodedEntry.token, decodedEntry.backendServerURL, decodedEntry.idGrupoAcesso).subscribe(res => {
         this.sessaoService.setUserInfo({
@@ -34,9 +33,10 @@ export class AuthComponent implements OnInit {
           backendServerURL: decodedEntry.backendServerURL,
           logoutURL: decodedEntry.logoutURL ? `${decodedEntry.logoutURL}/inicio.faces` : `${decodedEntry.backendServerURL.split('/rest')[0]}/inicio.faces`,
           idGrupoAcesso: decodedEntry.idGrupoAcesso,
+          listaPermissao: res.listaPermissao
         });
 
-        this.router.navigate(['turmas'], {
+        this.router.navigate(['site', 'turmas'], {
           queryParams: {
             idInstituicao: decodedEntry.idInstituicao,
             idPeriodoLetivo: decodedEntry.idPeriodoLetivo
