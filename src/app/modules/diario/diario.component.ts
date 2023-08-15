@@ -10,8 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./diario.component.css'],
 })
 export class DiarioComponent implements OnInit, OnDestroy {
-  abaAvaliacao: boolean = true;
-  abaFrequencia: boolean = true;
+  tabSelecionada: number = 0;
 
   instituicao: any;
   periodo: any;
@@ -102,10 +101,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
   setFaltasAlunos(): void {
     // Registra das faltas salvas quantas estão lançadas no diário
     this.alunos.forEach(aluno => {
-      // TODO: achar de onde vem o idAluno
-      // if (parametros.idAluno && parametros.idAluno == aluno.id) {
-      //   aluno.resolverPendencia = true;
-      // }
+      if (this.filtrosService.idAluno && this.filtrosService.idAluno == aluno.id)
+        aluno.resolverPendencia = true;
 
       if (aluno.frequencia && aluno.frequencia.length > 0) {
         var faltasPorDia = aluno.frequencia.map((alunoFrequencia: any) => {
@@ -131,10 +128,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
 
   setAbas(): void {
     // desabilita lancamento de frequencia
-    if (this.disciplina.computaFrequenciaGrupo) {
-      this.abaAvaliacao = this.disciplina.id === 0;
-      this.abaFrequencia = !this.abaAvaliacao;
-    }
+    if (this.disciplina.computaFrequenciaGrupo)
+      this.tabSelecionada = this.disciplina.id !== 0 ? 1 : 0;
   }
 
   onNoClick(): void {

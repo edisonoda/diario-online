@@ -34,7 +34,8 @@
         </div>
     </div>
 
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="mt-3">
+    <mat-tab-group [selectedIndex]="tabSelecionada" #tabs="matTabGroup" mat-stretch-tabs="false"
+        mat-align-tabs="start" class="mt-3">
         <mat-tab label="FREQUÊNCIA"><app-frequencia></app-frequencia></mat-tab>
         <mat-tab label="AVALIAÇÕES"><app-avaliacoes></app-avaliacoes></mat-tab>
     </mat-tab-group>
