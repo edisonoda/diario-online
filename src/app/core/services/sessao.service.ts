@@ -18,6 +18,7 @@ export class SessaoService {
   get idGrupoAcesso() { return localStorage.getItem('idGrupoAcesso') }
   get idInstituicao() { return localStorage.getItem('idInstituicao') }
   get idPeriodoLetivo() { return localStorage.getItem('idPeriodoLetivo') }
+  get permissoes() { return localStorage.getItem('permissoes') }
 
   constructor(private http: HttpClient) { }
 
@@ -34,6 +35,7 @@ export class SessaoService {
     localStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);
     localStorage.setItem('idInstituicao', info.idInstituicao);
     localStorage.setItem('idPeriodoLetivo', info.idPeriodoLetivo);
+    localStorage.setItem('permissoes', this._user.listaPermissao);
   }
 
   logout(): any {

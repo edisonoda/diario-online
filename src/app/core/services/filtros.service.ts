@@ -11,27 +11,27 @@ export class FiltrosService {
 
   private _idInstituicao: any;
   get idInstituicao() { return this._idInstituicao }
-  set idInstituicao(id) { this._idInstituicao = id }
+  set idInstituicao(id) { if (id != 'undefined') this._idInstituicao = id }
 
   private _idPeriodoLetivo: any;
   get idPeriodoLetivo() { return this._idPeriodoLetivo }
-  set idPeriodoLetivo(id) { this._idPeriodoLetivo = id }
+  set idPeriodoLetivo(id) { if (id != 'undefined') this._idPeriodoLetivo = id }
 
   private _idTurma: any;
   get idTurma() { return this._idTurma }
-  set idTurma(id) { this._idTurma = id }
+  set idTurma(id) { if (id != 'undefined') this._idTurma = id }
 
   private _idDisciplina: any;
   get idDisciplina() { return this._idDisciplina }
-  set idDisciplina(id) { this._idDisciplina = id }
+  set idDisciplina(id) { if (id != 'undefined') this._idDisciplina = id }
 
   private _idDivisao: any;
   get idDivisao() { return this._idDivisao }
-  set idDivisao(id) { this._idDivisao = id }
+  set idDivisao(id) { if (id != 'undefined') this._idDivisao = id }
 
   private _idEtapa: any;
   get idEtapa() { return this._idEtapa }
-  set idEtapa(id) { this._idEtapa = id }
+  set idEtapa(id) { if (id != 'undefined') this._idEtapa = id }
 
   private _instituicao: any;
   private _periodo: any;
