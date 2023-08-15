@@ -18,11 +18,11 @@ export class DiarioService {
   }
 
   obterInstituicao(idInstituicao: any): Observable<any> {
-    return of({
-      data: {
-        nome: "Instituição"
-      }
-    });
+    // return of({
+    //   data: {
+    //     nome: "Instituição"
+    //   }
+    // });
 
     return this.http.get(`${this.backendServerURL}/instituicao/get`, {
       params: { idInstituicao },
@@ -31,11 +31,11 @@ export class DiarioService {
   }
 
   obterPeriodo(idPeriodoLetivo: any): Observable<any> {
-    return of({
-      data: {
-        nome: "Período letivo"
-      }
-    });
+    // return of({
+    //   data: {
+    //     nome: "Período letivo"
+    //   }
+    // });
 
     return this.http.get(`${this.backendServerURL}/periodoletivo/get`, {
       params: { idPeriodoLetivo },
@@ -71,38 +71,38 @@ export class DiarioService {
   }
 
   obterTurmas(idInstituicao: any, idPeriodoLetivo: any): Observable<any> {
-    return of({
-      data: [
-        {
-          id: "1",
-          nome: "Turma 1",
-          etapa: {
-            id: 1,
-            nivel: {
-              nome: "Nível 1"
-            },
-            nome: "Etapa 1"
-          },
-          turno: {
-            nome: "Turno 1"
-          }
-        },
-        {
-          id: "2",
-          nome: "Turma 2",
-          etapa: {
-            id: 2,
-            nivel: {
-              nome: "Nível 2"
-            },
-            nome: "Etapa 2"
-          },
-          turno: {
-            nome: "Turno 2"
-          }
-        }
-      ]
-    });
+    // return of({
+    //   data: [
+    //     {
+    //       id: "1",
+    //       nome: "Turma 1",
+    //       etapa: {
+    //         id: 1,
+    //         nivel: {
+    //           nome: "Nível 1"
+    //         },
+    //         nome: "Etapa 1"
+    //       },
+    //       turno: {
+    //         nome: "Turno 1"
+    //       }
+    //     },
+    //     {
+    //       id: "2",
+    //       nome: "Turma 2",
+    //       etapa: {
+    //         id: 2,
+    //         nivel: {
+    //           nome: "Nível 2"
+    //         },
+    //         nome: "Etapa 2"
+    //       },
+    //       turno: {
+    //         nome: "Turno 2"
+    //       }
+    //     }
+    //   ]
+    // });
     
     return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}`, {
       params: { idPeriodoLetivo }
@@ -110,18 +110,18 @@ export class DiarioService {
   }
 
   obterDisciplinas(idInstituicao: any, idTurma: any, idEtapa: any): Observable<any> {
-    return of({
-      data: [
-        {
-          id: "1",
-          nome: "Disciplina 1",
-        },
-        {
-          id: "2",
-          nome: "Disciplina 2",
-        },
-      ]
-    });
+    // return of({
+    //   data: [
+    //     {
+    //       id: "1",
+    //       nome: "Disciplina 1",
+    //     },
+    //     {
+    //       id: "2",
+    //       nome: "Disciplina 2",
+    //     },
+    //   ]
+    // });
 
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
       params: { idTurma, idEtapa }
@@ -129,18 +129,18 @@ export class DiarioService {
   }
 
   obterDivisoes(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
-    return of({
-      data: [
-        {
-          id: "1",
-          nome: "Divisão 1",
-        },
-        {
-          id: "2",
-          nome: "Divisão 2",
-        },
-      ]
-    });
+    // return of({
+    //   data: [
+    //     {
+    //       id: "1",
+    //       nome: "Divisão 1",
+    //     },
+    //     {
+    //       id: "2",
+    //       nome: "Divisão 2",
+    //     },
+    //   ]
+    // });
 
     return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
       params: { idTurma, idDisciplina, idEtapa }
