@@ -40,6 +40,8 @@ export class DivisoesComponent implements OnInit, OnDestroy {
   }
 
   divisaoClick(divisao: any): void {
+    this.filtrosService.divisao = divisao;
+
     const dialogRef = this.dialog.open(DiarioComponent, {
       data: { divisao },
       width: '100%'

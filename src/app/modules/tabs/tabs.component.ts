@@ -62,15 +62,19 @@ export class TabsComponent implements OnInit, OnDestroy {
 
     this.filtrosService.obterInstituicao().subscribe(res => {
       this.instituicao = res.data;
+      this.filtrosService.instituicao = this.instituicao;
     });
     this.filtrosService.obterPeriodo().subscribe(res => {
       this.periodo = res.data;
+      this.filtrosService.periodo = this.periodo;
     });
     this.filtrosService.obterTurma().subscribe(res => {
       this.breadcrumb.turma = res.data?.nome;
+      this.filtrosService.turma = res.data;
     });
     this.filtrosService.obterDisciplina().subscribe(res => {
       this.breadcrumb.disciplina = res.data?.nome;
+      this.filtrosService.disciplina = res.data;
     });
   }
 
