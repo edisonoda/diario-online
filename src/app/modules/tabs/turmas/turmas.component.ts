@@ -57,7 +57,7 @@ export class TurmasComponent implements OnInit, OnDestroy {
 
   private _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    return this.turmas.filter(option => option.toLowerCase().includes(filterValue));
+    return this.turmas.filter(turma => turma?.nome?.toLowerCase().includes(filterValue));
   }
 
   ngOnDestroy(): void {
