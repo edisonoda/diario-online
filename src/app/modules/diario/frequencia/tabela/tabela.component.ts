@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
@@ -16,6 +16,9 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
   styleUrls: ['./tabela.component.css'],
 })
 export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
+  @Input() lista: any[] = [];
+  @Input() aulas: any[] = [];
+
   houveModificacao: boolean = false;
   aulaEditada: any = null;
   exibirDiaAula: boolean = false;
@@ -32,9 +35,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   totalAulasLancadasDiario: number = 0;
   possuiDiferencaAulasLecionadas: boolean = false;
   numeroMaxDeAulasPorDia: number = 0;
-
-  lista: any[] = [];
-  aulas: any[] = [];
 
   permissoes: string[] = [];
 

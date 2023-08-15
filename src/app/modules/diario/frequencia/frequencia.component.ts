@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { FiltrosService } from 'src/app/core/services/filtros.service';
   styleUrls: ['./frequencia.component.css'],
 })
 export class FrequenciaComponent implements OnInit, OnDestroy {
+  @Input() lista: any[] = [];
+  @Input() aulas: any[] = [];
+
   divisao: any;
 
   constructor(
