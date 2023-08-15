@@ -1,0 +1,23 @@
+<div class="tab-aval">
+    <div class="d-flex">
+        <button mat-icon-button class="md-fab md-mini" matTooltip="Novo dia de aula"
+            (click)="houveModificacao ? focarPersistencia() : trocarDivisao($event)">
+            <mat-icon class="material-icons">view_week</mat-icon>
+        </button>
+        <button mat-icon-button class="md-fab md-mini" matTooltip="Novo dia de aula"
+            (click)="houveModificacao ? focarPersistencia() : gerenciarAvaliacoes($event)"
+            *ngIf="permissoes.indexOf('avaliacaoFrequenciaBBean.abrirModalAvaliacaoSubDivisao') > -1 && habilitaBotaoSubDivisao">
+            <mat-icon class="material-icons">storage</mat-icon>
+        </button>
+        <button mat-icon-button class="md-fab md-mini" matTooltip="Provas anteriores" (click)="rolar('esq')"
+            ng-disabled="!botaoEsquerda">
+            <mat-icon class="material-icons">arrow_back</mat-icon>
+        </button>
+        <button mat-icon-button class="md-fab md-mini" matTooltip="Próximas provas" (click)="rolar('dir')"
+            ng-disabled="!botaoDireita">
+            <mat-icon class="material-icons">arrow_forward</mat-icon>
+        </button>
+    </div>
+
+    <!-- <app-tabela-frequencia [lista]="lista" [aulas]="aulas"></app-tabela-frequencia> -->
+</div>
