@@ -47,11 +47,13 @@ export class SessaoService {
   }
 
   logout(): any {
-    Object.keys(localStorage).forEach(key => {
-      localStorage.removeItem(key);
-    });
+    // Object.keys(localStorage).forEach(key => {
+    //   localStorage.removeItem(key);
+    // });
 
     if (this.logoutURL)
       window.location.href = this.logoutURL;
+    else
+      window.history.back();
   }
 }

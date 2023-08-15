@@ -13,7 +13,7 @@ export const CONSTANTS = {
 };
 
 export const CRYPTO_CONST = {
-    keySize: 128,
+    keySize: 4,
     iterationCount: 1000
 };
 

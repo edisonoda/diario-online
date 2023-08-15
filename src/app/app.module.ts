@@ -59,8 +59,8 @@ const MY_FORMATS = {
     HttpClientModule,
     HttpClientXsrfModule,
 
-    HeaderInterceptorModule,
-    TratamentoErrosModule,
+    // HeaderInterceptorModule,
+    // TratamentoErrosModule,
     InterceptorLoaderModule,
     GetFiltroModule,
 
