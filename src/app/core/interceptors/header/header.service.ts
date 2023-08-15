@@ -4,19 +4,33 @@ import {
   HttpEvent,
   HttpInterceptor,
   HttpHandler,
-  HttpRequest
+  HttpRequest,
+  HttpHeaders
 } from '@angular/common/http';
-import { HeaderService } from '../../services/header.service';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
-  constructor(private headerService: HeaderService) { }
+  constructor() { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const headers = this.headerService.headers;
+    const headers = new HttpHeaders({});
+    const token = localStorage.getItem('token');
+    const grupo = localStorage.getItem('idGrupoAcesso');
 
+    if (token)
+      headers.set('X-Auth-Token', token);
+    
+    if (grupo)
+      headers.set('X-Auth-Acess-Group', grupo);
+    
     if (request.headers)
-      Object.entries(request.headers).forEach(([key, value]) => headers.append(key, value));
+      request.headers.keys().forEach((key) => {
+        const lista = request.headers.getAll(key);
+        if (lista)
+          headers.set(key, lista);
+      });
+    
+    console.log(headers);
 
     return next.handle(request.clone({
       headers: headers

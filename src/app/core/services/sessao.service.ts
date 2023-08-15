@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HeaderService } from './header.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +20,18 @@ export class SessaoService {
   get idPeriodoLetivo() { return localStorage.getItem('idPeriodoLetivo') }
   get permissoes() { return localStorage.getItem('permissoes') }
 
-  constructor(private http: HttpClient, private headerService: HeaderService) { }
+  constructor(private http: HttpClient) { }
 
   buscarUser(token: any, backendServerURL: any, idGrupoAcesso: any): Observable<any> {
-    this.headerService.setHeaders(token, idGrupoAcesso);
+    localStorage.setItem('token', token);
+    localStorage.setItem('idGrupoAcesso', idGrupoAcesso);
 
-    return this.http.get(`${backendServerURL}usuario`);
+    return this.http.get(`${backendServerURL}usuario/`, {
+      headers: {
+        'X-Auth-Token': token,
+        'X-Auth-Acess-Group': idGrupoAcesso,
+      }
+    });
   }
 
   setUserInfo(info: any): void {
