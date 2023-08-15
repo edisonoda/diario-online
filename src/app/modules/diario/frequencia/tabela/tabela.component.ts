@@ -1,8 +1,13 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import { DiarioService } from 'src/app/core/services/diario.service';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
+import { ModalTrocaDivisaoComponent } from '../../modal-troca-divisao/modal-troca-divisao.component';
+import { ModalParaDataComponent } from '../modal-para-data/modal-para-data.component';
+import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/dialog-confirmacao.component';
+import { ModalNovoDiaComponent } from '../modal-novo-dia/modal-novo-dia.component';
 
 @Component({
   selector: 'app-tabela-frequencia',
@@ -33,11 +38,12 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   divisao: any;
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize(event?: any) {
     this.calcularLarguras();
   }
 
   constructor(
+    public dialog: MatDialog,
     private filtrosService: FiltrosService,
     private diarioService: DiarioService,
     private snackBar: MatSnackBar
@@ -92,10 +98,13 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         return retorno;
       }
 
-      // TODO: scroll para o aluno
-      // if (aluno.resolverPendencia) {
-      //   $location.hash('aluno-id-' + aluno.id);
-      // }
+      if (aluno.resolverPendencia) {
+        document.getElementById('aluno-id-' + aluno.id)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest"
+        });
+      }
 
       // calcula as faltas
       this.contarFaltas(aluno);
@@ -286,214 +295,168 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.mostrarAulaNaTela(indice);
 
-    // TODO: resize da janela
-    // window.resize();
-  }
-
-  abrirModalAulas(ev: Event, f: number, aluno: any): void {
-    // TODO: modal de frequências
-    // $mdDialog.show({
-    //   controller: 'DialogFrequenciasController',
-    //   templateUrl: 'app/views/diario/dialogs/frequencias.tpl.html',
-    //   targetEvent: ev,
-    //   locals: {
-    //     aluno: aluno,
-    //     frequencia: f
-    //   },
-    //   clickOutsideToClose: true
-    // });
+    this.onResize();
   }
 
   trocarDivisao(ev: Event): void {
-    // TODO: modal de troca de divisão
-    // $mdDialog.show({
-    //   controller: 'DialogTrocarDivisaoController',
-    //   templateUrl: 'app/views/diario/dialogs/trocarDivisao.tpl.html',
-    //   targetEvent: ev,
-    //   locals: {
-    //     listaDivisoes: this.listaDivisoes
-    //   },
-    //   clickOutsideToClose: true
-    // })
-    //   .then((a: any) {
-    //     if (a !== null) {
-    //       this.filtros.divisao = a;
+    const dialogRef = this.dialog.open(ModalTrocaDivisaoComponent, {
+      minWidth: "300px",
+      maxWidth: "800px",
+      minHeight: "130px",
+      maxHeight: "810px",
+      data: {
+        divisao: this.divisao
+      }
+    });
 
-
-    // TODO: buscar dados dos filtros no init
-    //       var entrada = {
-    //         idInstituicao: this.filtros.instituicao.id,
-    //         idPeriodoLetivo: this.filtros.periodoLetivo.id,
-    //         idTurma: this.filtros.turma.id,
-    //         idEtapa: this.filtros.turma.etapa.id,
-    //         idDisciplina: this.filtros.disciplina.id,
-    //         idDivisao: this.filtros.divisao.id,
-    //         tipoAvaliacao: this.filtros.divisao.tipoAvaliacao,
-    //         aba: 0
-    //       };
-
-    //       var json = CryptService.encrypt(angular.toJson(entrada));
-    //       $state.go('site.diario', {
-    //         entry: json
-    //       });
-    //     }
-    //   }, function () {
-    //     console.log('Cancelar');
-    //   });
+    dialogRef.afterClosed().subscribe(result => {
+      this.divisao = result;
+    });
   }
 
   irParaData(ev: Event): void {
-    // TODO: modal de ir para data
-    // $mdDialog.show({
-    //   controller: 'DialogIrParaData',
-    //   templateUrl: 'app/views/diario/dialogs/irParaData.tpl.html',
-    //   targetEvent: ev,
-    //   locals: {
-    //     listaDias: this.aulas.map(function (a) {
-    //       return a.data
-    //     })
-    //   },
-    //   clickOutsideToClose: true
-    // })
-    //   .then((dataSelecionada: any) => {
-    //     if (dataSelecionada !== null) {
-    //       function isDataSelecionada(element: any) {
-    //         var aulaMoment = moment(element.data, 'YYYY-MM-DD', true);
-    //         return aulaMoment.isSame(dataSelecionada, 'day') &&
-    //           aulaMoment.isSame(dataSelecionada, 'month') &&
-    //           aulaMoment.isSame(dataSelecionada, 'year');
-    //       };
+    const dialogRef = this.dialog.open(ModalParaDataComponent, {
+      minWidth: "200px",
+      maxWidth: "300px",
+      minHeight: "80px",
+      maxHeight: "200px",
+      data: {
+        listaDias: this.aulas.map(a => {
+          return a.data;
+        })
+      }
+    });
 
-    //       var indice = this.aulas.findIndex(isDataSelecionada);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== null) {
+        function isDataSelecionada(element: any) {
+          var aulaMoment = moment(element.data, 'YYYY-MM-DD', true);
+          return aulaMoment.isSame(result, 'day') &&
+            aulaMoment.isSame(result, 'month') &&
+            aulaMoment.isSame(result, 'year');
+        };
 
-    //       if (indice !== null && indice >= 0) {
-    //         this.ativarAula(this.aulas[indice], indice, false);
-    //         this.mostrarAulaNaTela(indice);
-    //       }
-    //     }
-    //   }, function () {
-    //     console.log('Cancelar');
-    //   });
+        var indice = this.aulas.findIndex(isDataSelecionada);
+
+        if (indice !== null && indice >= 0) {
+          this.ativarAula(this.aulas[indice], indice, false);
+          this.mostrarAulaNaTela(indice);
+        }
+      }
+    });
   }
 
   removerAula(ev: Event, aula: any, indice: number) {
-    // TODO: modal confirmação
+    const dialogRef = this.dialog.open(DialogConfirmacao, {
+      data: {
+        descricao: 'Deseja realmente excluir a aula?'
+      }
+    });
 
-    // var confirm = $mdDialog.confirm()
-    //   .title('Remover aula')
-    //   .textContent('Deseja realmente excluir a aula?')
-    //   .ariaLabel('Remover aula')
-    //   .targetEvent(ev)
-    //   .ok('Sim')
-    //   .cancel('Cancelar');
-
-    // $mdDialog.show(confirm).then(() => {
-    // this.diarioService.removerDiaAula(this.filtrosService.idInstituicao, aula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idEtapa, this.filtrosService.idDivisao).subscribe(res => {
-    //   if (res.error)
-    //     return;
-
-    //   this.divisao.aulasLecionadas -= 1;
-    //   this.totalAulasLancadasDiario -= 1;
-
-    //   var dataAula = this.aulas.splice(indice, 1)[0];
-
-    //   this.possuiDiferencaAulasLecionadas = false;
-
-    //   if (this.aulas != null && this.aulas.length > 0) {
-    //     this.possuiDiferencaAulasLecionadas = this.divisao.aulasLecionadas !== this.aulas.length;
-    //   }
-
-    //   this.lista.forEach(aluno => {
-    //     aluno.frequencia = aluno.frequencia.filter(function (fr: any) {
-    //       return fr.programacaoDivisaoAulaId !== dataAula.id
-    //     });
-    //   });
-
-    //   this.lista.forEach(aluno => {
-    //     this.atualizarFaltas(aluno);
-
-    //     if (aluno.totalFaltaInconsistente) {
-    //       aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
-    //     }
-    //   });
-
-    //   // atualiza as ordens (já é feito no backend)
-    //   this.aulas.filter(function (aula) {
-    //     return moment(aula.data, 'YYYY-MM-DD', true).isSame(dataAula.data) &&
-    //       aula.ordem > dataAula.ordem
-    //   }).forEach(function (data) {
-    //     data.ordem = data.ordem - 1;
-    //   });
-
-    //   // TODO: resize
-    //   // window.resize();
-
-    //   this.snackBar.open('Aula removida com sucesso.');
-    // });
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.diarioService.removerDiaAula(this.filtrosService.idInstituicao, aula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idEtapa, this.filtrosService.idDivisao).subscribe(res => {
+          if (res.error)
+            return;
+    
+          this.divisao.aulasLecionadas -= 1;
+          this.totalAulasLancadasDiario -= 1;
+    
+          var dataAula = this.aulas.splice(indice, 1)[0];
+    
+          this.possuiDiferencaAulasLecionadas = false;
+    
+          if (this.aulas != null && this.aulas.length > 0) {
+            this.possuiDiferencaAulasLecionadas = this.divisao.aulasLecionadas !== this.aulas.length;
+          }
+    
+          this.lista.forEach(aluno => {
+            aluno.frequencia = aluno.frequencia.filter(function (fr: any) {
+              return fr.programacaoDivisaoAulaId !== dataAula.id
+            });
+          });
+    
+          this.lista.forEach(aluno => {
+            this.atualizarFaltas(aluno);
+    
+            if (aluno.totalFaltaInconsistente) {
+              aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
+            }
+          });
+    
+          // atualiza as ordens (já é feito no backend)
+          this.aulas.filter(function (aula) {
+            return moment(aula.data, 'YYYY-MM-DD', true).isSame(dataAula.data) &&
+              aula.ordem > dataAula.ordem
+          }).forEach(function (data) {
+            data.ordem = data.ordem - 1;
+          });
+    
+          this.onResize();
+          this.snackBar.open('Aula removida com sucesso.');
+        });
+      }
+    });
   }
 
   adicionarAulaNovoDia(ev: Event): void {
-    // TODO: modal novo dia
-    // $mdDialog.show({
-    //   controller: 'DialogNovoDiaAulaController',
-    //   templateUrl: 'app/views/diario/dialogs/novoDiaAula.tpl.html',
-    //   targetEvent: ev,
-    //   locals: {
-    //     periodoLetivo: this.filtros.periodoLetivo
-    //   },
-    //   clickOutsideToClose: false
-    // })
-    // (dataAula: any) => {
-    //   var dataInformada = new Date(dataAula);
+    const dialogRef = this.dialog.open(ModalNovoDiaComponent, {
+      minWidth: "300px",
+      maxWidth: "800px",
+      minHeight: "130px",
+      maxHeight: "810px",
+    });
 
-    //   if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
-    //     this.snackBar.open('Número máximo de aulas diárias atingido.');
-    //     return;
-    //   }
+    dialogRef.afterClosed().subscribe(dataAula => {
+      var dataInformada = new Date(dataAula);
 
-    //   this.diarioService.criarNovoDiaAula(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idDivisao, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
-    //     if (res.error) {
-    //       this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message);
-    //       return;
-    //     }
+      if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
+        this.snackBar.open('Número máximo de aulas diárias atingido.');
+        return;
+      }
 
-    //     var i;
-    //     res.data = moment(res.data).format('YYYY-MM-DD');
+      this.diarioService.criarNovoDiaAula(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idDivisao, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
+        if (res.error) {
+          this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message);
+          return;
+        }
 
-    //     if (this.aulas && this.aulas !== undefined) {
-    //       for (i = 0; i < this.aulas.length; i++) {
-    //         if (moment(this.aulas[i].data).isAfter(moment(res.data))) {
-    //           break;
-    //         }
-    //       }
+        var i;
+        res.data = moment(res.data).format('YYYY-MM-DD');
 
-    //       this.aulas.splice(i, 0, res);
-    //     } else {
-    //       i = 0;
-    //       this.aulas = [];
-    //       this.aulas.push(res);
-    //     }
+        if (this.aulas && this.aulas !== undefined) {
+          for (i = 0; i < this.aulas.length; i++) {
+            if (moment(this.aulas[i].data).isAfter(moment(res.data))) {
+              break;
+            }
+          }
 
-    //     // Se for o primeiro, deixa retornar -1 mesmo
-    //     this.adicionarAula(res, i);
+          this.aulas.splice(i, 0, res);
+        } else {
+          i = 0;
+          this.aulas = [];
+          this.aulas.push(res);
+        }
 
-    //     this.possuiDiferencaAulasLecionadas = false;
-    //     if (this.aulas != null && this.aulas.length > 0) {
-    //       this.possuiDiferencaAulasLecionadas = this.divisao.aulasLecionadas !== this.aulas.length;
-    //     }
+        // Se for o primeiro, deixa retornar -1 mesmo
+        this.adicionarAula(res, i);
 
-    //     this.lista.forEach(aluno => {
-    //       if (aluno.totalFaltaInconsistente) {
-    //         aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
-    //       }
-    //     });
+        this.possuiDiferencaAulasLecionadas = false;
+        if (this.aulas != null && this.aulas.length > 0) {
+          this.possuiDiferencaAulasLecionadas = this.divisao.aulasLecionadas !== this.aulas.length;
+        }
 
-    //     this.houveModificacao = true;
+        this.lista.forEach(aluno => {
+          if (aluno.totalFaltaInconsistente) {
+            aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
+          }
+        });
 
-    //     this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.');
-    //   });
-    // }
+        this.houveModificacao = true;
+
+        this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.');
+      });
+    });
   }
 
   diaJaAtingiuLimiteDeAula(dataInformada: any): boolean {
@@ -510,26 +473,20 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   dialogPlanoAula(ev: Event, aula: any): void {
-    // TODO: modal plano
-    // $mdDialog.show({
-    //   controller: 'DialogPlanoAulaController',
-    //   templateUrl: 'app/views/diario/dialogs/planoDeAula.tpl.html',
-    //   targetEvent: ev,
-    //   clickOutsideToClose: true,
-    //   fullscreen: true,
-    //   locals: {
-    //     aula: aula
-    //   }
-    // })
-    // (dataAula: any) => {
-    //   this.diarioService.salvarPlanoAula(this.filtrosService.idInstituicao, dataAula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, dataAula.conteudo, dataAula.modulo,
-    //     this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
-    //       if (res.error)
-    //         return;
+    const dialogRef = this.dialog.open(ModalNovoDiaComponent, {
+      maxWidth: "500px",
+      maxHeight: "900px",
+    });
 
-    //       this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.');
-    //     });
-    // };
+    dialogRef.afterClosed().subscribe(dataAula => {
+      this.diarioService.salvarPlanoAula(this.filtrosService.idInstituicao, dataAula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, dataAula.conteudo, dataAula.modulo,
+        this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
+          if (res.error)
+            return;
+
+          this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.');
+        });
+    });
   }
 
   salvarDiaAula(): void {
@@ -574,29 +531,26 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   corrigirTotalFaltas(ev: Event, aluno: any): void {
-    // TODO: modal total faltas
+    const dialogRef = this.dialog.open(DialogConfirmacao, {
+      data: {
+        descricao: 'Deseja realmente alterar o total de ' + aluno.qtdFaltasVeioRest + ' falta(s) para ' + aluno.qtdFaltasDiario + ' falta(s) conforme os lançamentos do Diário Online?'
+      }
+    });
 
-    // var confirm = $mdDialog.confirm()
-    //   .title('Corrigir Total de Faltas')
-    //   .textContent('Deseja realmente alterar o total de ' + aluno.qtdFaltasVeioRest + ' falta(s) para ' + aluno.qtdFaltasDiario + ' falta(s) conforme os lançamentos do Diário Online?')
-    //   .ariaLabel('Corrigir Total de Faltas')
-    //   .targetEvent(ev)
-    //   .ok('Sim')
-    //   .cancel('Cancelar');
-
-    // $mdDialog.show(confirm).then(function () {
-
-      // this.diarioService.corrigirTotalFaltas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma, this.filtrosService.idDisciplina,
-      //   this.filtrosService.idDivisao, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
-      //   .subscribe(res => {
-      //     if (res.error)
-      //       return;
-
-      //     aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
-
-      //     this.snackBar.open('Total de faltas corrigido com sucesso.');
-      //   });
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.diarioService.corrigirTotalFaltas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma, this.filtrosService.idDisciplina,
+          this.filtrosService.idDivisao, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
+          .subscribe(res => {
+            if (res.error)
+              return;
+    
+            aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
+    
+            this.snackBar.open('Total de faltas corrigido com sucesso.');
+          });
+      }
+    });
   }
 
   ngOnDestroy(): void { }

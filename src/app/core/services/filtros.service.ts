@@ -38,10 +38,19 @@ export class FiltrosService {
   set idAluno(id) { if (id != 'undefined') this._idAluno = id }
 
   private _instituicao: any;
+  set instituicao(instituicao: any) { this._instituicao = instituicao }
+
   private _periodo: any;
+  set periodo(periodo: any) { this._periodo = periodo }
+
   private _turma: any;
+  set turma(turma: any) { this._turma = turma }
+
   private _disciplina: any;
+  set disciplina(disciplina: any) { this._disciplina = disciplina }
+
   private _divisao: any;
+  set divisao(divisao: any) { this._divisao = divisao }
 
   constructor(private diarioService: DiarioService, private sessaoService: SessaoService) {
     this.backendServerURL = this.sessaoService.backendServerURL ?? '';

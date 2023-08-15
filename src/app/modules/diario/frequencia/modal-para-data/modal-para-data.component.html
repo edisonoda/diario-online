@@ -1,0 +1,26 @@
+<div mat-dialog-title aria-label="Ir para data" class="irParaDataModal">
+    <div class="md-toolbar-tools">
+        <h2>Navegar entre as datas</h2>
+        <span class="flex-grow-1"></span>
+        <button mat-icon-button class="md-icon-button" (click)="fecharJanela()">
+            <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+        </button>
+    </div>
+</div>
+<div mat-dialog-content class="conteuddo-centralizado">
+    <div class="container-descricao card-info-diario">
+        <mat-form-field class="w-100">
+            <mat-label>Data</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="dataSelecionada">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="irParaData()" class="md-primary" [disabled]="!dataValida">
+        <mat-icon class="material-icons">today</mat-icon>
+        &nbsp;Ir
+    </button>
+</div>

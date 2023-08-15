@@ -1,0 +1,39 @@
+<div mat-dialog-title aria-label="Diário de Conteúdo" class="irParaDataModal">
+    <div class="md-toolbar-tools">
+        <h2>
+            Diário de Conteúdo
+            <button matTooltip="CI Orientadora" class="md-fab md-mini md-button md-ink-ripple md-default-theme"
+                *ngIf="deveExibirCiOrientadora">
+                <mat-icon class="material-icons md-default-theme">perm_identity</mat-icon>
+            </button>
+        </h2>
+        <span class="flex-grow-1"></span>
+        <button mat-icon-button class="md-icon-button" (click)="fecharJanela()">
+            <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+        </button>
+    </div>
+</div>
+<div mat-dialog-content class="conteuddo-centralizado">
+    <div class="container-descricao card-info-diario">
+        <p>Diário de Conteúdo para o dia {{ aula.data | date:'dd/MM/yyyy' }}, aula {{ aula.ordem }}:</p>
+        <mat-form-field class="w-100">
+            <mat-label>Conteúdo/matéria lecionada</mat-label>
+            <textarea matInput class="plano-aula" name="conteudo" [(ngModel)]="aula.conteudo" columns="1" md-maxlength="4000" rows="5" required></textarea>
+            <mat-error *ngIf="!aula.conteudo">Este campo é obrigatório.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" *ngIf="deveExibirRegistroModulo">
+            <mat-label>Registro de módulos</mat-label>
+            <textarea matInput class="plano-aula" name="modulo" [(ngModel)]="aula.modulo" columns="1" md-maxlength="4000" rows="5"></textarea>
+            <mat-error *ngIf="!aula.conteudo">Este campo é obrigatório.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100" *ngIf="deveExibirRecuperacaoParalela">
+            <mat-label>Recuperação Paralela</mat-label>
+            <textarea matInput class="plano-aula" name="recuperacaoParalela" [(ngModel)]="aula.recuperacaoParalela" columns="1" md-maxlength="4000" rows="5"></textarea>
+            <mat-error *ngIf="!aula.conteudo">Este campo é obrigatório.</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="salvarAula()" class="md-primary">Salvar</button>
+    <button mat-button (click)="fecharJanela()" class="md-primary">Cancelar</button>
+</div>

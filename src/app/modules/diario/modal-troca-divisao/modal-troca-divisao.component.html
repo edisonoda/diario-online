@@ -1,0 +1,33 @@
+<div mat-dialog-title class="cabecalho-dialog">
+    <div class="md-toolbar-tools">
+        <h2>Trocar divisão</h2>
+        <span class="flex-grow-1"></span>
+        <button mat-icon-button class="md-icon-button" (click)="fecharJanela()">
+            <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+        </button>
+    </div>
+</div>
+<div mat-dialog-content class="conteuddo-centralizado">
+    <form>
+        <div class="container-descricao card-info-diario">
+            <mat-form-field class="w-100">
+                <mat-label>Divisão</mat-label>
+                <mat-select [formControl]="divisao">
+                    <mat-option *ngFor="let divisao in listaDivisoes" [value]="divisao.id">
+                        {{ divisao.nome }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="trocarDivisao()" class="md-primary">
+        <mat-icon class="material-icons">cached</mat-icon>
+        &nbsp;Trocar
+    </button>
+    <button mat-button (click)="fecharJanela()" class="md-primary">
+        <mat-icon class="material-icons">undo</mat-icon>
+        &nbsp;Cancelar
+    </button>
+</div>
