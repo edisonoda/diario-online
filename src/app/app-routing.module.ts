@@ -7,14 +7,22 @@ import { TabsComponent } from './modules/tabs/tabs.component';
 
 const routes: Routes = [
   {
-    path: ':tab',
+    path: 'site/:tab',
     component: TabsComponent,
     // canActivate: [canActivateLogin],
     loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)
   },
   {
-    path: 'login',
+    path: 'site/login',
     component: AuthComponent,
+  },
+  {
+    path: '#/site/:tab',
+    redirectTo: 'login',
+  },
+  {
+    path: '#/site/login',
+    redirectTo: 'login',
   },
   {
     path: '**',
