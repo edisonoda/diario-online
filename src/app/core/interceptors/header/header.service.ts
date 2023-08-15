@@ -14,22 +14,22 @@ export class HeaderInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const headers = new HttpHeaders({});
-    const token = localStorage.getItem('token');
-    const grupo = localStorage.getItem('idGrupoAcesso');
+    const token = sessionStorage.getItem('token');
+    const grupo = sessionStorage.getItem('idGrupoAcesso');
 
     if (token)
       headers.set('X-Auth-Token', token);
-    
+
     if (grupo)
       headers.set('X-Auth-Acess-Group', grupo);
-    
+
     if (request.headers)
       request.headers.keys().forEach((key) => {
         const lista = request.headers.getAll(key);
         if (lista)
           headers.set(key, lista);
       });
-    
+
     console.log(headers);
 
     return next.handle(request.clone({

@@ -27,12 +27,13 @@ export class DivisoesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.diarioService.obterDivisoes(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idEtapa).subscribe(res => {
-      if (Array.isArray(res.data))
-        this.tabsService.randomizarCores(res.data);
+      console.log('divisoes ->' + res)
+      if (Array.isArray(res))
+        this.tabsService.randomizarCores(res);
       else
-        res.data = [];
+        res = [];
 
-      this.divisoes = res.data;
+      this.divisoes = res;
 
       if (this.divisoes.length === -1)
         this.divisaoClick(this.divisoes[0]);
@@ -41,7 +42,7 @@ export class DivisoesComponent implements OnInit, OnDestroy {
 
   divisaoClick(divisao: any): void {
     this.filtrosService.divisao = divisao;
-
+console.log('divisao:' + divisao)
     const dialogRef = this.dialog.open(DiarioComponent, {
       data: { divisao },
       width: '100%'

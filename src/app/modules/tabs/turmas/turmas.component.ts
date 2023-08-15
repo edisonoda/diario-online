@@ -5,6 +5,7 @@ import { TabsService } from '../tabs.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { DiarioService } from 'src/app/core/services/diario.service';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-turmas',
@@ -13,6 +14,8 @@ import { DiarioService } from 'src/app/core/services/diario.service';
 })
 export class TurmasComponent implements OnInit, OnDestroy {
   filtroControl: FormControl = new FormControl();
+  idInstituicao: any;
+  idPeriodoLetivo: any;
   turmas: any[] = [];
   turmasF: any[] = [];
 
@@ -23,21 +26,28 @@ export class TurmasComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private snackBar: MatSnackBar,
     private filtrosService: FiltrosService,
-  ) { }
+    private activatedRoute: ActivatedRoute,
+
+  ) {
+    this.idInstituicao = this.activatedRoute.snapshot.queryParamMap.get('idInstituicao');
+    this.idPeriodoLetivo = this.activatedRoute.snapshot.queryParamMap.get('idPeriodoLetivoy');
+  }
 
   ngOnInit() {
+
     this.subs.push(this.filtroControl.valueChanges.subscribe(value => {
       this.turmasF = this._filter(value);
     }));
     this.diarioService.obterTurmas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo).subscribe(res => {
-      if (Array.isArray(res.data))
-        this.tabsService.randomizarCores(res.data);
+      if (Array.isArray(res))
+        this.tabsService.randomizarCores(res);
       else
-        res.data = [];
+        res = [];
 
-      this.turmas = res.data;
-      this.turmasF = res.data;
+      this.turmas = res;
+      this.turmasF = res;
     });
+    console.log(this.turmas)
   }
 
   turmaClick(turma: any): void {

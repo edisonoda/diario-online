@@ -24,15 +24,16 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.diarioService.obterDisciplinas(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idEtapa).subscribe(res => {
+     console.log('disciplinas->' + res)
       if (res.error)
         return;
 
-      if (Array.isArray(res.data))
-        this.tabsService.randomizarCores(res.data);
+      if (Array.isArray(res))
+        this.tabsService.randomizarCores(res);
       else
-        res.data = [];
+        res = [];
 
-      this.disciplinas = res.data;
+      this.disciplinas = res;
 
       if (this.disciplinas.length === -1)
         this.disciplinaClick(this.disciplinas[0]);

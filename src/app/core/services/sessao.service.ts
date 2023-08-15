@@ -12,19 +12,19 @@ export class SessaoService {
     return this._user;
   }
 
-  get token() { return localStorage.getItem('token') }
-  get backendServerURL() { return localStorage.getItem('backendServerURL') }
-  get logoutURL() { return localStorage.getItem('logoutURL') }
-  get idGrupoAcesso() { return localStorage.getItem('idGrupoAcesso') }
-  get idInstituicao() { return localStorage.getItem('idInstituicao') }
-  get idPeriodoLetivo() { return localStorage.getItem('idPeriodoLetivo') }
-  get permissoes() { return localStorage.getItem('permissoes') }
+  get token() { return sessionStorage.getItem('token') }
+  get backendServerURL() { return sessionStorage.getItem('backendServerURL') }
+  get logoutURL() { return sessionStorage.getItem('logoutURL') }
+  get idGrupoAcesso() { return sessionStorage.getItem('idGrupoAcesso') }
+  get idInstituicao() { return sessionStorage.getItem('idInstituicao') }
+  get idPeriodoLetivo() { return sessionStorage.getItem('idPeriodoLetivo') }
+  get permissoes() { return sessionStorage.getItem('permissoes') }
 
   constructor(private http: HttpClient) { }
 
   buscarUser(token: any, backendServerURL: any, idGrupoAcesso: any): Observable<any> {
-    localStorage.setItem('token', token);
-    localStorage.setItem('idGrupoAcesso', idGrupoAcesso);
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('idGrupoAcesso', idGrupoAcesso);
 
     return this.http.get(`${backendServerURL}usuario/`, {
       headers: {
@@ -37,13 +37,14 @@ export class SessaoService {
   setUserInfo(info: any): void {
     this._user = info.user;
 
-    localStorage.setItem('token', info.token);
-    localStorage.setItem('backendServerURL', info.backendServerURL);
-    localStorage.setItem('logoutURL', info.logoutURL);
-    localStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);
-    localStorage.setItem('idInstituicao', info.idInstituicao);
-    localStorage.setItem('idPeriodoLetivo', info.idPeriodoLetivo);
-    localStorage.setItem('permissoes', this._user.listaPermissao);
+    console.log(info);
+    sessionStorage.setItem('token', info.token);
+    sessionStorage.setItem('backendServerURL', info.backendServerURL.replace('4200', '8080'));
+    sessionStorage.setItem('logoutURL', info.logoutURL);
+    sessionStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);
+    sessionStorage.setItem('idInstituicao', info.idInstituicao);
+    sessionStorage.setItem('idPeriodoLetivo', info.idPeriodoLetivo);
+    sessionStorage.setItem('permissoes', info.listaPermissao);
   }
 
   logout(): any {
