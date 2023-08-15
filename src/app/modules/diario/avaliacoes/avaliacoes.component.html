@@ -10,14 +10,185 @@
             <mat-icon class="material-icons">storage</mat-icon>
         </button>
         <button mat-icon-button class="md-fab md-mini" matTooltip="Provas anteriores" (click)="rolar('esq')"
-            ng-disabled="!botaoEsquerda">
+            [disabled]="!botaoEsquerda">
             <mat-icon class="material-icons">arrow_back</mat-icon>
         </button>
         <button mat-icon-button class="md-fab md-mini" matTooltip="Próximas provas" (click)="rolar('dir')"
-            ng-disabled="!botaoDireita">
+            [disabled]="!botaoDireita">
             <mat-icon class="material-icons">arrow_forward</mat-icon>
         </button>
     </div>
 
-    <!-- <app-tabela-frequencia [lista]="lista" [aulas]="aulas"></app-tabela-frequencia> -->
+    <div class="content-padding container-externo" id="container-aval-nota">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <button mat-icon-button class="md-fab md-mini" matTooltip="Trocar divisão" (click)="houveModificacao ? focarPersistencia() : trocarDivisao($event)">
+                <mat-icon class="material-icons">view_week</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="habilitaBotaoSubDivisao && permissoes.indexOf('avaliacaoFrequenciaBBean.abrirModalAvaliacaoSubDivisao') > -1"
+                class="md-fab md-mini" matTooltip="Gerenciar avaliações"
+                (click)="houveModificacao ? focarPersistencia() : gerenciarAvaliacoes($event)">
+                <mat-icon class="material-icons">storage</mat-icon>
+            </button>
+            <button mat-icon-button class="md-fab md-mini" matTooltip="Provas anteriores" (click)="rolar('esq')" [disabled]="!botaoEsquerda">
+                <mat-icon class="material-icons">arrow_back</mat-icon>
+            </button>
+            <button mat-icon-button class="md-fab md-mini" matTooltip="Próximas provas" (click)="rolar('dir')" [disabled]="!botaoDireita">
+                <mat-icon class="material-icons">arrow_forward</mat-icon>
+            </button>
+        </div>
+    
+        <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-aval-nota-cab" style="z-index:1;">
+            <colgroup>
+                <col style="width:23px">
+                <col style="width:23px">
+                <col style="width:30%">
+                <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
+                    <col style="width:45px" *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)">
+                </ng-template>
+                <col style="width:45px" *ngIf="!computaConceito">
+            </colgroup>
+            <thead>
+                <tr style="height:40px;" *ngIf="!(botaoEsquerda || botaoDireita)">
+                    <th class="text-right">O</th>
+                    <th class="text-center">S</th>
+                    <th class="text-left nome-aluno-header">
+                        <div>Nome</div>
+                    </th>
+    
+                    <ng-template ngFor let-aval [ngForOf]="avaliacoes" let-i="index">
+                        <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center" colspan="{{aval.subAvaliacoes.length}}">
+                            {{ aval.nome }} {{ aval.notaMaxima ? (aval.notaMaxima) : '' }}
+                        </th>
+                    </ng-template>
+                    <th class="texto-vertical" *ngIf="!computaConceito">
+                        <div>Total</div>
+                    </th>
+                </tr>
+                <tr style="height:90px;">
+                    <th class="text-right">O</th>
+                    <th class="text-center">S</th>
+                    <th class="text-left nome-aluno-header">
+                        <div class="gerenciar-avaliacoes" layout="row">
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Trocar divisão" (click)="houveModificacao ? focarPersistencia() : trocarDivisao($event)">
+                                <mat-icon class="material-icons">view_week</mat-icon>
+                            </button>
+                            <button mat-icon-button *ngIf="habilitaBotaoSubDivisao && permissoes.indexOf('avaliacaoFrequenciaBBean.abrirModalAvaliacaoSubDivisao') > -1"
+                                class="md-fab md-mini" matTooltip="Gerenciar avaliações" (click)="houveModificacao ? focarPersistencia() : gerenciarAvaliacoes($event)">
+                                <mat-icon class="material-icons">storage</mat-icon>
+                            </button>
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Provas anteriores" (click)="rolar('esq')" [disabled]="!botaoEsquerda">
+                                <mat-icon class="material-icons">arrow_back</mat-icon>
+                            </button>
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Próximas provas" (click)="rolar('dir')" [disabled]="!botaoDireita">
+                                <mat-icon class="material-icons">arrow_forward</mat-icon>
+                            </button>
+                        </div>
+                    </th>
+    
+                    <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
+                        <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center">
+                            <div *ngIf="(botaoEsquerda || botaoDireita)">
+                                [{{ sub.nomeAvaliacao }}]
+                            </div>
+                            <div *ngIf="sub.nome">
+                                {{ sub.nome }} {{ sub.notaMaxima ? sub.notaMaxima : ''}}
+                            </div>
+                        </th>
+                    </ng-template>
+                    <th class="avaliacao text-center" *ngIf="!computaConceito"></th>
+                </tr>
+            </thead>
+        </table>
+        <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-aval-nota-corpo" style="border-top:none;">
+            <colgroup>
+                <col style="width:23px">
+                <col style="width:23px">
+                <col style="width:30%">
+                <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
+                    <col style="width:45px" *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)">
+                </ng-template>
+                <col style="width:45px" *ngIf="!computaConceito">
+            </colgroup>
+            <tbody>
+                <tr *ngFor="let aluno in lista">
+                    <td class="text-right" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                        {{ aluno.nu_ordem }}
+                    </td>
+                    <td class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}"
+                        [matTooltip]="aluno.situacaoStatus">
+                        {{ aluno.status }}
+                    </td>
+                    <td id="aluno-id-{{aluno.id}}" class="text-left nome-aluno" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}"
+                        [matTooltip]="aluno.nome">
+                        {{aluno.nome}}
+                        <div *ngIf="aluno.nomeSocial !== null && aluno.nomeSocial !== '' " style="margin-top:-3%; font-size:10px; font-weight:bold;">
+                            ({{aluno.nomeSocial}})
+                        </div> 
+                       
+                       <div *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento" style="margin-top:-3%; font-size:10px; font-weight:bold; color:#8bc34a;">
+                            (veio de remanejamento)
+                        </div>
+                    </td>
+                    <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
+                        <td *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                            <table>
+                                <tr>
+                                    <ng-template ngFor let-nota [ngForOf]="aluno.notas" let-i="index">
+                                        <div *ngIf="nota.id === sub.id || nota.flagNotaSubTipo === sub.flagSubTipo" style="border: none; width: 35px; display: inline; white-space: nowrap;"
+                                            class="text-center">
+                                            <mat-form-field>
+                                                <input matInput *ngIf="!sub.isRecuperacao && !computaConceito" type="text" class="nota" [(ngModel)]="nota.vl_nota" min="0" (change)="onchangeNota(sub,nota,aluno,false)"
+                                                    [matTooltip]="nota.vl_nota" 
+                                                    [disabled]="nota.desabilitar || sub.flAvaliacaoFormativa || aluno.alunoVeioDeRemanejamento"/>
+                                            </mat-form-field>
+            
+                                            <mat-form-field>
+                                                <input matInput *ngIf="sub.isRecuperacao && !computaConceito" type="text" class="nota" [(ngModel)]="nota.vl_nota_recuperacao" min="0"
+                                                    (change)="onchangeNota(sub,nota,aluno,true)" [matTooltip]="nota.vl_nota_recuperacao" 
+                                                    [disabled]="nota.desabilitar || nota.vl_nota === null || nota.vl_nota === undefined || nota.vl_nota == sub.notaMaxima || aluno.alunoVeioDeRemanejamento"/>
+                                            </mat-form-field>
+            
+                                            <mat-form-field>
+                                                <mat-select [(ngModel)]="nota.idConceito" [disabled]="nota.desabilitar || sub.flAvaliacaoFormativa"
+                                                    (change)="onchangeConceito(sub, nota, aluno)" *ngIf="computaConceito">
+                                                    <mat-option *ngFor="let conceito of conceitos" [value]="conceito.id">
+                                                        {{conceito.descricaoReduzida}} {{conceito.descricao ? '(' + conceito.descricao + ')' : ''}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </ng-template>
+                                </tr>
+                            </table>
+                        </td>
+                    </ng-template>
+                    <td class="text-right" *ngIf="!computaConceito" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                        <mat-form-field>
+                            <input matInput *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento" 
+                                [ngStyle]="aluno.alunoVeioDeRemanejamento && {color:'#8bc34a'}" 
+                                [(ngModel)]="aluno.notaTotal" [disabled]="true" [matTooltip]="aluno.notaTotal">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput *ngIf="aluno.status == 'R'" [(ngModel)]="aluno.notaTotal" [disabled]="true" 
+                                [matTooltip]="aluno.notaTotal">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput *ngIf="aluno.status != 'R' && !aluno.alunoVeioDeRemanejamento" 
+                                [(ngModel)]="aluno.totalNotas" [disabled]="true" [matTooltip]="aluno.totalNotas">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <button mat-raised-button id="botaoSalvar" class="md-raised md-primary botao-salvar" (click)="salvarLancamentos($event)" *ngIf="houveModificacao">
+                <mat-icon class="material-icons">done_all</mat-icon>
+                &nbsp; SALVAR NOTAS
+            </button>
+            <button mat-raised-button id="botaoDescartar" class="md-raised md-warn botao-salvar" (click)="descartarAlteracoes()" *ngIf="houveModificacao">
+                <mat-icon class="material-icons">cached</mat-icon>
+                &nbsp; DESCARTAR ALTERAÇÕES
+            </button>
+        </div>
+    </div>
 </div>
