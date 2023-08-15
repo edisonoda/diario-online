@@ -33,6 +33,10 @@ export class FiltrosService {
   get idEtapa() { return this._idEtapa }
   set idEtapa(id) { if (id != 'undefined') this._idEtapa = id }
 
+  private _idAluno: any;
+  get idAluno() { return this._idAluno }
+  set idAluno(id) { if (id != 'undefined') this._idAluno = id }
+
   private _instituicao: any;
   private _periodo: any;
   private _turma: any;

@@ -78,55 +78,38 @@
                         *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)">
 
                         <div class="dia-aula" *ngIf="exibirDiaAula">
-                            <mat-button class="mat-icon-button" style="width: 50px;">
+                            <button mat-button class="mat-icon-button" style="width: 50px;">
                                 {{aula.data | date:'dd/MM'}}
                                 <br />
                                 <sup>{{ aula.ordem > 1 ? aula.ordem : ''}}</sup>
-                            </mat-button>
+                            </button>
                         </div>
 
-                        <md-menu md-offset="0 -7">
-                            <mat-button matTooltip="Ações" class="mat-icon-button"
-                                (click)="houveModificacao ? focarPersistencia() : $mdMenu.open($event)"
-                                style="width: 50px;" permission permission-only="'frequenciaDiariaBBean.salvar'">
-                                <md-tooltip>Clique para opções</md-tooltip>
-                                {{aula.data | date:'dd/MM'}}
-                                <br />
-                                <sup>{{ aula.ordem > 1 ? aula.ordem : ''}}</sup>
-                            </mat-button>
-                            <md-menu-content width="3">
-                                <md-menu-item>
-                                    <mat-button (click)="ativarAula($event, aula, $index, false)">
-                                        <md-tooltip md-direction="left">Ativa a aula selecionada para realizar a
-                                            chamada</md-tooltip>
-                                        <div layout="row">
-                                            <p flex>Ativar aula</p>
-                                            <mat-icon md-menu-align-target class="material-icons icone-menu">edit</mat-icon>
-                                        </div>
-                                    </mat-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <mat-button (click)="dialogPlanoAula($event, aula)">
-                                        <md-tooltip md-direction="left">Abre a janela de preenchimento do diário de conteúdo
-                                            (plano de aula)</md-tooltip>
-                                        <div layout="row">
-                                            <p flex>Diário de Conteúdo</p>
-                                            <mat-icon md-menu-align-target class="material-icons icone-menu">event</mat-icon>
-                                        </div>
-                                    </mat-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <mat-button (click)="removerAula($event, aula, $index)">
-                                        <md-tooltip md-direction="left">Apaga/remove a aula selecionada</md-tooltip>
-                                        <div layout="row">
-                                            <p flex>Remover aula</p>
-                                            <mat-icon md-menu-align-target
-                                                class="material-icons icone-menu">remove_circle_outline</mat-icon>
-                                        </div>
-                                    </mat-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
+                        <button mat-button matTooltip="Ações" class="mat-icon-button"
+                            #trigger="matMenuTrigger" [matMenuTriggerFor]="menu"
+                            (click)="houveModificacao ? focarPersistencia() : trigger.closeMenu()"
+                            style="width: 50px;" permission permission-only="'frequenciaDiariaBBean.salvar'">
+                            {{aula.data | date:'dd/MM'}}
+                            <br />
+                            <sup>{{ aula.ordem > 1 ? aula.ordem : ''}}</sup>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="ativarAula(aula, i, false)"
+                                matTooltip="Ativa a aula selecionada para realizar a chamada">
+                                <mat-icon class="material-icons">edit</mat-icon>
+                                <span>Ativar aula</span>
+                            </button>
+                            <button mat-menu-item (click)="dialogPlanoAula($event, aula)"
+                                matTooltip="Abre a janela de preenchimento do diário de conteúdo (plano de aula)">
+                                <mat-icon class="material-icons">event</mat-icon>
+                                <span>Diário de conteúdo</span>
+                            </button>
+                            <button mat-menu-item (click)="removerAula($event, aula, i)"
+                                matTooltip="Apaga/remove a aula selecionada">
+                                <mat-icon class="material-icons">remove_circle_outline</mat-icon>
+                                <span>Remover aula</span>
+                            </button>
+                        </mat-menu>
                     </th>
                 </ng-template>
                 <th class="data-aula text-center">
@@ -139,81 +122,75 @@
         style="border-top:none;">
         <thead>
             <col style="width:23px">
-            </col>
             <col style="width:23px">
-            </col>
             <col style="width:45%">
-            </col>
-            <col ng-repeat="aula in aulas track by aula.$$id"
-                ng-if="$index >= indiceInicial && $index < (indiceInicial + quantAulasTelaMax)">
-            </col>
+            <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
+                <col *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)">
+            </ng-template>
             <col style="width:35px">
-            </col>
         </thead>
         <tbody>
-            <tr ng-repeat="aluno in lista">
-                <td ng-bind="aluno.nu_ordem" class="text-right"
-                    ng-class="{'resolverPendencia': aluno.resolverPendencia}"></td>
-                <td ng-bind="aluno.status" class="text-center"
-                    ng-class="{'resolverPendencia': aluno.resolverPendencia}">
-                    <md-tooltip md-direction="right">
-                        {{aluno.situacaoStatus}}
-                    </md-tooltip>
+            <tr *ngFor="let aluno in lista">
+                <td class="text-right" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                    {{ aluno.nu_ordem }}
                 </td>
-                <td ng-attr-id="aluno-id-{{aluno.id}}" class="text-left nome-aluno"
-                    ng-class="{'resolverPendencia': aluno.resolverPendencia}">
+                <td class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}"
+                    [matTooltip]="aluno.situacaoStatus">
+                    {{ aluno.nu_ordem }}
+                </td>
+                <td id="aluno-id-{{aluno.id}}" class="text-left nome-aluno"
+                    [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                     {{aluno.nome}}
-                    <div ng-if="aluno.nomeSocial !== null && aluno.nomeSocial !== '' "
+                    <div *ngIf="aluno.nomeSocial !== null && aluno.nomeSocial !== '' "
                         style="margin-top:-2%; font-size:10px; font-weight:bold;">
                         ({{aluno.nomeSocial}})
                     </div>
-                    <div ng-if="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento"
+                    <div *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento"
                         style="margin-top:-2%; font-size:10px; font-weight:bold; color:#8bc34a;">
                         (veio de remanejamento)
                     </div>
                 </td>
-                <td ng-repeat="aula in aulas track by aula.$$id"
-                    ng-if="$index >= indiceInicial && $index < (indiceInicial + quantAulasTelaMax)"
-                    ng-class="{ ativo: (indiceAtivo === $index) }" class="text-center">
-                    <table>
-                        <tr>
-                            <div ng-repeat="f in aluno.frequencia | filter:{ 'programacaoDivisaoAulaId': aula.id }:true"
-                                style="border: none; width: 35px; display: inline; white-space: nowrap;"
-                                class="text-center" ng-class="{'resolverPendencia': aluno.resolverPendencia}">
-                                <cd-botao-chamada frequencia="f" aluno-modificado="alunoModificado(aluno, true)"
-                                    atualizar-faltas="atualizarFaltas(aluno, true)"
-                                    disabled="f.desabilitado || indiceAtivo !== aula.$$id"
-                                    ng-hide="f.indisponivel || (f.flPresente === null && indiceAtivo !== aula.$$id)">
-                                </cd-botao-chamada>
-                            </div>
-                        </tr>
-                    </table>
-                </td>
-                <td class="text-center" ng-class="{'resolverPendencia': aluno.resolverPendencia}">
-                    <md-input-container style="margin: 0 0;" *ngIf="aluno.frequencia">
-                        <mat-button class="mat-icon-button total-diario" matTooltip="Corrigir Frequência"
-                            (click)="corrigirTotalFaltas($event, aluno)"
-                            ng-class="{'totalDiferente' : !aluno.alunoVeioDeRemanejamento && aluno.qtdDifRestDiario() !== 0 && aluno.status === 'A'}"
-                            ng-disabled="aluno.alunoVeioDeRemanejamento || aluno.qtdDifRestDiario() === 0 || aluno.status !== 'A'">
+                <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
+                    <td *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)"
+                        [ngClass]="{ ativo: (indiceAtivo === i) }" class="text-center">
+                        <table>
+                            <tr>
+                                <div *ngFor="let f in aluno.frequencia | filter:{ 'programacaoDivisaoAulaId': aula.id }:true"
+                                    style="border: none; width: 35px; display: inline; white-space: nowrap;"
+                                    class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                                    <!-- <cd-botao-chamada [frequencia]="f" [alunoModificado]="alunoModificado(aluno, true)"
+                                        [atualizarFaltas]="atualizarFaltas(aluno, true)"
+                                        [disabled]="f.desabilitado || indiceAtivo !== aula.$$id"
+                                        [hidden]="f.indisponivel || (f.flPresente === null && indiceAtivo !== aula.$$id)">
+                                    </cd-botao-chamada> -->
+                                </div>
+                            </tr>
+                        </table>
+                    </td>
+                </ng-template>
+                <td class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                    <div *ngIf="aluno.frequencia">
+                        <button mat-button class="mat-icon-button total-diario" (click)="corrigirTotalFaltas($event, aluno)"
+                            [matTooltip]="aluno.qtdDifRestDiario() !== 0 ? 'Clique para corrigir o total de faltas conforme os lançamento do diário online.' : 'Corrigir Frequência'"
+                            [ngClass]="{'totalDiferente' : !aluno.alunoVeioDeRemanejamento && aluno.qtdDifRestDiario() !== 0 && aluno.status === 'A'}"
+                            [disabled]="aluno.alunoVeioDeRemanejamento || aluno.qtdDifRestDiario() === 0 || aluno.status !== 'A'">
                             {{aluno.qtdFaltasVeioRest}}
-                            <md-tooltip md-direction="left" *ngIf="{{ aluno.qtdDifRestDiario() !== 0 }}">
-                                Clique para corrigir o total de faltas conforme os lançamento do diário online.
-                            </md-tooltip>
-                        </mat-button>
-                    </md-input-container>
+                        </button>
+                    </div>
                 </td>
             </tr>
         </tbody>
     </table>
     <div class="text-right" *ngIf="houveModificacao">
-        <mat-button id="botaoSalvarFrequencia" class="md-raised md-primary botao-salvar" (click)="salvarDiaAula()"
+        <button mat-raised-button id="botaoSalvarFrequencia" class="md-raised md-primary botao-salvar" (click)="salvarDiaAula()"
             permission permission-only="'frequenciaDiariaBBean.salvar'">
             <mat-icon class="material-icons">done_all</mat-icon>
             &nbsp; SALVAR FREQUÊNCIA
-        </mat-button>
-        <mat-button id="botaoDescartar" class="md-raised md-warn botao-salvar" (click)="descartarAlteracoes()">
+        </button>
+        <!-- TODO: descartar alterações -->
+        <!-- <button mat-raised-button id="botaoDescartar" class="md-raised md-warn botao-salvar" (click)="descartarAlteracoes()">
             <mat-icon class="material-icons">cached</mat-icon>
             &nbsp; DESCARTAR ALTERAÇÕES
-        </mat-button>
+        </button> -->
     </div>
 </div>

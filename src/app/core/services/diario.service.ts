@@ -184,4 +184,63 @@ export class DiarioService {
   deveValidarLancamentoFrequenciaDomingo(idInstituicao: any): Observable<any> {
     return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/frequencia/domingo/validar`);
   }
+
+  removerDiaAula(idInstituicao: any, idProgramacaoDivisaoAula: any, idTurma: any, idDisciplina: any, idEtapa: any, idDivisao: any): Observable<any> {
+    return this.http.delete(`${this.backendServerURL}/programacaoaula/remover/${idProgramacaoDivisaoAula}/turma/${idTurma}\/disciplina/${idDisciplina}/instituicao/${idInstituicao}/etapa/${idEtapa}/divisao/${idDivisao}`);
+  }
+
+  criarNovoDiaAula(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, dataAula: any, idEtapa: any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}/programacaoaula/salvar/instituicao/${idInstituicao}`, {
+      idTurma, idEtapa, idDisciplina, idDivisao, dataAula
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
+    });
+  }
+
+  salvarPlanoAula(idInstituicao: any, id: any, idTurma: any, idDisciplina: any, conteudo: any, modulo: any, idEtapa: any, recuperacaoParalela: any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}/programacaoaula/editar/instituicao/${idInstituicao}`, {
+      id, idTurma, idEtapa, idDisciplina, conteudo, modulo, recuperacaoParalela
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
+    });
+  }
+
+  salvarDiaAula(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, programacaoDivisaoAula: any, lancamentosFrequencia: any, idEtapa: any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}/diario/instituicao/${idInstituicao}/frequencia/salvar`, {
+      "idPeriodoLetivo": idPeriodoLetivo,
+      "idTurma": idTurma,
+      "idEtapa": idEtapa,
+      "idDisciplina": idDisciplina,
+      "idDivisao": idDivisao,
+      "dataAula": programacaoDivisaoAula.data,
+      "ordem": programacaoDivisaoAula.ordem,
+      "lancamentosFrequencia": lancamentosFrequencia
+    }, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    });
+  }
+
+  corrigirTotalFaltas(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any, idAluno: any, faltas: any, faltasCorrigida: any, indice: any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}/diario/instituicao/${idInstituicao}/frequencia/falta/corrigir`, {
+      "idPeriodoLetivo": idPeriodoLetivo,
+      "idTurma": idTurma,
+      "idDisciplina": idDisciplina,
+      "idDivisao": idDivisao,
+      "idEtapa": idEtapa,
+      "idAluno": idAluno,
+      "faltas": faltas,
+      "faltasCorrigida": faltasCorrigida,
+      "indice": indice
+    }, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    });
+  }
 }

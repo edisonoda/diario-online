@@ -16,12 +16,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { TabelaFrequenciaComponent } from './frequencia/tabela/tabela.component';
 
 @NgModule({
   declarations: [
     DiarioComponent,
     FrequenciaComponent,
     AvaliacoesComponent,
+
+    TabelaFrequenciaComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
+    MatMenuModule,
   ],
   exports: [DiarioComponent]
 })
