@@ -1,6 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SessaoService } from './sessao.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +10,15 @@ export class HeaderService {
     return this._headers;
   }
 
-  constructor(private sessaoService: SessaoService) {
+  constructor() {
     this._headers = new HttpHeaders({});
+  }
 
-    const token = this.sessaoService.token;
+  setHeaders(token: any, idGrupoAcesso: any): void {
     if (token)
       this._headers.set('X-Auth-Token', token);
 
-    const grupo = this.sessaoService.idGrupoAcesso;
-    if (grupo)
-      this._headers.set('X-Auth-Acess-Group', grupo);
+    if (idGrupoAcesso)
+      this._headers.set('X-Auth-Acess-Group', idGrupoAcesso);
   }
 }

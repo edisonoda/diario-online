@@ -24,16 +24,10 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let decodedEntry: any;
-
-    try {
-      decodedEntry = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(this.entry)));
-    } catch {
-      this.sessaoService.logout();
-    }
+    let decodedEntry: any = JSON.parse(this.aesUtilService.decrypt(decodeURIComponent(this.entry)));
 
     if (decodedEntry) {
-      this.sessaoService.buscarUser().subscribe(res => {
+      this.sessaoService.buscarUser(decodedEntry.token, decodedEntry.backendServerURL, decodedEntry.idGrupoAcesso).subscribe(res => {
         this.sessaoService.setUserInfo({
           user: res.user,
           token: decodedEntry.token,

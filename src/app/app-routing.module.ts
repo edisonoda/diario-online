@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './core/auth/auth.component';
 
@@ -7,31 +7,32 @@ import { TabsComponent } from './modules/tabs/tabs.component';
 
 const routes: Routes = [
   {
-    path: 'site/:tab',
-    component: TabsComponent,
-    // canActivate: [canActivateLogin],
-    loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)
-  },
-  {
-    path: 'site/login',
+    path: 'api/site/login',
     component: AuthComponent,
   },
   {
-    path: '#/site/:tab',
-    redirectTo: 'login',
-  },
-  {
-    path: '#/site/login',
-    redirectTo: 'login',
+    path: '',
+    children: [
+      {
+        path: '',
+        redirectTo: 'site/turma',
+        pathMatch: 'full',
+      },
+      {
+        path: 'site/:tab',
+        component: TabsComponent,
+        // canActivate: [canActivateLogin],
+        loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)
+      },
+    ]
   },
   {
     path: '**',
-    redirectTo: 'turma',
+    redirectTo: 'site/turma',
   },
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+export class AppRoutingModule {
+  static routing: ModuleWithProviders<RouterModule> =
+    RouterModule.forRoot(routes);
+}

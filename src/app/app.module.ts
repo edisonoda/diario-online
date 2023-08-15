@@ -53,7 +53,7 @@ const MY_FORMATS = {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    AppRoutingModule.routing,
     BrowserAnimationsModule,
     NgbModule,
     HttpClientModule,
