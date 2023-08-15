@@ -77,7 +77,7 @@ export class TabsComponent implements OnInit, OnDestroy {
   alterarTab(ev: MatTabChangeEvent): void {
     const tab = Object.entries(this.tabs).find(([tab, index]) => index === ev.index);
 
-    if (tab) {
+    if (tab && tab[0] !== this.route.snapshot.params['tab']) {
       this.resetTab(tab[0]);
       this.router.navigate([tab[0]]);
     }
