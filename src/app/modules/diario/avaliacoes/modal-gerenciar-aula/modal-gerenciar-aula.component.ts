@@ -1,6 +1,8 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { FiltrosService } from 'src/app/core/services/filtros.service';
+import { SessaoService } from 'src/app/core/services/sessao.service';
 
 @Component({
   selector: 'app-modal-gerenciar-aula',
@@ -14,14 +16,20 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
   lista: any;
   filtros: any;
 
+  permissoes: any = [];
+
   constructor(
     public dialogRef: MatDialogRef<ModalGerenciarAulaComponent>,
     @Inject(MAT_DIALOG_DATA) public dados: any,
+    private filtrosService: FiltrosService,
+    private sessaoService: SessaoService,
     private snackBar: MatSnackBar,
   ) {
     this.avaliacoes = dados.avaliacoes;
     this.lista = dados.lista;
     this.filtros = dados.filtros;
+
+    this.permissoes = this.sessaoService.permissoes;
   }
 
   ngOnDestroy() {

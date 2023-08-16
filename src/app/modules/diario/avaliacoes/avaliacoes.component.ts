@@ -69,51 +69,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       }
     })
   }
-  gerenciarAulaModal(ev: Event): void {
-    const dialogRef = this.dialog.open(ModalGerenciarAulaComponent, {
-      data: {
-        avaliacoes: this.avaliacoes,
-        lista: this.lista,
-        filtros: this.filtrosService
-      }
-    });
-
-    let avaliacoesRest: any = []
-    dialogRef.afterClosed().subscribe(data => {
-      data.forEach((aval: any) => {
-        aval.subAvaliacoes.forEach(function (sub: any) {
-          if (sub.flagSubTipo && !sub.isRecuperacao) {
-            avaliacoesRest.push({
-              "id": sub.id,
-              "notaMaxima": sub.notaMaxima,
-              "nome": sub.nome,
-              "idProgramaItemDivisao": aval.idProgramaItemDivisao
-            });
-          }
-        });
-      });
-
-      this.diarioService.salvarAvaliacoes(this.filtrosService.instituicao.id, this.filtrosService.divisao.id, this.filtrosService.turma.id,
-        this.filtrosService.disciplina.id, avaliacoesRest, this.filtrosService.idEtapa).subscribe((data: any) => {
-          this.avaliacoes = data;
-          this.diarioService.obterAlunos(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id,
-            this.filtrosService.disciplina.id, this.filtrosService.divisao.id, this.filtrosService.idEtapa).subscribe((dataAluno: any) => {
-              this.lista = dataAluno;
-              this.prepararAvaliacoes();
-              this.obterSubAvaliacoes();
-              this.calcularLarguras();
-              this.snackBar.open('Avaliações salvas com sucesso.');
-            });
-        },
-          (error: any) => {
-            var data = error.data;
-            if (data !== null && data.error !== null && data.error.message !== null) {
-              this.snackBar.open(data.error.message);
-            }
-          });
-
-    });
-  }
 
   trocarDivisao(ev: Event): void {
     const dialogRef = this.dialog.open(ModalTrocaDivisaoComponent, {
@@ -220,6 +175,8 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     });
 
     const dialogRef = this.dialog.open(ModalGerenciarAulaComponent, {
+      minWidth: "300px",
+      minHeight: "450px",
       data: {
         avaliacoes: this.avaliacoes,
         lista: this.lista,

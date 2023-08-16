@@ -19,6 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TabelaFrequenciaComponent } from './frequencia/tabela/tabela.component';
 import { ModalTrocaDivisaoComponent } from './modal-troca-divisao/modal-troca-divisao.component';
 import { ModalParaDataComponent } from './frequencia/modal-para-data/modal-para-data.component';
@@ -58,6 +59,7 @@ import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/m
     MatMenuModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatCheckboxModule,
   ],
   exports: [DiarioComponent]
 })
