@@ -21,15 +21,13 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   @Input() avaliacoes: any[] = [];
   @Input() lista: any[] = [];
   @Input() conceitos: any[] = [];
-  @Input() filtros: any = '';
-
 
   subAvaliacoes: any[] = [];
 
   houveModificacao: boolean = false;
-  computaConceito: boolean = this.filtros.disciplina.tipoMedia === 'CONCEITO'
+  computaConceito: boolean;
   habilitaBotaoSubDivisao: boolean = false;
-  :number = -1;
+  indiceAtivo: number = -1;
 
   quantTelaMax: number = 0; // Maximo de aulas na tela
   indiceInicial: number = 0; // Primeira aula visivel na tela
@@ -48,6 +46,8 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     private filtrosService: FiltrosService,
     private snackbar: MatSnackBar
   ) {
+    this.computaConceito = this.filtrosService.disciplina.tipoMedia === 'CONCEITO';
+
     if (this.sessaoService.permissoes)
       this.permissoes = JSON.parse(this.sessaoService.permissoes);
   }
@@ -93,10 +93,9 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
 
   }
 
-  gerenciarAvaliacoes = function (ev: Event) {
-
+  gerenciarAvaliacoes(ev: Event) {
     // verifica se ja tem lancamento para as macroavaliacoes
-    this.avaliacoes.forEach(function (aval:any) {
+    this.avaliacoes.forEach((aval: any) => {
       var alunoEncontrado = this.lista.find(f);
 
       function f(aluno: any) {
@@ -114,19 +113,15 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       aval.temLancamento = alunoEncontrado != null;
     });
 
-    $mdDialog.show({
-      controller: 'DialogGerenciarAulasController',
-      templateUrl: 'app/views/diario/dialogs/novoAtividadeNota.tpl.html',
-      fullscreen: true,
-      targetEvent: ev,
-      locals: {
+    const dialogRef = this.dialog.open(Modal, {
+      data: {
         avaliacoes: this.avaliacoes,
         lista: this.lista,
         filtros: this.filtros
-      },
-      clickOutsideToClose: true
-    }).then(function (data:any) {
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(data => {
       let avaliacoesRest:any = [];
       data.forEach(function (aval:any) {
         aval.subAvaliacoes.forEach(function (sub:any) {
@@ -141,27 +136,24 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         });
       });
 
-      this.diarioService.salvarAvaliacoes(this.filtros.instituicao.id, this.filtros.divisao.id, this.filtros.turma.id,
-        this.filtros.disciplina.id, avaliacoesRest, this.filtros.turma.etapa.id).then(function (data:any) {
+      this.diarioService.salvarAvaliacoes(this.filtrosService.idInstituicao, this.filtrosService.idDivisao, this.filtrosService.idTurma,
+        this.filtrosService.idDisciplina, avaliacoesRest, this.filtrosService.idEtapa).subscribe((data: any) => {
           this.avaliacoes = data;
-          this.thisdiarioService.obterAlunos(this.filtros.instituicao.id, this.filtros.periodoLetivo.id, scope.filtros.turma.id,
-            this.filtros.disciplina.id, this.filtros.divisao.id, this.filtros.turma.etapa.id).then(function (dataAluno) {
+          this.diarioService.obterAlunos(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma,
+            this.filtrosService.idDisciplina, this.filtrosService.idDivisao, this.filtrosService.idEtapa).subscribe((dataAluno) => {
             this.lista = dataAluno;
             this.prepararAvaliacoes();
-            this.subAvaliacoes = scope.obterSubAvaliacoes();
+            this.obterSubAvaliacoes();
             this.calcularLarguras();
-            this.messagesService.sucesso('Avaliações salvas com sucesso.');
+            this.snackbar.open('Avaliações salvas com sucesso.');
           });
         },
-        function (error:any) {
+        (error: any) => {
           var data = error.data;
           if (data !== null && data.error !== null && data.error.message !== null) {
-            this.messagesService.erro(data.error.message);
+            this.snackbar.open(data.error.message);
           }
         });
-
-    }, function () {
-      console.log('Cancelar');
     });
   };
 
