@@ -32,6 +32,8 @@ import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { InterceptorLoaderModule } from './core/interceptors/loader/loader.module';
 import { GetFiltroModule } from './core/interceptors/get-filtros/get-filtro.module';
 import { LoaderGeralComponent } from './shared/components/loader-geral/loader-geral.component';
+import { ModaAulasComponent } from './avaliacoes/moda-aulas/moda-aulas.component';
+import { ModalAulasComponent } from './diario/avaliacoes/modal-aulas/modal-aulas.component';
 
 const MY_FORMATS = {
   parse: {
@@ -52,6 +54,8 @@ const MY_FORMATS = {
     FooterComponent,
     AuthComponent,
     LoaderGeralComponent,
+    ModaAulasComponent,
+    ModalAulasComponent,
   ],
   imports: [
     BrowserModule,
