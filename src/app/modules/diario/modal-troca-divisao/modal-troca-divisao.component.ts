@@ -20,7 +20,7 @@ export class ModalTrocaDivisaoComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private filtrosService: FiltrosService,
   ) {
-    this.divisao.setValue(data.divisao);
+    this.divisao.setValue(data.divisao.id);
   }
 
   ngOnInit() {
@@ -35,8 +35,7 @@ export class ModalTrocaDivisaoComponent implements OnInit, OnDestroy {
   }
 
   trocarDivisao(): void {
-    this.filtrosService.divisao = this.divisao;
-    this.dialogRef.close(this.divisao);
+    this.dialogRef.close(this.listaDivisoes.find(divisao => divisao.id === this.divisao.value));
   };
 
   fecharJanela(): void {

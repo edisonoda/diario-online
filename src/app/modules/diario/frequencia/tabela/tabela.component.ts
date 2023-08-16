@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
@@ -18,6 +18,9 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
 export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   @Input() lista: any[] = [];
   @Input() aulas: any[] = [];
+  @Input() possuiDiferencaAulasLecionadas: boolean = false;
+
+  @Output() aulaLancadaEmitter: EventEmitter<number> = new EventEmitter();
 
   houveModificacao: boolean = false;
   aulaEditada: any = null;
@@ -33,7 +36,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   frequenciaDiaria: number = 0;
   totalAulasLancadasDiario: number = 0;
-  possuiDiferencaAulasLecionadas: boolean = false;
   numeroMaxDeAulasPorDia: number = 0;
 
   permissoes: string[] = [];
@@ -294,6 +296,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.divisao.aulasLecionadas += 1;
     this.totalAulasLancadasDiario += 1;
+    this.aulaLancadaEmitter.emit(1);
 
     this.ativarAula(programacaoDivisaoAula, indice, true);
 
@@ -311,11 +314,12 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       minHeight: "130px",
       maxHeight: "810px",
       data: {
-        divisao: this.divisao
+        divisao: this.divisao.id
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.filtrosService.divisao = result;
       this.divisao = result;
     });
   }
@@ -361,12 +365,13 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.diarioService.removerDiaAula(this.filtrosService.idInstituicao, aula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idEtapa, this.filtrosService.idDivisao).subscribe(res => {
+        this.diarioService.removerDiaAula(this.filtrosService.instituicao.id, aula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.idEtapa, this.filtrosService.divisao.id).subscribe(res => {
           if (res.error)
             return;
     
           this.divisao.aulasLecionadas -= 1;
           this.totalAulasLancadasDiario -= 1;
+          this.aulaLancadaEmitter.emit(-1);
     
           var dataAula = this.aulas.splice(indice, 1)[0];
     
@@ -375,7 +380,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           if (this.aulas != null && this.aulas.length > 0) {
             this.possuiDiferencaAulasLecionadas = this.divisao.aulasLecionadas !== this.aulas.length;
           }
-    
+
           this.lista.forEach(aluno => {
             aluno.frequencia = aluno.frequencia.filter(function (fr: any) {
               return fr.programacaoDivisaoAulaId !== dataAula.id
@@ -421,7 +426,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.diarioService.criarNovoDiaAula(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idDisciplina, this.filtrosService.idDivisao, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
+      this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
         if (res.error) {
           this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message);
           return;
@@ -485,7 +490,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
-      this.diarioService.salvarPlanoAula(this.filtrosService.idInstituicao, dataAula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, dataAula.conteudo, dataAula.modulo,
+      this.diarioService.salvarPlanoAula(this.filtrosService.instituicao.id, dataAula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, dataAula.conteudo, dataAula.modulo,
         this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
           if (res.error)
             return;
@@ -513,8 +518,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.aulaEditada.data = moment(this.aulaEditada.data, 'YYYY-MM-DD', true).toDate();
 
-    this.diarioService.salvarDiaAula(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma,
-      this.filtrosService.idDisciplina, this.filtrosService.idDivisao, this.aulaEditada, lancamentosFrequencia, this.filtrosService.idEtapa).subscribe(res => {
+    this.diarioService.salvarDiaAula(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id,
+      this.filtrosService.disciplina.id, this.filtrosService.divisao.id, this.aulaEditada, lancamentosFrequencia, this.filtrosService.idEtapa).subscribe(res => {
         if (res.error)
           return;
 
@@ -545,8 +550,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.diarioService.corrigirTotalFaltas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma, this.filtrosService.idDisciplina,
-          this.filtrosService.idDivisao, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
+        this.diarioService.corrigirTotalFaltas(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id,
+          this.filtrosService.divisao.id, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
           .subscribe(res => {
             if (res.error)
               return;

@@ -24,7 +24,6 @@ import { ModalTrocaDivisaoComponent } from './modal-troca-divisao/modal-troca-di
 import { ModalParaDataComponent } from './frequencia/modal-para-data/modal-para-data.component';
 import { ModalNovoDiaComponent } from './frequencia/modal-novo-dia/modal-novo-dia.component';
 import { ModalPlanoAulaComponent } from './frequencia/modal-plano-aula/modal-plano-aula.component';
-import { ModalAulasComponent } from './avaliacoes/modal-aulas/modal-aulas.component';
 import { ModalErroComponent } from './avaliacoes/modal-erro/modal-erro.component';
 import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/modal-gerenciar-aula.component';
 
@@ -39,7 +38,6 @@ import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/m
     ModalParaDataComponent,
     ModalNovoDiaComponent,
     ModalPlanoAulaComponent,
-    ModalAulasComponent,
     ModalErroComponent,
     ModalGerenciarAulaComponent,
   ],

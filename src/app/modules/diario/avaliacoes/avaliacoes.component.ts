@@ -1,15 +1,16 @@
-import {ActivatedRoute, Router} from '@angular/router';
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {SessaoService} from 'src/app/core/services/sessao.service';
-import {DiarioService} from '../../../core/services/diario.service';
-import {MatDialog} from "@angular/material/dialog";
-import {ModalErroComponent} from "./modal-erro/modal-erro.component";
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { SessaoService } from 'src/app/core/services/sessao.service';
+import { DiarioService } from '../../../core/services/diario.service';
+import { MatDialog } from "@angular/material/dialog";
+import { ModalErroComponent } from "./modal-erro/modal-erro.component";
 import * as CryptoJS from 'crypto-js';
-import {CONSTANTS} from "../../../core/constants";
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { CONSTANTS } from "../../../core/constants";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import * as moment from "moment/moment";
-import {ModalGerenciarAulaComponent} from "./modal-gerenciar-aula/modal-gerenciar-aula.component";
+import { ModalGerenciarAulaComponent } from "./modal-gerenciar-aula/modal-gerenciar-aula.component";
+import { ModalTrocaDivisaoComponent } from '../modal-troca-divisao/modal-troca-divisao.component';
 
 
 @Component({
@@ -21,8 +22,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   @Input() avaliacoes: any[] = [];
   @Input() lista: any[] = [];
   @Input() conceitos: any[] = [];
-  @Input() filtros: any[] = [];
-
 
   subAvaliacoes: any[] = [];
 
@@ -41,12 +40,11 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private route: ActivatedRoute,
     private sessaoService: SessaoService,
     private diarioService: DiarioService,
     private router: Router,
     private filtrosService: FiltrosService,
-    private snackbar: MatSnackBar
+    private snackBar: MatSnackBar
   ) {
     this.computaConceito = this.filtrosService.disciplina.tipoMedia === 'CONCEITO';
 
@@ -60,14 +58,14 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   focarPersistencia(): void {
 
   }
-  mostrarJanelaErro(error:any): void {
+  mostrarJanelaErro(error: any): void {
     const dialogRef = this.dialog.open(ModalErroComponent, {
       minWidth: "300px",
       maxWidth: "800px",
       minHeight: "130px",
       maxHeight: "810px",
       data: {
-       error: error
+        error: error
       }
     })
   }
@@ -80,10 +78,10 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       }
     });
 
-    let avaliacoesRest:any = []
+    let avaliacoesRest: any = []
     dialogRef.afterClosed().subscribe(data => {
-        data.forEach(function (aval:any) {
-          aval.subAvaliacoes.forEach(function (sub:any) {
+      data.forEach((aval: any) => {
+        aval.subAvaliacoes.forEach(function (sub: any) {
           if (sub.flagSubTipo && !sub.isRecuperacao) {
             avaliacoesRest.push({
               "id": sub.id,
@@ -95,31 +93,110 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         });
       });
 
-      this.diarioService.salvarAvaliacoes(this.filtros.instituicao.id, this.filtros.divisao.id, this.filtros.turma.id,
-        this.filtros.disciplina.id, avaliacoesRest, this.filtros.turma.etapa.id).then(function (data:any) {
+      this.diarioService.salvarAvaliacoes(this.filtrosService.instituicao.id, this.filtrosService.divisao.id, this.filtrosService.turma.id,
+        this.filtrosService.disciplina.id, avaliacoesRest, this.filtrosService.idEtapa).subscribe((data: any) => {
           this.avaliacoes = data;
-          this.diarioService.obterAlunos(this.filtros.instituicao.id, this.filtros.periodoLetivo.id, this.filtros.turma.id,
-            this.filtros.disciplina.id, this.filtros.divisao.id, this.filtros.turma.etapa.id).then(function (dataAluno:any) {
-            this.lista = dataAluno;
-            this.prepararAvaliacoes();
-            this.subAvaliacoes = scope.obterSubAvaliacoes();
-            this.calcularLarguras();
-            this.snackBar.open('Avaliações salvas com sucesso.');
-
+          this.diarioService.obterAlunos(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id,
+            this.filtrosService.disciplina.id, this.filtrosService.divisao.id, this.filtrosService.idEtapa).subscribe((dataAluno: any) => {
+              this.lista = dataAluno;
+              this.prepararAvaliacoes();
+              this.obterSubAvaliacoes();
+              this.calcularLarguras();
+              this.snackBar.open('Avaliações salvas com sucesso.');
             });
         },
-        function (error:any) {
-          var data = error.data;
-          if (data !== null && data.error !== null && data.error.message !== null) {
-            this.snackBar.open(data.error.message);
-          }
-        });
+          (error: any) => {
+            var data = error.data;
+            if (data !== null && data.error !== null && data.error.message !== null) {
+              this.snackBar.open(data.error.message);
+            }
+          });
 
     });
   }
 
   trocarDivisao(ev: Event): void {
+    const dialogRef = this.dialog.open(ModalTrocaDivisaoComponent, {
+      minWidth: "300px",
+      maxWidth: "800px",
+      minHeight: "130px",
+      maxHeight: "810px",
+      data: {
+        divisao: this.filtrosService.divisao
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.filtrosService.divisao = result;
+    });
+  }
+
+  salvarLancamentos(ev: Event) {
+    var lancamentosNota: any[] = [];
+
+    this.subAvaliacoes.filter((av: any) => {
+      return !av.isRecuperacao
+    }).forEach((aval) => {
+      var listaAlunoNotaAvaliacao = [];
+
+      var lancamentoNota: any = {
+        "idTipoAvaliacao": aval.id,
+        "flagSubTipo": aval.flagSubTipo,
+        "listaAlunoNotaAvaliacao": []
+      };
+
+      this.lista.forEach((aluno) => {
+        if (aluno.modificado) {
+          aluno.notas.forEach((nota: any) => {
+            if (nota.id === aval.id && nota.flagNotaSubTipo === aval.flagSubTipo) {
+              if (!this.computaConceito) {
+                var alunoNota: any = {
+                  "idAluno": aluno.id
+                }
+                if (aval.flagSubTipo) {
+                  if (aval.flPermiteRecuperacao) {
+                    alunoNota.notaRecuperacaoParalela = nota.vl_nota_recuperacao;
+                  }
+                  alunoNota.nota = nota.vl_nota;
+                } else {
+                  alunoNota.nota = nota.vl_nota;
+                }
+                lancamentoNota.listaAlunoNotaAvaliacao.push(alunoNota);
+              } else {
+                lancamentoNota.listaAlunoNotaAvaliacao.push({
+                  "idAluno": aluno.id,
+                  "idConceito": nota.idConceito
+                });
+              }
+            }
+          });
+        }
+      });
+      lancamentosNota.push(lancamentoNota);
+    });
+
+    this.diarioService.salvarNotas(this.filtrosService.instituicao.id, this.filtrosService.idPeriodoLetivo, this.filtrosService.turma.id,
+      this.filtrosService.disciplina.id, this.filtrosService.divisao.id, lancamentosNota, this.filtrosService.turma.etapa.id).subscribe((data) => {
+        this.houveModificacao = false;
+        this.snackBar.open('Notas salvas com sucesso.');
+        this.lista.forEach((aluno) => {
+          aluno.modificado = false;
+          if (aluno.resolverPendencia) {
+            aluno.resolverPendencia = false;
+            this.snackBar.open('Pendência resolvida com sucesso.');
+            document.getElementById('aluno-id-' + aluno.id)?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+              inline: "nearest"
+            });
+          }
+        });
+      }, (error) => {
+        var data = error.data;
+        if (data !== null && data.error !== null && data.error.message !== null) {
+          this.mostrarJanelaErro(data.error.message);
+        }
+      });
   }
 
   gerenciarAvaliacoes(ev: Event) {
@@ -146,14 +223,13 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       data: {
         avaliacoes: this.avaliacoes,
         lista: this.lista,
-        filtros: this.filtros
       }
     });
 
     dialogRef.afterClosed().subscribe(data => {
-      let avaliacoesRest:any = [];
-      data.forEach(function (aval:any) {
-        aval.subAvaliacoes.forEach(function (sub:any) {
+      let avaliacoesRest: any = [];
+      data.forEach(function (aval: any) {
+        aval.subAvaliacoes.forEach(function (sub: any) {
           if (sub.flagSubTipo && !sub.isRecuperacao) {
             avaliacoesRest.push({
               "id": sub.id,
@@ -165,29 +241,29 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         });
       });
 
-      this.diarioService.salvarAvaliacoes(this.filtrosService.idInstituicao, this.filtrosService.idDivisao, this.filtrosService.idTurma,
-        this.filtrosService.idDisciplina, avaliacoesRest, this.filtrosService.idEtapa).subscribe((data: any) => {
+      this.diarioService.salvarAvaliacoes(this.filtrosService.instituicao.id, this.filtrosService.divisao.id, this.filtrosService.turma.id,
+        this.filtrosService.disciplina.id, avaliacoesRest, this.filtrosService.idEtapa).subscribe((data: any) => {
           this.avaliacoes = data;
           this.diarioService.obterAlunos(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma,
             this.filtrosService.idDisciplina, this.filtrosService.idDivisao, this.filtrosService.idEtapa).subscribe((dataAluno) => {
-            this.lista = dataAluno;
-            this.prepararAvaliacoes();
-            this.obterSubAvaliacoes();
-            this.calcularLarguras();
-            this.snackbar.open('Avaliações salvas com sucesso.');
-          });
+              this.lista = dataAluno;
+              this.prepararAvaliacoes();
+              this.obterSubAvaliacoes();
+              this.calcularLarguras();
+              this.snackBar.open('Avaliações salvas com sucesso.');
+            });
         },
-        (error: any) => {
-          var data = error.data;
-          if (data !== null && data.error !== null && data.error.message !== null) {
-            this.snackbar.open(data.error.message);
-          }
-        });
+          (error: any) => {
+            var data = error.data;
+            if (data !== null && data.error !== null && data.error.message !== null) {
+              this.snackBar.open(data.error.message);
+            }
+          });
     });
   };
 
   calcularLarguras() {
-    var larguraJanela = $(window).width();
+    var larguraJanela = window.innerWidth;
     var larguraTabela = larguraJanela > 1167 ? 1134 : (larguraJanela - 33); // 17 + 16
     var larguraItensFixos = 23 + 23 + 45; // O, S e Total
     var larguraAula = 45;
@@ -209,31 +285,30 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
 
     this.habilitaBotaoSubDivisao = false;
 
-    this.avaliacoes.forEach(function (aval) {
+    this.avaliacoes.forEach((aval) => {
       if (!this.habilitaBotaoSubDivisao && aval.flagPermiteSubTipo && aval.id != -1) {
         this.habilitaBotaoSubDivisao = true;
       }
       //total fake de aval de conceito
       if (aval.subAvaliacoes.length > 0 && this.computaConceito) {
-        var avalCopy = angular.copy(aval);
+        var avalCopy = JSON.parse(JSON.stringify(aval));
         avalCopy.nome = "Total";
         avalCopy.totalConceito = true;
         aval.subAvaliacoes.push(avalCopy);
       }
       //se nao tem subavaliacao cria uma para atender o layout
       if (aval.subAvaliacoes.length == 0) {
-        var avalCopy = angular.copy(aval);
+        var avalCopy = JSON.parse(JSON.stringify(aval));
         avalCopy.nome = null;
         aval.subAvaliacoes.push(avalCopy);
       }
 
       var index = 0;
-      this.teste = aval.tipoCalculoSubavaliacoes;
 
       for (var index = 0; index < aval.subAvaliacoes.length; index++) {
         aval.subAvaliacoes[index].isRecuperacao = false;
         if (aval.subAvaliacoes[index] && aval.subAvaliacoes[index].flPermiteRecuperacao === true) {
-          var avalCopy = angular.copy(aval.subAvaliacoes[index]);
+          var avalCopy = JSON.parse(JSON.stringify(aval.subAvaliacoes[index]));
           avalCopy.flPermiteRecuperacao = false;
           avalCopy.nome = 'Recuperação';
           avalCopy.isRecuperacao = true;
@@ -242,68 +317,50 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         }
       }
 
-    /*
-     * É preciso definir um id para cada frequencia, por causa dos ng-repeats
-     * Usar o $index não estava dando certo ao inserir novas aulas
-     */
-    this.lista.forEach(function (aluno:any) {
-      aluno.remanejadoOuVeioDeRemanejamento = this.remanejadoOuVeioDeRemanejamento(aluno);
-      this.ocultarNotaSeRemanejadoOuVeioDeRemanejamento(aluno);
+      /*
+       * É preciso definir um id para cada frequencia, por causa dos ng-repeats
+       * Usar o $index não estava dando certo ao inserir novas aulas
+       */
+      this.lista.forEach((aluno: any) => {
+        aluno.remanejadoOuVeioDeRemanejamento = this.remanejadoOuVeioDeRemanejamento(aluno);
+        this.ocultarNotaSeRemanejadoOuVeioDeRemanejamento(aluno);
 
-      //atualiza notas dos alunos
-      if (this.avaliacoes && this.avaliacoes.length > 0 && !this.computaConceito) {
-        this.atualizarNota(aluno, false);
-      }
+        //atualiza notas dos alunos
+        if (this.avaliacoes && this.avaliacoes.length > 0 && !this.computaConceito) {
+          this.atualizarNota(aluno, false);
+        }
 
-      aluno.resultados.forEach(function (aval:any, k2:any) {
-        aval.$$id = k2;
-      });
-
-
-      if (aluno.resolverPendencia) {
-        document.getElementById('aluno-id-' + aluno.id)?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          inline: "nearest"
+        aluno.resultados.forEach((aval: any, k2: any) => {
+          aval.$$id = k2;
         });
-      }
+
+
+        if (aluno.resolverPendencia) {
+          document.getElementById('aluno-id-' + aluno.id)?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest"
+          });
+        }
+      });
     });
-  });
   }
 
-  ocultarNotaSeRemanejadoOuVeioDeRemanejamento(aluno:any) {
+  ocultarNotaSeRemanejadoOuVeioDeRemanejamento(aluno: any) {
     if (aluno.remanejadoOuVeioDeRemanejamento) {
-      aluno.notas.forEach(function(nota:any) {
+      aluno.notas.forEach(function (nota: any) {
         nota.vl_nota = '';
         nota.vl_nota_recuperacao = '';
       });
     }
   }
 
-  descartarAlteracoes = function () {
-    var entrada = {
-      idInstituicao: this.filtros.instituicao.id,
-      idPeriodoLetivo: this.filtros.periodoLetivo.id,
-      idTurma: this.filtros.turma.id,
-      idEtapa: this.filtros.turma.etapa.id,
-      idDisciplina: this.filtros.disciplina.id,
-      idDivisao: this.filtros.divisao.id,
-      tipoAvaliacao: this.filtros.divisao.tipoAvaliacao,
-      aba: 1
-    };
-    var json = CryptoJS.AES.encrypt(JSON.stringify(entrada), CONSTANTS.KEY);
-    this.router.navigate(['site', 'diario'], {
-      queryParams: {
-        entry: json,
-        reload: true,
-        inherit: true,
-        notify: true
-      }
-    });
+  descartarAlteracoes() {
+    this.router.navigate(['site', 'diario']);
   };
 
-  atualizarNota(aluno:any, controleModificacao:any) {
-    aluno.notas.forEach(function (alunoNota:any) {
+  atualizarNota(aluno: any, controleModificacao: any) {
+    aluno.notas.forEach((alunoNota: any) => {
       alunoNota.vl_nota_processada = alunoNota.vl_nota;
       // se existe nota, verifico a nota de recuperação
       if (alunoNota.vl_nota_processada != null) {
@@ -327,7 +384,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     //scope.$apply();
   };
 
-  remanejadoOuVeioDeRemanejamento(aluno:any) {
+  remanejadoOuVeioDeRemanejamento(aluno: any) {
     return aluno.status === 'R' && aluno.alunoVeioDeRemanejamento;
   }
 
@@ -341,14 +398,13 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     this.calcularBotoesAtivos();
   };
 
-  getNotaFinal(notas:any, quantidadeCasasDecimais:any) {
-
+  getNotaFinal(notas: any, quantidadeCasasDecimais: any) {
     var notaCalculada = 0;
-    this.avaliacoes.forEach(function (aval) {
+    this.avaliacoes.forEach((aval) => {
 
       var notaAval = 0;
       var qtSubs = 0;
-      aval.subAvaliacoes.forEach(function (sub:any) {
+      aval.subAvaliacoes.forEach((sub: any) => {
 
         if (!sub.isRecuperacao) {
           notaAval = notaAval + this.getNotaSubAvaliacao(notas, sub);
@@ -358,14 +414,14 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
 
       if (aval.tipoCalculoSubavaliacoes == 2 && notaAval && notaAval > 0) {
         notaAval = notaAval / qtSubs;
-        var notaAvalAjustada = this.ajustarNumeroCasasDecimais(''+notaAval, quantidadeCasasDecimais);
+        var notaAvalAjustada = this.ajustarNumeroCasasDecimais('' + notaAval, quantidadeCasasDecimais);
         notaAval = parseFloat(notaAvalAjustada);
       }
 
       notaCalculada = notaCalculada + notaAval;
     })
 
-    return Math.round(notaCalculada * 100)/100;
+    return Math.round(notaCalculada * 100) / 100;
   }
 
   obterSubAvaliacoes() {
@@ -396,12 +452,12 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     this.botaoDireita = (this.indiceInicial + this.quantTelaMax) < totalAvaliacoes;
   }
 
-  alunoModificado(aluno:any) {
+  alunoModificado(aluno: any) {
     this.houveModificacao = true;
     aluno.modificado = true;
   }
 
-  ajustarNumeroCasasDecimais(num:any, dec:any) {
+  ajustarNumeroCasasDecimais(num: any, dec: any) {
     var anum = num.split('.');
     var numnew;
     if (anum[1]) {
@@ -412,9 +468,9 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     return numnew;
   }
 
-  getNotaSubAvaliacao(notas:any, sub:any) {
+  getNotaSubAvaliacao(notas: any, sub: any) {
     var notaSub = 0;
-    notas.forEach(function (nota:any) {
+    notas.forEach(function (nota: any) {
       if (sub.id === nota.id) {
         notaSub = nota.vl_nota_processada;
       }
@@ -422,13 +478,13 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     return notaSub;
   }
 
-  selecionarConceito(){
+  selecionarConceito() {
     this.houveModificacao = true;
     //this.modificado = true;
   };
 
-  onchangeNota(avaliacao:any, nota:any, aluno:any, isRecuperacao:any) {
-    function validarNota(vl_nota:any) {
+  onchangeNota(avaliacao: any, nota: any, aluno: any, isRecuperacao: any) {
+    const validarNota = (vl_nota: any) => {
 
       if (vl_nota === undefined || isNaN(Number(vl_nota))) {
         return null;
@@ -454,11 +510,11 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     this.atualizarNota(aluno, true);
   };
 
-  nchangeConceito = function (avaliacao:any, nota:any, aluno:any) {
+  onchangeConceito(avaliacao: any, nota: any, aluno: any) {
     this.alunoModificado(aluno);
     // se tem somente uma avaliação e total o valor é atribuido automaticamente
     if (this.avaliacoes.length == 2 && aluno.notas.length == 2) {
-      aluno.notas.forEach(function (alunoNota:any) {
+      aluno.notas.forEach(function (alunoNota: any) {
         alunoNota.idConceito = nota.idConceito;
       });
     }

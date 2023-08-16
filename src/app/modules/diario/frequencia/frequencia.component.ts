@@ -1,5 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DiarioService } from 'src/app/core/services/diario.service';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
+import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/dialog-confirmacao.component';
 
 @Component({
   selector: 'app-frequencia',
@@ -10,10 +14,16 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
   @Input() lista: any[] = [];
   @Input() aulas: any[] = [];
 
+  totalAulasLancadasDiario: number = 0;
+  possuiDiferencaAulasLecionadas: boolean = false;
+
   divisao: any;
 
   constructor(
     private filtrosService: FiltrosService,
+    private diarioService: DiarioService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     this.filtrosService.obterDivisao().subscribe(divisao => {
       this.divisao = divisao;
@@ -26,8 +36,33 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
-  corrigirTotalAulasLancadas(ev: Event): void {
+  aulaLancada(qtd: number): void {
+    this.totalAulasLancadasDiario += qtd;
+  }
 
+  corrigirTotalAulasLancadas(ev: Event): void {
+    var confirm = this.dialog.open(DialogConfirmacao, {
+      data: {
+        descricao: 'Deseja realmente corrigir o total de ' + this.filtrosService.divisao.aulasLecionadas + ' aula(s) lecionada(s) para ' + this.totalAulasLancadasDiario + ' aula(s) conforme os lançamentos do Diário Online?'
+      }
+    });
+
+    confirm.afterClosed().subscribe(() => {
+      this.diarioService.corrigirTotalAulasLecionadas(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id,
+        this.filtrosService.divisao.id, this.filtrosService.turma.etapa.id, this.filtrosService.divisao.programacaoPedagogicaDivisao.id,
+        this.filtrosService.divisao.aulasLecionadas, this.totalAulasLancadasDiario)
+        .subscribe((response) => {
+          if (response.error) {
+            this.snackBar.open('Mensagem de erro do sistema: ' + response.error.message);
+            return;
+          }
+
+          this.filtrosService.divisao.aulasLecionadas = this.totalAulasLancadasDiario;
+          this.possuiDiferencaAulasLecionadas = false;
+
+          this.snackBar.open('Total de aulas lecionadas corrigido com sucesso.');
+        });
+    });
   }
 
   ngOnDestroy(): void { }
