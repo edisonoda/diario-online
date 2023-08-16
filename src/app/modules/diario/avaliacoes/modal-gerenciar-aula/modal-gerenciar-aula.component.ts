@@ -24,80 +24,43 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
     this.filtros = dados.filtros;
   }
 
-  this
-.
-  avaliacao = {
+  ngOnDestroy() {
+  }
+
+  ngOnInit() {
+  }
+
+  this.avaliacao = {
     descricao: null,
     nota: null
   }
-  this
-.
-  computaConceito = this.filtros.disciplina.tipoMedida === 'CONCEITO';
-  this
-.
-  qtMaximoSubDivisoes = this.filtros.disciplina.qtMaximoSubavaliacoes;
+  this.computaConceito = this.filtros.disciplina.tipoMedida === 'CONCEITO';
+  this.qtMaximoSubDivisoes = this.filtros.disciplina.qtMaximoSubavaliacoes;
 
-  this
-.
-  indexAvaliacaoSelecionada = null;
+  this.indexAvaliacaoSelecionada = null;
 
-  this
-.
-  avaliacoes = [];
+  this.avaliacoes = [];
 
-  let
-  avaliacoesFilter = this.ava.filter(function (av: any) {
+  let avaliacoesFilter = this.ava.filter(function (av: any) {
     return av.flAvaliacaoFormativa == false
   })
-  this
-.
-  avaliacoes
-.
 
-  push(JSON
+  this.avaliacoes.push(JSON.parse(JSON.stringify(avaliacoesFilter)));
 
-.
+  this.notaMaximaDivisao = this.filtros.divisao.notaMaxima;
 
-  parse(JSON
+  if(this.avaliacoes[this.indexAvaliacaoSelecionada] && this.isTipoCalculoMedia) {
+    this.avaliacao.nota = this.avaliacoes[this.indexAvaliacaoSelecionada].notaMaxima;
+  }
 
-.
-
-  stringify(avaliacoesFilter)
-
-));
-
-  this
-.
-  notaMaximaDivisao = this.filtros.divisao.notaMaxima;
-
-  if(this
-
-.
-  avaliacoes
-  [this.indexAvaliacaoSelecionada]
-&&
-  this
-.
-
-  isTipoCalculoMedia()
-
-) {
-  this
-.
-  avaliacao
-.
-  nota = this.avaliacoes[this.indexAvaliacaoSelecionada].notaMaxima;
-}
-
-this.getSomaAvaliacoes = function () {
-  var contador = 0;
-  contador += this.avaliacao.nota;
-  this.avaliacoes[this.indexAvaliacaoSelecionada].subAvaliacoes.forEach(function (entry: any, index: any) {
-    if (this != index && entry.flagSubTipo && !entry.isRecuperacao) {
-      contador += entry.notaMaxima;
-    }
+  this.getSomaAvaliacoes = function () {
+    var contador = 0;
+    contador += this.avaliacao.nota;
+    this.avaliacoes[this.indexAvaliacaoSelecionada].subAvaliacoes.forEach(function (entry: any, index: any) {
+      if (this != index && entry.flagSubTipo && !entry.isRecuperacao) {
+        contador += entry.notaMaxima;
+      }
   });
-
   return contador;
 }
 
