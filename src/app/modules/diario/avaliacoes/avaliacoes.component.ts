@@ -21,6 +21,8 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   @Input() avaliacoes: any[] = [];
   @Input() lista: any[] = [];
   @Input() conceitos: any[] = [];
+  @Input() filtros: any[] = [];
+
 
   subAvaliacoes: any[] = [];
 
@@ -74,18 +76,45 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       data: {
         avaliacoes: this.avaliacoes,
         lista: this.lista,
-        filtros: this.filtros
+        filtros: this.filtrosService
       }
     });
 
-    dialogRef.afterClosed().subscribe(dataAula => {
-      this.diarioService.salvarPlanoAula(this.filtrosService.idInstituicao, dataAula.id, this.filtrosService.idTurma, this.filtrosService.idDisciplina, dataAula.conteudo, dataAula.modulo,
-        this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
-        if (res.error)
-          return;
-
-        this.snackbar.open('Diário de Conteúdo atualizado para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.');
+    let avaliacoesRest:any = []
+    dialogRef.afterClosed().subscribe(data => {
+        data.forEach(function (aval:any) {
+          aval.subAvaliacoes.forEach(function (sub:any) {
+          if (sub.flagSubTipo && !sub.isRecuperacao) {
+            avaliacoesRest.push({
+              "id": sub.id,
+              "notaMaxima": sub.notaMaxima,
+              "nome": sub.nome,
+              "idProgramaItemDivisao": aval.idProgramaItemDivisao
+            });
+          }
+        });
       });
+
+      this.diarioService.salvarAvaliacoes(this.filtros.instituicao.id, this.filtros.divisao.id, this.filtros.turma.id,
+        this.filtros.disciplina.id, avaliacoesRest, this.filtros.turma.etapa.id).then(function (data:any) {
+          this.avaliacoes = data;
+          this.diarioService.obterAlunos(this.filtros.instituicao.id, this.filtros.periodoLetivo.id, this.filtros.turma.id,
+            this.filtros.disciplina.id, this.filtros.divisao.id, this.filtros.turma.etapa.id).then(function (dataAluno:any) {
+            this.lista = dataAluno;
+            this.prepararAvaliacoes();
+            this.subAvaliacoes = scope.obterSubAvaliacoes();
+            this.calcularLarguras();
+            this.snackBar.open('Avaliações salvas com sucesso.');
+
+            });
+        },
+        function (error:any) {
+          var data = error.data;
+          if (data !== null && data.error !== null && data.error.message !== null) {
+            this.snackBar.open(data.error.message);
+          }
+        });
+
     });
   }
 
@@ -113,7 +142,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       aval.temLancamento = alunoEncontrado != null;
     });
 
-    const dialogRef = this.dialog.open(Modal, {
+    const dialogRef = this.dialog.open(ModalGerenciarAulaComponent, {
       data: {
         avaliacoes: this.avaliacoes,
         lista: this.lista,
@@ -156,6 +185,25 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         });
     });
   };
+
+  calcularLarguras() {
+    var larguraJanela = $(window).width();
+    var larguraTabela = larguraJanela > 1167 ? 1134 : (larguraJanela - 33); // 17 + 16
+    var larguraItensFixos = 23 + 23 + 45; // O, S e Total
+    var larguraAula = 45;
+    var larguraMinimaNome = larguraTabela / 2; //50%
+    var largTempNome = larguraTabela - larguraItensFixos;
+    var quantTelaMax = 0;
+    while (largTempNome > larguraMinimaNome) { // Descobre o máximo de avaliacoes possiveis, mantendo a largura minima do nome
+      largTempNome -= larguraAula;
+      quantTelaMax++;
+    }
+    quantTelaMax--;
+
+    this.quantTelaMax = quantTelaMax;
+
+    this.calcularBotoesAtivos();
+  }
 
   prepararAvaliacoes() {
 

@@ -325,4 +325,25 @@ export class DiarioService {
       }
     });
   }
+
+  salvarAvaliacoes = function (idInstituicao:any, idDivisao:any, idTurma:any, idDisciplina:any, avaliacoes:any, idEtapa:any) {
+    var postAvaliacao = {
+      "idDivisao": idDivisao,
+      "idTurma": idTurma,
+      "idEtapa": idEtapa,
+      "idDisciplina": idDisciplina,
+      "avaliacoesRest": avaliacoes
+    };
+    return this.http.post(`${this.backendServerURL}/diario/avaliacao/${idInstituicao}/salvar`,
+      {
+        'data': JSON.stringify(postAvaliacao)
+      }, {
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      }
+    ).subscribe(res => {
+      return res.data
+    })}
+
 }

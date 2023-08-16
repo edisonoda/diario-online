@@ -204,7 +204,7 @@ this.salvar = function () {
     this.snackBar.open('A soma dos SubTipos de Avaliação deve ser igual à nota máxima do Tipo de Avaliação selecionado.);
     return;
   } else {
-    this.dialogRef.close(null);
+    this.dialogRef.close(this.avaliacoes);
   }
 }
 
