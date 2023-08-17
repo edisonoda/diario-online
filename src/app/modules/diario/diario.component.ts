@@ -3,6 +3,7 @@ import { DiarioService } from '../../core/services/diario.service';
 import { Subscription } from 'rxjs';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SessaoService } from 'src/app/core/services/sessao.service';
 
 @Component({
   selector: 'app-diario',
@@ -11,6 +12,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class DiarioComponent implements OnInit, OnDestroy {
   tabSelecionada: number = 0;
+
+  abaAvaliacao: boolean = false;
+  abaFrequencia: boolean = false;
 
   instituicao: any;
   periodo: any;
@@ -34,6 +38,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private diarioService: DiarioService,
     private filtrosService: FiltrosService,
+    private sessaoService: SessaoService,
   ) {
     this.filtrosService.obterInstituicao().subscribe(instituicao => {
       this.instituicao = instituicao;
@@ -41,14 +46,19 @@ export class DiarioComponent implements OnInit, OnDestroy {
     this.filtrosService.obterPeriodo().subscribe(periodo => {
       this.periodo = periodo;
     });
-    this.filtrosService.obterTurma().subscribe(turma => {
-      this.turma = turma;
-    });
-    this.filtrosService.obterDisciplina().subscribe(disciplina => {
-      this.disciplina = disciplina;
-    });
+    if (this.filtrosService.idInstituicao) {
+      this.filtrosService.obterTurma().subscribe(turma => {
+        this.turma = turma;
+      });
+    }
+    if (this.filtrosService.idDisciplina) {
+      this.filtrosService.obterDisciplina().subscribe(disciplina => {
+        this.disciplina = disciplina;
+      });
+    }
 
     this.divisao = data.divisao;
+    this.setAbas();
   }
 
   ngOnInit() {
@@ -63,32 +73,34 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.alunos = res.data;
       this.setFaltasAlunos();
     });
-    this.diarioService.obterDiasAula(
-      this.filtrosService.idInstituicao, 
-      this.filtrosService.idTurma, 
-      this.filtrosService.idDisciplina, 
-      this.filtrosService.idDivisao, 
-      this.filtrosService.idEtapa
-    ).subscribe(res => {
-      this.aulas = res.data;
-      this.totalAulasLancadasDiario = this.aulas.length;
+    if (this.filtrosService.divisao.tipoAvaliacao === 'F' || this.filtrosService.divisao.tipoAvaliacao === 'AF') {
+      this.diarioService.obterDiasAula(
+        this.filtrosService.idInstituicao,
+        this.filtrosService.idTurma,
+        this.filtrosService.idDisciplina,
+        this.filtrosService.idDivisao,
+        this.filtrosService.idEtapa
+      ).subscribe(res => {
+        this.aulas = res.data;
+        this.totalAulasLancadasDiario = this.aulas.length;
 
-      if (this.divisao)
-        this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
-    });
+        if (this.divisao)
+          this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
+      });
+    }
     this.diarioService.obterAvaliacoes(
-      this.filtrosService.idInstituicao, 
-      this.filtrosService.idTurma, 
-      this.filtrosService.idDisciplina, 
-      this.filtrosService.idDivisao, 
+      this.filtrosService.idInstituicao,
+      this.filtrosService.idTurma,
+      this.filtrosService.idDisciplina,
+      this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
     ).subscribe(res => {
       this.avaliacoes = res.data;
     });
     this.diarioService.obterListaConceitoDisciplina(
-      this.filtrosService.idInstituicao, 
-      this.filtrosService.idTurma, 
-      this.filtrosService.idDisciplina, 
+      this.filtrosService.idInstituicao,
+      this.filtrosService.idTurma,
+      this.filtrosService.idDisciplina,
       this.filtrosService.idEtapa
     ).subscribe(res => {
       this.listaConceito = res.data;
@@ -128,8 +140,13 @@ export class DiarioComponent implements OnInit, OnDestroy {
 
   setAbas(): void {
     // desabilita lancamento de frequencia
-    if (this.disciplina.computaFrequenciaGrupo)
-      this.tabSelecionada = this.disciplina.id !== 0 ? 1 : 0;
+    if (this.disciplina.computaFrequenciaGrupo) {
+      this.abaAvaliacao = this.filtrosService.idDisciplina === 0;
+      this.abaFrequencia = !this.abaAvaliacao;
+    } else {
+      this.abaAvaliacao = this.sessaoService.permissoes?.indexOf("avaliacaoFrequenciaBBean.abrir") === -1;
+      this.abaFrequencia = this.sessaoService.permissoes?.indexOf("frequenciaDiariaBBean.abrir") === -1 || this.filtrosService.divisao.tipoAvaliacao === 'A';
+    }
   }
 
   onNoClick(): void {

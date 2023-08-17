@@ -27,7 +27,7 @@ export class DiarioService {
     // });
     console.log(this.sessaoService)
 
-    return this.http.get(`${this.backendServerURL}/instituicao/get`, {
+    return this.http.get(`${this.backendServerURL}instituicao/get`, {
       params: { idInstituicao },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'instituicao'),
       headers: {
@@ -44,7 +44,7 @@ export class DiarioService {
     //   }
     // });
 
-    return this.http.get(`${this.backendServerURL}/periodoletivo/get`, {
+    return this.http.get(`${this.backendServerURL}periodoletivo/get`, {
       params: { idPeriodoLetivo },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'periodo'),
       headers: {
@@ -55,7 +55,7 @@ export class DiarioService {
   }
 
   obterTurma(idTurma: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/get`, {
+    return this.http.get(`${this.backendServerURL}turma/get`, {
       params: { idTurma, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'turma'),
       headers: {
@@ -66,7 +66,7 @@ export class DiarioService {
   }
 
   obterDisciplina(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
+    return this.http.get(`${this.backendServerURL}disciplina/instituicao/${idInstituicao}/get`, {
       params: { idTurma, idDisciplina, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'disciplina'),
       headers: {
@@ -77,7 +77,7 @@ export class DiarioService {
   }
 
   obterDivisao(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}/get`, {
+    return this.http.get(`${this.backendServerURL}disciplina/instituicao/${idInstituicao}/get`, {
       params: { idTurma, idDisciplina, idDivisao, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'divisao'),
       headers: {
@@ -132,7 +132,7 @@ export class DiarioService {
     // });
 
     console.log(this.sessaoService)
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/`, {
+    return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/`, {
       params: { idPeriodoLetivo },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -155,7 +155,7 @@ export class DiarioService {
     //   ]
     // });
 
-    return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
+    return this.http.get(`${this.backendServerURL}disciplina/instituicao/${idInstituicao}`, {
       params: { idTurma, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -178,7 +178,7 @@ export class DiarioService {
     //   ]
     // });
 
-    return this.http.get(`${this.backendServerURL}/disciplina/instituicao/${idInstituicao}`, {
+    return this.http.get(`${this.backendServerURL}disciplina/instituicao/${idInstituicao}`, {
       params: { idTurma, idDisciplina, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -227,7 +227,7 @@ export class DiarioService {
   }
 
   deveExibirCiOrientadora(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-ci-orientadora`, {
+    return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/exibe-ci-orientadora`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -236,7 +236,7 @@ export class DiarioService {
   }
 
   deveExibirRegistroModulo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-registro-modulo`, {
+    return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/exibe-plano-aula-registro-modulo`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -245,7 +245,7 @@ export class DiarioService {
   }
 
   deveExibirRecuperacaoParalela(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/exibe-plano-aula-recuperacao-paralela`, {
+    return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/exibe-plano-aula-recuperacao-paralela`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -254,7 +254,7 @@ export class DiarioService {
   }
 
   deveValidarLancamentoFrequenciaDomingo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}/turma/instituicao/${idInstituicao}/frequencia/domingo/validar`, {
+    return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/frequencia/domingo/validar`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -263,7 +263,7 @@ export class DiarioService {
   }
 
   removerDiaAula(idInstituicao: any, idProgramacaoDivisaoAula: any, idTurma: any, idDisciplina: any, idEtapa: any, idDivisao: any): Observable<any> {
-    return this.http.delete(`${this.backendServerURL}/programacaoaula/remover/${idProgramacaoDivisaoAula}/turma/${idTurma}\/disciplina/${idDisciplina}/instituicao/${idInstituicao}/etapa/${idEtapa}/divisao/${idDivisao}`, {
+    return this.http.delete(`${this.backendServerURL}programacaoaula/remover/${idProgramacaoDivisaoAula}/turma/${idTurma}\/disciplina/${idDisciplina}/instituicao/${idInstituicao}/etapa/${idEtapa}/divisao/${idDivisao}`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -272,7 +272,7 @@ export class DiarioService {
   }
 
   criarNovoDiaAula(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, dataAula: any, idEtapa: any): Observable<any> {
-    return this.http.post(`${this.backendServerURL}/programacaoaula/salvar/instituicao/${idInstituicao}`, {
+    return this.http.post(`${this.backendServerURL}programacaoaula/salvar/instituicao/${idInstituicao}`, {
       idTurma, idEtapa, idDisciplina, idDivisao, dataAula
     }, {
       headers: {
@@ -282,7 +282,7 @@ export class DiarioService {
   }
 
   salvarPlanoAula(idInstituicao: any, id: any, idTurma: any, idDisciplina: any, conteudo: any, modulo: any, idEtapa: any, recuperacaoParalela: any): Observable<any> {
-    return this.http.post(`${this.backendServerURL}/programacaoaula/editar/instituicao/${idInstituicao}`, {
+    return this.http.post(`${this.backendServerURL}programacaoaula/editar/instituicao/${idInstituicao}`, {
       id, idTurma, idEtapa, idDisciplina, conteudo, modulo, recuperacaoParalela
     }, {
       headers: {
@@ -292,7 +292,7 @@ export class DiarioService {
   }
 
   salvarDiaAula(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, programacaoDivisaoAula: any, lancamentosFrequencia: any, idEtapa: any): Observable<any> {
-    return this.http.post(`${this.backendServerURL}/diario/instituicao/${idInstituicao}/frequencia/salvar`, {
+    return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/salvar`, {
       "idPeriodoLetivo": idPeriodoLetivo,
       "idTurma": idTurma,
       "idEtapa": idEtapa,
@@ -309,7 +309,7 @@ export class DiarioService {
   }
 
   corrigirTotalFaltas(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any, idAluno: any, faltas: any, faltasCorrigida: any, indice: any): Observable<any> {
-    return this.http.post(`${this.backendServerURL}/diario/instituicao/${idInstituicao}/frequencia/falta/corrigir`, {
+    return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/falta/corrigir`, {
       "idPeriodoLetivo": idPeriodoLetivo,
       "idTurma": idTurma,
       "idDisciplina": idDisciplina,
@@ -326,24 +326,50 @@ export class DiarioService {
     });
   }
 
-  salvarAvaliacoes = function (idInstituicao:any, idDivisao:any, idTurma:any, idDisciplina:any, avaliacoes:any, idEtapa:any) {
-    var postAvaliacao = {
+  salvarAvaliacoes(idInstituicao:any, idDivisao:any, idTurma:any, idDisciplina:any, avaliacoes:any, idEtapa:any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}diario/avaliacao/${idInstituicao}/salvar`, {
       "idDivisao": idDivisao,
       "idTurma": idTurma,
       "idEtapa": idEtapa,
       "idDisciplina": idDisciplina,
       "avaliacoesRest": avaliacoes
-    };
-    return this.http.post(`${this.backendServerURL}/diario/avaliacao/${idInstituicao}/salvar`,
-      {
-        'data': JSON.stringify(postAvaliacao)
-      }, {
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        }
+    }, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
       }
-    ).subscribe(res => {
-      return res.data
-    })}
+    });
+  }
 
+  salvarNotas(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, lancamentosNota: any, idEtapa: any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/avaliacoes/salvar`, {
+      "idPeriodoLetivo": idPeriodoLetivo,
+      "idTurma": idTurma,
+      "idEtapa": idEtapa,
+      "idDisciplina": idDisciplina,
+      "idDivisao": idDivisao,
+      "lancamentosNota": lancamentosNota
+    }, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    });
+  }
+
+  corrigirTotalAulasLecionadas(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any, idProgramacaoPedagogicaDivisao: any,
+    aulasLecionadasDivisao: any, aulasLancadasDiario: any): Observable<any> {
+    return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/aula/corrigir`, {
+      "idPeriodoLetivo": idPeriodoLetivo,
+      "idTurma": idTurma,
+      "idDisciplina": idDisciplina,
+      "idDivisao": idDivisao,
+      "idEtapa": idEtapa,
+      "idProgramacaoPedagogicaDivisao": idProgramacaoPedagogicaDivisao,
+      "aulasLecionadasDivisao": aulasLecionadasDivisao,
+      "aulasLancadasDiario": aulasLancadasDiario
+    }, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    });
+  }
 }

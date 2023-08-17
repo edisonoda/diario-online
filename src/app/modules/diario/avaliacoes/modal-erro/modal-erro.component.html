@@ -1,1 +1,20 @@
-<p>modal-erro works!</p>
+<div mat-dialog-title aria-label="Diário de Conteúdo" class="irParaDataModal">
+    <div class="md-toolbar-tools">
+        <h2>
+            Erro
+        </h2>
+        <span class="flex-grow-1"></span>
+        <button mat-icon-button class="md-icon-button" (click)="close()">
+            <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+        </button>
+    </div>
+</div>
+
+<mat-dialog-content>
+    <mat-label>{{ error.value }}</mat-label>
+</mat-dialog-content>
+
+<div mat-dialog-actions align="center">
+    <button mat-button color="primary" (click)="confirm()" cdkFocusInitial>SIM</button>
+    <button mat-button color="primary" (click)="close()">NÃO</button>
+</div>

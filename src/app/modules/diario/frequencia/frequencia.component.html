@@ -17,5 +17,6 @@
         </div>
     </div>
 
-    <app-tabela-frequencia [lista]="lista" [aulas]="aulas"></app-tabela-frequencia>
+    <app-tabela-frequencia [lista]="lista" [aulas]="aulas" [possuiDiferencaAulasLecionadas]="possuiDiferencaAulasLecionadas"
+        (aulaLancadaEmitter)="aulaLancada($event)"></app-tabela-frequencia>
 </div>

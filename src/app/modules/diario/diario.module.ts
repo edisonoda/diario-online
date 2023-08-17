@@ -19,14 +19,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TabelaFrequenciaComponent } from './frequencia/tabela/tabela.component';
 import { ModalTrocaDivisaoComponent } from './modal-troca-divisao/modal-troca-divisao.component';
 import { ModalParaDataComponent } from './frequencia/modal-para-data/modal-para-data.component';
 import { ModalNovoDiaComponent } from './frequencia/modal-novo-dia/modal-novo-dia.component';
 import { ModalPlanoAulaComponent } from './frequencia/modal-plano-aula/modal-plano-aula.component';
-import { ModalAulasComponent } from './avaliacoes/modal-aulas/modal-aulas.component';
 import { ModalErroComponent } from './avaliacoes/modal-erro/modal-erro.component';
 import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/modal-gerenciar-aula.component';
+import { BotaoChamadaComponent } from './frequencia/botao-chamada/botao-chamada.component';
 
 @NgModule({
   declarations: [
@@ -39,9 +40,9 @@ import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/m
     ModalParaDataComponent,
     ModalNovoDiaComponent,
     ModalPlanoAulaComponent,
-    ModalAulasComponent,
     ModalErroComponent,
     ModalGerenciarAulaComponent,
+    BotaoChamadaComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +61,7 @@ import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/m
     MatMenuModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatCheckboxModule,
   ],
   exports: [DiarioComponent]
 })

@@ -1,1 +1,118 @@
-<p>modal-gerenciar-aula works!</p>
+<div mat-dialog-title aria-label="Gerenciar Avaliações">
+    <div class="md-toolbar-tools">
+        <h2>
+            Gerenciar Avaliações
+        </h2>
+        <span class="flex-grow-1"></span>
+        <button mat-icon-button class="mat-icon-button" (click)="fecharJanela()">
+            <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+        </button>
+    </div>
+</div>
+
+<mat-dialog-content>
+    <div class="md-dialog-content">
+        <div class="container-descricao layout-padding">
+            <div class="row">
+                <mat-form-field class="col-12 col-md-9">
+                    <mat-label>Divisão</mat-label>
+                    <input matInput class="campos-descricao" [(ngModel)]="filtrosService.divisao.nome" disabled>
+                </mat-form-field>
+                <mat-form-field class="col-12 col-md-3" *ngIf="!computaConceito">
+                    <mat-label>Nota máxima</mat-label>
+                    <input matInput class="campos-descricao" [(ngModel)]="filtrosService.divisao.notaMaxima" disabled>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field class="col-12 col-md-9">
+                    <mat-label>Tipo de avaliação</mat-label>
+                    <mat-select [(ngModel)]="indexAvaliacaoSelecionada" (change)="novaAvaliacao()">
+                        <mat-option *ngFor="let avaliacao in avaliacoes" [value]="avaliacao.id">
+                            {{ avaliacao.nome }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-12 col-md-3" *ngIf="!computaConceito">
+                    <mat-label>Nota máxima</mat-label>
+                    <input matInput class="campos-descricao" [(ngModel)]="avaliacoes[indexAvaliacaoSelecionada].notaMaxima" disabled>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div *ngIf="indexAvaliacaoSelecionada !== null">
+            <div class="row">
+                <mat-form-field class="col-12 col-md-9">
+                    <mat-label>Avaliação</mat-label>
+                    <input matInput [(ngModel)]="avaliacao.descricao">
+                </mat-form-field>
+                <mat-form-field class="col-12 col-md-3" *ngIf="!computaConceito">
+                    <mat-label>Nota Máxima</mat-label>
+                    <input matInput [(ngModel)]="avaliacao.nota" type="number" [disabled]="isTipoCalculoMedia()">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <div class="text-center" class="col-12 col-3">
+                    <button mat-raised-button class="md-raised md-primary botao-salvar w-100" (click)="novaAvaliacao()" *ngIf="permissoes.indexOf('avaliacaoFrequenciaBBean.novaSubdivisao') > -1">
+                        <mat-icon class="material-icons">add_circle_outline</mat-icon>
+                        &nbsp; NOVO
+                    </button>
+                </div>
+                <div class="text-center" class="col-12 col-3">
+                    <button mat-raised-button class="md-raised md-primary botao-salvar w-100" (click)="salvarAvaliacao()" *ngIf="permissoes.indexOf('avaliacaoFrequenciaBBean.salvarSubdivisao') > -1">
+                        <mat-icon class="material-icons">done</mat-icon>
+                        &nbsp; SALVAR
+                    </button>
+                </div>
+                <div class="text-center" class="col-12 col-3">
+                    <button mat-raised-button class="md-raised md-primary botao-salvar w-100" (click)="excluir()" [disabled]="obterQtdSelecionados() < 1" permission
+                        permission-only="'avaliacaoFrequenciaBBean.excluirSubdivisao'">
+                        <mat-icon class="material-icons">clear</mat-icon>
+                        &nbsp; EXCLUIR
+                    </button>
+                </div>
+                <div class="text-center" class="col-12 col-3">
+                    <button mat-raised-button class="md-raised md-primary botao-salvar w-100" (click)="editarAtividadeNota()" [disabled]="obterQtdSelecionados() !== 1"
+                        *ngIf="permissoes.indexOf('avaliacaoFrequenciaBBean.editarSubdivisao') > -1">
+                        <mat-icon class="material-icons">create</mat-icon>
+                        &nbsp; EDITAR
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos tabela-dialog-avaliacao" style="margin-top: 5px" *ngIf="indexAvaliacaoSelecionada !== null">
+            <colgroup>
+                <col width="40px">
+                <col width="100%">
+                <col width="80px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="text-center nome-aluno-header">
+                        <!--  <md-checkbox [disabled]="true" class="checkbox-selecao-tabela"></md-checkbox> -->
+                    </th>
+                    <th class="text-center nome-aluno-header">Descrição</th>
+                    <th class="text-center nome-aluno-header">Nota máxima</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template ngFor let-avaliacao [ngForOf]="avaliacoes[indexAvaliacaoSelecionada].subAvaliacoes">
+                    <tr *ngIf="avaliacao.flagSubTipo || !avaliacao.isRecuperacao">
+                        <td class="text-center">
+                            <mat-checkbox [(ngModel)]="avaliacao.selecionado" class="checkbox-selecao-tabela"
+                                (change)="selecionarAtividadeNota(avaliacao.id)">
+                                Check me!
+                            </mat-checkbox>
+                        </td>
+                        <td class="text-left">{{ avaliacao.nome }}</td>
+                        <td class="text-right">{{ avaliacao.notaMaxima }}</td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+    <button mat-button color="primary" (click)="salvar()">Salvar</button>
+    <button mat-button color="primary" (click)="fecharJanela()">Fechar</button>
+</div>
