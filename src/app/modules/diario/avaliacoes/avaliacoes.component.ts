@@ -6,9 +6,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {ModalErroComponent} from "./modal-erro/modal-erro.component";
 import * as CryptoJS from 'crypto-js';
 import {CONSTANTS} from "../../../core/constants";
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import { FiltrosService } from 'src/app/core/services/filtros.service';
-import * as moment from "moment/moment";
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {FiltrosService} from 'src/app/core/services/filtros.service';
 import {ModalGerenciarAulaComponent} from "./modal-gerenciar-aula/modal-gerenciar-aula.component";
 
 
