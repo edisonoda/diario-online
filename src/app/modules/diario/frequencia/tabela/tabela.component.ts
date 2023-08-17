@@ -564,5 +564,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
   }
 
+  descartarAlteracoes(): void {
+    window.location.reload();
+  }
+
   ngOnDestroy(): void { }
 }

@@ -27,6 +27,7 @@ import { ModalNovoDiaComponent } from './frequencia/modal-novo-dia/modal-novo-di
 import { ModalPlanoAulaComponent } from './frequencia/modal-plano-aula/modal-plano-aula.component';
 import { ModalErroComponent } from './avaliacoes/modal-erro/modal-erro.component';
 import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/modal-gerenciar-aula.component';
+import { BotaoChamadaComponent } from './frequencia/botao-chamada/botao-chamada.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ModalGerenciarAulaComponent } from './avaliacoes/modal-gerenciar-aula/m
     ModalPlanoAulaComponent,
     ModalErroComponent,
     ModalGerenciarAulaComponent,
+    BotaoChamadaComponent,
   ],
   imports: [
     CommonModule,

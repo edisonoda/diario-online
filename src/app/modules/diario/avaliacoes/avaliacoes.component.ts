@@ -312,10 +312,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     }
   }
 
-  descartarAlteracoes() {
-    this.router.navigate(['site', 'diario']);
-  };
-
   atualizarNota(aluno: any, controleModificacao: any) {
     aluno.notas.forEach((alunoNota: any) => {
       alunoNota.vl_nota_processada = alunoNota.vl_nota;
@@ -476,5 +472,10 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  descartarAlteracoes(): void {
+    window.location.reload();
+  }
+  
   ngOnDestroy(): void { }
 }

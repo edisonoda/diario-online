@@ -159,11 +159,11 @@
                                 <div *ngFor="let f in aluno.frequencia | filter:{ 'programacaoDivisaoAulaId': aula.id }:true"
                                     style="border: none; width: 35px; display: inline; white-space: nowrap;"
                                     class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
-                                    <!-- <cd-botao-chamada [frequencia]="f" [alunoModificado]="alunoModificado(aluno, true)"
-                                        [atualizarFaltas]="atualizarFaltas(aluno, true)"
+                                    <app-botao-chamada [aula]="f" (alunoModificado)="alunoModificado(aluno)"
+                                        (atualizarFaltas)="atualizarFaltas(aluno)"
                                         [disabled]="f.desabilitado || indiceAtivo !== aula.$$id"
                                         [hidden]="f.indisponivel || (f.flPresente === null && indiceAtivo !== aula.$$id)">
-                                    </cd-botao-chamada> -->
+                                    </app-botao-chamada>
                                 </div>
                             </tr>
                         </table>
@@ -188,10 +188,9 @@
             <mat-icon class="material-icons">done_all</mat-icon>
             &nbsp; SALVAR FREQUÊNCIA
         </button>
-        <!-- TODO: descartar alterações -->
-        <!-- <button mat-raised-button id="botaoDescartar" class="md-raised md-warn botao-salvar" (click)="descartarAlteracoes()">
+        <button mat-raised-button id="botaoDescartar" class="md-raised md-warn botao-salvar" (click)="descartarAlteracoes()">
             <mat-icon class="material-icons">cached</mat-icon>
             &nbsp; DESCARTAR ALTERAÇÕES
-        </button> -->
+        </button>
     </div>
 </div>
