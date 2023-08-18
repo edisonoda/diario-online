@@ -7,7 +7,7 @@ import { TabsComponent } from './modules/tabs/tabs.component';
 
 const routes: Routes = [
   {
-    path: 'api/site/login',
+    path: 'api/sitelogin',
     component: AuthComponent,
   },
   {
@@ -25,11 +25,7 @@ const routes: Routes = [
         loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)
       },
     ]
-  },
-  {
-    path: '**',
-    redirectTo: 'site/turma',
-  },
+  }
 ];
 
 export class AppRoutingModule {

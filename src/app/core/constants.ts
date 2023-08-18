@@ -18,7 +18,7 @@ export const CRYPTO_CONST = {
 };
 
 export const CONFIGURACOES = {
-    REST_ADDRESS: 'http://localhost:8080/sislame/rest',
+    REST_ADDRESS: 'http://localhost:8080/sislame/rest/',
     IS_PRODUCAO: false,
     DATA_VERSAO: 'PARAM_DATA_BUILD'
 }

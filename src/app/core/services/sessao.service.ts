@@ -23,10 +23,11 @@ export class SessaoService {
   constructor(private http: HttpClient) { }
 
   buscarUser(token: any, backendServerURL: any, idGrupoAcesso: any): Observable<any> {
+    console.log(token)
     sessionStorage.setItem('token', token);
     sessionStorage.setItem('idGrupoAcesso', idGrupoAcesso);
 
-    return this.http.get(`${backendServerURL}usuario/`, {
+    return this.http.get(`${backendServerURL}/usuario/`, {
       headers: {
         'X-Auth-Token': token,
         'X-Auth-Acess-Group': idGrupoAcesso,

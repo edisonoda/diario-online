@@ -24,7 +24,7 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.diarioService.obterDisciplinas(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idEtapa).subscribe(res => {
-
+      console.log(res)
       if (res.error)
         return;
 
@@ -42,6 +42,7 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
 
   disciplinaClick(disciplina: any): void {
     this.tabsService.passarEtapa('disciplina', 'divisao', disciplina, `turma=${this.filtrosService.idTurma}&etapa=${this.filtrosService.idEtapa}&disciplina=${disciplina.id}`);
+    this.filtrosService.disciplina = disciplina;
   }
 
   getCols(): number {
