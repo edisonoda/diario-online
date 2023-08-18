@@ -54,13 +54,13 @@ export class DiarioComponent implements OnInit, OnDestroy {
     if (this.filtrosService.idDisciplina) {
       this.filtrosService.obterDisciplina().subscribe(disciplina => {
         this.disciplina = disciplina;
+        this.setAbas();
       });
     }
 
     this.divisao = data.divisao;
-    this.setAbas();
   }
-
+  
   ngOnInit() {
     this.diarioService.obterAlunos(
       this.filtrosService.idInstituicao,
