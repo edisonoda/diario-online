@@ -1,10 +1,9 @@
 .botao-chamada {
-    transform: rotateY(0deg);
-    -webkit-animation: rotateY 120ms cubic-bezier(0.075, 0.82, 0.165, 1); /* Safari */
-    animation: rotateY 120ms  cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform: rotateY(0deg);
+  transition: all 120ms cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .botao-chamada.girando {
-    pointer-events: none;
-    transform: rotateY(90deg);
+  pointer-events: none;
+  transform: rotateY(90deg);
 }
