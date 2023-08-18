@@ -19,6 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/layout/header/header.component';
@@ -32,8 +33,6 @@ import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { InterceptorLoaderModule } from './core/interceptors/loader/loader.module';
 import { GetFiltroModule } from './core/interceptors/get-filtros/get-filtro.module';
 import { LoaderGeralComponent } from './shared/components/loader-geral/loader-geral.component';
-import { ModaAulasComponent } from './avaliacoes/moda-aulas/moda-aulas.component';
-import { ModalAulasComponent } from './diario/avaliacoes/modal-aulas/modal-aulas.component';
 
 const MY_FORMATS = {
   parse: {
@@ -53,9 +52,7 @@ const MY_FORMATS = {
     HeaderComponent,
     FooterComponent,
     AuthComponent,
-    LoaderGeralComponent,
-    ModaAulasComponent,
-    ModalAulasComponent,
+    LoaderGeralComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +61,7 @@ const MY_FORMATS = {
     NgbModule,
     HttpClientModule,
     HttpClientXsrfModule,
+    MatSnackBarModule,
 
     // HeaderInterceptorModule,
     // TratamentoErrosModule,

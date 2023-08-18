@@ -46,6 +46,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     private filtrosService: FiltrosService,
     private snackBar: MatSnackBar
   ) {
+
     this.computaConceito = this.filtrosService.disciplina.tipoMedia === 'CONCEITO';
 
     if (this.sessaoService.permissoes)
@@ -476,6 +477,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   descartarAlteracoes(): void {
     window.location.reload();
   }
-  
+
   ngOnDestroy(): void { }
 }
