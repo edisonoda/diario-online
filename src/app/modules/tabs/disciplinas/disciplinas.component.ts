@@ -41,8 +41,9 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
   }
 
   disciplinaClick(disciplina: any): void {
-    this.tabsService.passarEtapa('disciplina', 'divisao', disciplina, `turma=${this.filtrosService.idTurma}&etapa=${this.filtrosService.idEtapa}&disciplina=${disciplina.id}`);
+    this.filtrosService.idDisciplina = disciplina.id;
     this.filtrosService.disciplina = disciplina;
+    this.tabsService.passarEtapa('disciplina', 'divisao', disciplina, `turma=${this.filtrosService.idTurma}&etapa=${this.filtrosService.idEtapa}&disciplina=${disciplina.id}`);
   }
 
   getCols(): number {

@@ -34,7 +34,6 @@ export class TurmasComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.subs.push(this.filtroControl.valueChanges.subscribe(value => {
       this.turmasF = this._filter(value);
     }));
@@ -57,6 +56,10 @@ export class TurmasComponent implements OnInit, OnDestroy {
         horizontalPosition: 'end',
         verticalPosition: 'bottom'
       });
+
+    this.filtrosService.idTurma = turma.id;
+    this.filtrosService.idEtapa = turma.etapa.id;
+    this.filtrosService.turma = turma;
 
     this.tabsService.passarEtapa('turma', 'disciplina', turma, `turma=${turma.id}&etapa=${turma.etapa.id}`);
   }

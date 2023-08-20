@@ -41,6 +41,7 @@ export class DivisoesComponent implements OnInit, OnDestroy {
   }
 
   divisaoClick(divisao: any): void {
+    this.filtrosService.idDivisao = divisao.id;
     this.filtrosService.divisao = divisao;
 console.log('divisao:' + divisao)
     const dialogRef = this.dialog.open(DiarioComponent, {
