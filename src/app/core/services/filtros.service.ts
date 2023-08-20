@@ -39,18 +39,23 @@ export class FiltrosService {
 
   private _instituicao: any;
   set instituicao(instituicao: any) { this._instituicao = instituicao }
+  get instituicao() { return this._instituicao }
 
   private _periodo: any;
   set periodo(periodo: any) { this._periodo = periodo }
+  get periodo() { return this._periodo }
 
   private _turma: any;
   set turma(turma: any) { this._turma = turma }
+  get turma() { return this._turma }
 
   private _disciplina: any;
   set disciplina(disciplina: any) { this._disciplina = disciplina }
+  get disciplina() { return this._disciplina }
 
   private _divisao: any;
   set divisao(divisao: any) { this._divisao = divisao }
+  get divisao() { return this._divisao }
 
   constructor(private diarioService: DiarioService, private sessaoService: SessaoService) {
     this.backendServerURL = this.sessaoService.backendServerURL ?? '';
