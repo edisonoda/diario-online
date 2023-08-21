@@ -276,7 +276,9 @@ export class DiarioService {
       idTurma, idEtapa, idDisciplina, idDivisao, dataAula
     }, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
@@ -286,7 +288,9 @@ export class DiarioService {
       id, idTurma, idEtapa, idDisciplina, conteudo, modulo, recuperacaoParalela
     }, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
@@ -303,7 +307,9 @@ export class DiarioService {
       "lancamentosFrequencia": lancamentosFrequencia
     }, {
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
@@ -321,7 +327,9 @@ export class DiarioService {
       "indice": indice
     }, {
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
@@ -335,7 +343,9 @@ export class DiarioService {
       "avaliacoesRest": avaliacoes
     }, {
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
@@ -350,7 +360,9 @@ export class DiarioService {
       "lancamentosNota": lancamentosNota
     }, {
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
@@ -368,7 +380,9 @@ export class DiarioService {
       "aulasLancadasDiario": aulasLancadasDiario
     }, {
       headers: {
-        'Content-Type': 'application/json;charset=utf-8'
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
   }
