@@ -30,14 +30,14 @@ export class TratamentoErrosService implements HttpInterceptor {
   }
 
   handleResponseError(error: HttpErrorResponse): Observable<never> {
-    if (error.status === 401)
-      this.sessaoService.logout();
-    else if (error.status === 403)
-      this.sessaoService.logout();
-    else if (error.status === 419)
-      this.sessaoService.logout();
-    else if (error.status === 440)
-      this.sessaoService.logout();
+    // if (error.status === 401)
+    //   this.sessaoService.logout();
+    // else if (error.status === 403)
+    //   this.sessaoService.logout();
+    // else if (error.status === 419)
+    //   this.sessaoService.logout();
+    // else if (error.status === 440)
+    //   this.sessaoService.logout();
 
     return throwError(() => error);
   }
