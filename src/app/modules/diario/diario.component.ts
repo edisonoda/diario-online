@@ -58,6 +58,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
       });
     }
 
+    this.filtrosService.idDivisao = data.divisao.id;
+    this.filtrosService.divisao = data.divisao;
     this.divisao = data.divisao;
   }
   
