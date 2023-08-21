@@ -34,6 +34,7 @@ import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { InterceptorLoaderModule } from './core/interceptors/loader/loader.module';
 import { GetFiltroModule } from './core/interceptors/get-filtros/get-filtro.module';
 import { LoaderGeralComponent } from './shared/components/loader-geral/loader-geral.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const MY_FORMATS = {
   parse: {
@@ -76,12 +77,11 @@ const MY_FORMATS = {
     MatIconModule,
     MatCardModule,
     MatDialogModule,
+    MatDatepickerModule,
   ],
   providers: [
-    [
-      { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
-      { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-    ]
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
   bootstrap: [AppComponent]
 })
