@@ -13,7 +13,7 @@
             <mat-form-field class="w-100">
                 <mat-label>Divisão</mat-label>
                 <mat-select [formControl]="divisao">
-                    <mat-option *ngFor="let divisao in listaDivisoes" [value]="divisao.id">
+                    <mat-option *ngFor="let divisao of listaDivisoes" [value]="divisao.id">
                         {{ divisao.nome }}
                     </mat-option>
                 </mat-select>

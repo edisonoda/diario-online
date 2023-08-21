@@ -48,8 +48,9 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
     });
 
     confirm.afterClosed().subscribe(() => {
-      this.diarioService.corrigirTotalAulasLecionadas(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id,
-        this.filtrosService.divisao.id, this.filtrosService.turma.etapa.id, this.filtrosService.divisao.programacaoPedagogicaDivisao.id,
+      console.log(this.filtrosService)
+      this.diarioService.corrigirTotalAulasLecionadas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma, this.filtrosService.idDisciplina,
+        this.filtrosService.idDivisao, this.filtrosService.idEtapa, this.filtrosService.divisao.programacaoPedagogicaDivisao.id,
         this.filtrosService.divisao.aulasLecionadas, this.totalAulasLancadasDiario)
         .subscribe((response) => {
           if (response.error) {

@@ -131,7 +131,7 @@
             <col style="width:35px">
         </thead>
         <tbody>
-            <tr *ngFor="let aluno in lista">
+            <tr *ngFor="let aluno of lista">
                 <td class="text-right" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                     {{ aluno.nu_ordem }}
                 </td>
@@ -156,7 +156,7 @@
                         [ngClass]="{ ativo: (indiceAtivo === i) }" class="text-center">
                         <table>
                             <tr>
-                                <div *ngFor="let f in aluno.frequencia | filter:{ 'programacaoDivisaoAulaId': aula.id }:true"
+                                <div *ngFor="let f of aluno.frequencia"
                                     style="border: none; width: 35px; display: inline; white-space: nowrap;"
                                     class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                                     <app-botao-chamada [aula]="f" (alunoModificado)="alunoModificado(aluno)"

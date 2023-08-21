@@ -38,7 +38,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   totalAulasLancadasDiario: number = 0;
   numeroMaxDeAulasPorDia: number = 0;
 
-  permissoes: string[] = [];
+  permissoes: string = "";
 
   divisao: any;
 
@@ -56,17 +56,17 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   ) {
     this.initAlunos();
     this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
-      this.numeroMaxDeAulasPorDia = res.data;
+      this.numeroMaxDeAulasPorDia = res;
     });
 
     this.idFreq = this.aulas !== null && this.aulas !== undefined ? this.aulas.length : 0;
     if (this.sessaoService.permissoes)
-      this.permissoes = JSON.parse(this.sessaoService.permissoes);
+      this.permissoes = this.sessaoService.permissoes;
   }
 
   ngOnInit() {
     this.filtrosService.obterDivisao().subscribe(res => {
-      this.divisao = res.data;
+      this.divisao = res;
     });
   }
 
@@ -367,15 +367,15 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         this.diarioService.removerDiaAula(this.filtrosService.instituicao.id, aula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.idEtapa, this.filtrosService.divisao.id).subscribe(res => {
           if (res.error)
             return;
-    
+
           this.divisao.aulasLecionadas -= 1;
           this.totalAulasLancadasDiario -= 1;
           this.aulaLancadaEmitter.emit(-1);
-    
+
           var dataAula = this.aulas.splice(indice, 1)[0];
-    
+
           this.possuiDiferencaAulasLecionadas = false;
-    
+
           if (this.aulas != null && this.aulas.length > 0) {
             this.possuiDiferencaAulasLecionadas = this.divisao.aulasLecionadas !== this.aulas.length;
           }
@@ -385,15 +385,15 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
               return fr.programacaoDivisaoAulaId !== dataAula.id
             });
           });
-    
+
           this.lista.forEach(aluno => {
             this.atualizarFaltas(aluno);
-    
+
             if (aluno.totalFaltaInconsistente) {
               aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
             }
           });
-    
+
           // atualiza as ordens (já é feito no backend)
           this.aulas.filter(function (aula) {
             return moment(aula.data, 'YYYY-MM-DD', true).isSame(dataAula.data) &&
@@ -401,7 +401,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           }).forEach(function (data) {
             data.ordem = data.ordem - 1;
           });
-    
+
           this.onResize();
           this.snackBar.open('Aula removida com sucesso.');
         });
@@ -436,7 +436,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
         if (this.aulas && this.aulas !== undefined) {
           for (i = 0; i < this.aulas.length; i++) {
-            if (moment(this.aulas[i].data).isAfter(moment(res.data))) {
+            if (moment(this.aulas[i].data).isAfter(moment(res))) {
               break;
             }
           }
@@ -554,9 +554,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           .subscribe(res => {
             if (res.error)
               return;
-    
+
             aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
-    
+
             this.snackBar.open('Total de faltas corrigido com sucesso.');
           });
       }

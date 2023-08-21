@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/layout/header/header.component';
@@ -62,6 +63,7 @@ const MY_FORMATS = {
     HttpClientModule,
     HttpClientXsrfModule,
     MatSnackBarModule,
+    MatNativeDateModule,
 
     // HeaderInterceptorModule,
     // TratamentoErrosModule,

@@ -37,11 +37,11 @@ export class ModalNovoDiaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.filtrosService.obterPeriodo().subscribe(res => {
-      this.periodo = res.data;
+      this.periodo = res;
     });
 
     this.diarioService.deveValidarLancamentoFrequenciaDomingo(this.filtrosService.idInstituicao).subscribe(res => {
-      this.deveValidarLancamentoFrequenciaDomingo = res.data;
+      this.deveValidarLancamentoFrequenciaDomingo = res;
     });
   }
 

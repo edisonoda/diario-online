@@ -61,24 +61,24 @@ export class TabsComponent implements OnInit, OnDestroy {
     this.filtrosService.idEtapa = this.route.snapshot.queryParamMap.get('etapa');
 
     this.filtrosService.obterInstituicao().subscribe(res => {
-      this.instituicao = res.data;
+      this.instituicao = res;
       this.filtrosService.instituicao = this.instituicao;
     });
     this.filtrosService.obterPeriodo().subscribe(res => {
-      this.periodo = res.data;
+      this.periodo = res;
       this.filtrosService.periodo = this.periodo;
     });
 
     if(this.filtrosService.idTurma) {
       this.filtrosService.obterTurma().subscribe(res => {
-        this.breadcrumb.turma = res.data?.nome;
-        this.filtrosService.turma = res.data;
+        this.breadcrumb.turma = res?.nome;
+        this.filtrosService.turma = res;
       });
     }
     if(this.filtrosService.idDisciplina) {
       this.filtrosService.obterDisciplina().subscribe(res => {
-        this.breadcrumb.disciplina = res.data?.nome;
-        this.filtrosService.disciplina = res.data;
+        this.breadcrumb.disciplina = res?.nome;
+        this.filtrosService.disciplina = res;
       });
     }
   }

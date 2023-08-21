@@ -30,7 +30,7 @@ export class ModalTrocaDivisaoComponent implements OnInit, OnDestroy {
       this.filtrosService.idDisciplina,
       this.filtrosService.idEtapa,
     ).subscribe(res => {
-      this.listaDivisoes = res.data;
+      this.listaDivisoes = res;
     });
   }
 

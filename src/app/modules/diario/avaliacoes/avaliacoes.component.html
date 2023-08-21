@@ -36,7 +36,7 @@
                 <mat-icon class="material-icons">arrow_forward</mat-icon>
             </button>
         </div>
-    
+
         <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-aval-nota-cab" style="z-index:1;">
             <colgroup>
                 <col style="width:23px">
@@ -54,7 +54,7 @@
                     <th class="text-left nome-aluno-header">
                         <div>Nome</div>
                     </th>
-    
+
                     <ng-template ngFor let-aval [ngForOf]="avaliacoes" let-i="index">
                         <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center" [attr.colspan]="aval.subAvaliacoes.length">
                             {{ aval.nome }} {{ aval.notaMaxima ? (aval.notaMaxima) : '' }}
@@ -84,7 +84,7 @@
                             </button>
                         </div>
                     </th>
-    
+
                     <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
                         <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center">
                             <div *ngIf="(botaoEsquerda || botaoDireita)">
@@ -110,7 +110,7 @@
                 <col style="width:45px" *ngIf="!computaConceito">
             </colgroup>
             <tbody>
-                <tr *ngFor="let aluno in lista">
+                <tr *ngFor="let aluno of lista">
                     <td class="text-right" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                         {{ aluno.nu_ordem }}
                     </td>
@@ -123,8 +123,8 @@
                         {{aluno.nome}}
                         <div *ngIf="aluno.nomeSocial !== null && aluno.nomeSocial !== '' " style="margin-top:-3%; font-size:10px; font-weight:bold;">
                             ({{aluno.nomeSocial}})
-                        </div> 
-                       
+                        </div>
+
                        <div *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento" style="margin-top:-3%; font-size:10px; font-weight:bold; color:#8bc34a;">
                             (veio de remanejamento)
                         </div>
@@ -138,16 +138,16 @@
                                             class="text-center">
                                             <mat-form-field>
                                                 <input matInput *ngIf="!sub.isRecuperacao && !computaConceito" type="text" class="nota" [(ngModel)]="nota.vl_nota" min="0" (change)="onchangeNota(sub,nota,aluno,false)"
-                                                    [matTooltip]="nota.vl_nota" 
+                                                    [matTooltip]="nota.vl_nota"
                                                     [disabled]="nota.desabilitar || sub.flAvaliacaoFormativa || aluno.alunoVeioDeRemanejamento"/>
                                             </mat-form-field>
-            
+
                                             <mat-form-field>
                                                 <input matInput *ngIf="sub.isRecuperacao && !computaConceito" type="text" class="nota" [(ngModel)]="nota.vl_nota_recuperacao" min="0"
-                                                    (change)="onchangeNota(sub,nota,aluno,true)" [matTooltip]="nota.vl_nota_recuperacao" 
+                                                    (change)="onchangeNota(sub,nota,aluno,true)" [matTooltip]="nota.vl_nota_recuperacao"
                                                     [disabled]="nota.desabilitar || nota.vl_nota === null || nota.vl_nota === undefined || nota.vl_nota == sub.notaMaxima || aluno.alunoVeioDeRemanejamento"/>
                                             </mat-form-field>
-            
+
                                             <mat-form-field>
                                                 <mat-select [(ngModel)]="nota.idConceito" [disabled]="nota.desabilitar || sub.flAvaliacaoFormativa"
                                                     (change)="onchangeConceito(sub, nota, aluno)" *ngIf="computaConceito">
@@ -164,16 +164,16 @@
                     </ng-template>
                     <td class="text-right" *ngIf="!computaConceito" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                         <mat-form-field>
-                            <input matInput *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento" 
-                                [ngStyle]="aluno.alunoVeioDeRemanejamento && {color:'#8bc34a'}" 
+                            <input matInput *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento"
+                                [ngStyle]="aluno.alunoVeioDeRemanejamento && {color:'#8bc34a'}"
                                 [(ngModel)]="aluno.notaTotal" [disabled]="true" [matTooltip]="aluno.notaTotal">
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput *ngIf="aluno.status == 'R'" [(ngModel)]="aluno.notaTotal" [disabled]="true" 
+                            <input matInput *ngIf="aluno.status == 'R'" [(ngModel)]="aluno.notaTotal" [disabled]="true"
                                 [matTooltip]="aluno.notaTotal">
                         </mat-form-field>
                         <mat-form-field>
-                            <input matInput *ngIf="aluno.status != 'R' && !aluno.alunoVeioDeRemanejamento" 
+                            <input matInput *ngIf="aluno.status != 'R' && !aluno.alunoVeioDeRemanejamento"
                                 [(ngModel)]="aluno.totalNotas" [disabled]="true" [matTooltip]="aluno.totalNotas">
                         </mat-form-field>
                     </td>

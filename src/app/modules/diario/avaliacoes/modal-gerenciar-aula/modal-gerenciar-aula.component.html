@@ -27,7 +27,7 @@
                 <mat-form-field class="col-12 col-md-9">
                     <mat-label>Tipo de avaliação</mat-label>
                     <mat-select [(ngModel)]="indexAvaliacaoSelecionada" (change)="novaAvaliacao()">
-                        <mat-option *ngFor="let avaliacao in avaliacoes" [value]="avaliacao.id">
+                        <mat-option *ngFor="let avaliacao of avaliacoes" [value]="avaliacao.id">
                             {{ avaliacao.nome }}
                         </mat-option>
                     </mat-select>

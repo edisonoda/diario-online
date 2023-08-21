@@ -62,7 +62,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
     this.filtrosService.divisao = data.divisao;
     this.divisao = data.divisao;
   }
-  
+
   ngOnInit() {
     this.diarioService.obterAlunos(
       this.filtrosService.idInstituicao,
@@ -72,7 +72,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
     ).subscribe(res => {
-      this.alunos = res.data;
+      console.log(res)
+      this.alunos = res;
       this.setFaltasAlunos();
     });
     if (this.filtrosService.divisao.tipoAvaliacao === 'F' || this.filtrosService.divisao.tipoAvaliacao === 'AF') {
@@ -83,7 +84,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.filtrosService.idDivisao,
         this.filtrosService.idEtapa
       ).subscribe(res => {
-        this.aulas = res.data;
+        console.log(res)
+        this.aulas = res;
         this.totalAulasLancadasDiario = this.aulas.length;
 
         if (this.divisao)
@@ -97,7 +99,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
     ).subscribe(res => {
-      this.avaliacoes = res.data;
+      this.avaliacoes = res;
     });
     this.diarioService.obterListaConceitoDisciplina(
       this.filtrosService.idInstituicao,
@@ -105,10 +107,10 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.filtrosService.idDisciplina,
       this.filtrosService.idEtapa
     ).subscribe(res => {
-      this.listaConceito = res.data;
+      this.listaConceito = res;
     });
     this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
-      this.numeroMaxDeAulasPorDia = res.data;
+      this.numeroMaxDeAulasPorDia = res;
     });
   }
 

@@ -29,13 +29,13 @@ export class ModalPlanoAulaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.diarioService.deveExibirCiOrientadora(this.filtrosService.idInstituicao).subscribe(res => {
-      this.deveExibirCiOrientadora = res.data;
+      this.deveExibirCiOrientadora = res;
     });
     this.diarioService.deveExibirRegistroModulo(this.filtrosService.idInstituicao).subscribe(res => {
-      this.deveExibirRegistroModulo = res.data;
+      this.deveExibirRegistroModulo = res;
     });
     this.diarioService.deveExibirRecuperacaoParalela(this.filtrosService.idInstituicao).subscribe(res => {
-      this.deveExibirRecuperacaoParalela = res.data;
+      this.deveExibirRecuperacaoParalela = res;
     });
   }
 

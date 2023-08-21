@@ -6,7 +6,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { ModalErroComponent } from "./modal-erro/modal-erro.component";
 import * as CryptoJS from 'crypto-js';
 import { CONSTANTS } from "../../../core/constants";
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule }  from '@angular/material/snack-bar';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import * as moment from "moment/moment";
 import { ModalGerenciarAulaComponent } from "./modal-gerenciar-aula/modal-gerenciar-aula.component";
@@ -36,7 +36,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   botaoEsquerda: boolean = false; // Indica se os botoes de navegação estarão habilitados
   botaoDireita: boolean = false;
 
-  permissoes: string[] = [];
+  permissoes: string = "";
 
   constructor(
     public dialog: MatDialog,
@@ -47,10 +47,10 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar
   ) {
 
-    this.computaConceito = this.filtrosService.disciplina.tipoMedia === 'CONCEITO';
-
-    if (this.sessaoService.permissoes)
-      this.permissoes = JSON.parse(this.sessaoService.permissoes);
+    this.computaConceito = true
+    if (this.sessaoService.permissoes) {
+      this.permissoes = this.sessaoService.permissoes;
+    }
   }
 
   ngOnInit() {
