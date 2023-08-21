@@ -81,10 +81,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         divisao: this.filtrosService.divisao
       }
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.filtrosService.divisao = result;
-    });
   }
 
   salvarLancamentos(ev: Event) {

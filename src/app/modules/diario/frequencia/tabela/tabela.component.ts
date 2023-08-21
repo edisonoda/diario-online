@@ -319,7 +319,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.filtrosService.divisao = result;
       this.divisao = result;
     });
   }

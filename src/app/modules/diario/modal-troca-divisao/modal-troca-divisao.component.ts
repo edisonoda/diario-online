@@ -35,7 +35,13 @@ export class ModalTrocaDivisaoComponent implements OnInit, OnDestroy {
   }
 
   trocarDivisao(): void {
-    this.dialogRef.close(this.listaDivisoes.find(divisao => divisao.id === this.divisao.value));
+    const divisao = this.listaDivisoes.find(divisao => divisao.id === this.divisao.value);
+    if (divisao) {
+      this.filtrosService.divisao = divisao;
+      this.filtrosService.idDivisao = this.filtrosService.divisao.id;
+    }
+
+    this.dialogRef.close(divisao);
   };
 
   fecharJanela(): void {
