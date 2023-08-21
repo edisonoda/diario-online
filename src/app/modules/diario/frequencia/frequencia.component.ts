@@ -50,7 +50,7 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
     confirm.afterClosed().subscribe(() => {
       console.log(this.filtrosService)
       this.diarioService.corrigirTotalAulasLecionadas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma, this.filtrosService.idDisciplina,
-        this.filtrosService.idDivisao, this.filtrosService.idEtapa, this.filtrosService.divisao.idProgramacaoPedagogicaDivisao,
+        this.filtrosService.idDivisao, this.filtrosService.idEtapa, this.filtrosService.divisao.programacaoPedagogicaDivisao?.id,
         this.filtrosService.divisao.aulasLecionadas, this.totalAulasLancadasDiario)
         .subscribe((response) => {
           if (response.error) {
