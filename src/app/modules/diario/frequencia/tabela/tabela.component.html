@@ -42,12 +42,12 @@
                 <th class="text-left nome-aluno-header">
                     <div>Nome</div>
                     <div class="row adicionar-aula" *ngIf="quantAulasTelaMax > 2">
-                        <div class="col-4">
-                            <button class="md-fab md-mini" matTooltip="Trocar divisão"
+                        <div class="col-4 d-flex">
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Trocar divisão"
                                 (click)="houveModificacao ? focarPersistencia() : trocarDivisao($event)">
                                 <mat-icon class="material-icons">view_week</mat-icon>
                             </button>
-                            <button *ngIf="permissoes.indexOf('frequenciaDiariaBBean.salvar') > -1"
+                            <button mat-icon-button *ngIf="permissoes.indexOf('frequenciaDiariaBBean.salvar') > -1"
                                 class="md-fab md-mini" matTooltip="Adiciona novo dia de aula"
                                 (click)="houveModificacao ? focarPersistencia() : adicionarAulaNovoDia($event)"
                                 [disabled]="deveDesabilitarBotaoNovoDiaDeAula">
@@ -55,17 +55,17 @@
                             </button>
                         </div>
                         <div class="col">
-                            <button class="md-fab md-mini" matTooltip="Aulas anteriores"
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Aulas anteriores"
                                 (click)="houveModificacao ? focarPersistencia() : rolarFrequencia('esq')"
                                 [disabled]="!botaoEsquerda">
                                 <mat-icon class="material-icons">arrow_back</mat-icon>
                             </button>
-                            <button class="md-fab md-mini" matTooltip="Ir para data"
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Ir para data"
                                 (click)="houveModificacao ? focarPersistencia() : irParaData($event)"
                                 [disabled]="!(botaoEsquerda || botaoDireita)">
                                 <mat-icon class="material-icons">today</mat-icon>
                             </button>
-                            <button class="md-fab md-mini" matTooltip="Próximas aulas"
+                            <button mat-icon-button class="md-fab md-mini" matTooltip="Próximas aulas"
                                 (click)="houveModificacao ? focarPersistencia() : rolarFrequencia('dir')"
                                 [disabled]="!botaoDireita">
                                 <mat-icon class="material-icons">arrow_forward</mat-icon>
