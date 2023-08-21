@@ -357,7 +357,7 @@ export class DiarioService {
 
   corrigirTotalAulasLecionadas(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any, idProgramacaoPedagogicaDivisao: any,
     aulasLecionadasDivisao: any, aulasLancadasDiario: any): Observable<any> {
-    return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/aula/corrigir`, {
+    return this.http.put(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/aula/corrigir`, {
       "idPeriodoLetivo": idPeriodoLetivo,
       "idTurma": idTurma,
       "idDisciplina": idDisciplina,
