@@ -46,6 +46,9 @@ export class DivisoesComponent implements OnInit, OnDestroy {
 console.log('divisao:' + divisao)
     const dialogRef = this.dialog.open(DiarioComponent, {
       data: { divisao },
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
       width: '100%'
     });
   }
