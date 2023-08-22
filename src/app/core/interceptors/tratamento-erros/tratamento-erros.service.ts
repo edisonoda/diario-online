@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { SessaoService } from '../../services/sessao.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoaderService } from '../loader/loader.service';
+import { LoadingService } from 'src/app/shared/components/loader-geral/loader-geral.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TratamentoErrosService implements HttpInterceptor {
   constructor(
     private sessaoService: SessaoService,
+    private loadingService: LoadingService,
     private snackBar: MatSnackBar,
   ) { }
 
@@ -24,12 +27,12 @@ export class TratamentoErrosService implements HttpInterceptor {
               });
         }),
         catchError(error => {
-          return this.handleResponseError(error);
+          return this.handleResponseError(error, request);
         })
       );
   }
 
-  handleResponseError(error: HttpErrorResponse): Observable<never> {
+  handleResponseError(error: HttpErrorResponse, request: HttpRequest<any>): Observable<never> {
     // if (error.status === 401)
     //   this.sessaoService.logout();
     // else if (error.status === 403)
@@ -38,6 +41,8 @@ export class TratamentoErrosService implements HttpInterceptor {
     //   this.sessaoService.logout();
     // else if (error.status === 440)
     //   this.sessaoService.logout();
+
+    this.loadingService.setLoading(false, request.url);
 
     return throwError(() => error);
   }
