@@ -254,7 +254,7 @@ export class DiarioService {
   }
 
   deveValidarLancamentoFrequenciaDomingo(idInstituicao: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/frequencia/domingo/validar`, {
+    return this.http.get(`${this.backendServerURL}instituicao/${idInstituicao}/frequencia/domingo/validar`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -272,9 +272,8 @@ export class DiarioService {
   }
 
   criarNovoDiaAula(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, dataAula: any, idEtapa: any): Observable<any> {
-    return this.http.post(`${this.backendServerURL}programacaoaula/salvar/instituicao/${idInstituicao}`, {
-      idTurma, idEtapa, idDisciplina, idDivisao, dataAula
-    }, {
+    let form = this.serialize({idTurma, idEtapa, idDisciplina, idDivisao, dataAula})
+    return this.http.post(`${this.backendServerURL}programacaoaula/salvar/instituicao/${idInstituicao}/`, form, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Auth-Token': this.sessaoService.token!,
@@ -385,5 +384,19 @@ export class DiarioService {
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!
       }
     });
+  }
+  serialize(obj: any) {
+    let params: URLSearchParams = new URLSearchParams();
+
+
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        var element = obj[key];
+
+        params.set(key, element);
+      }
+    }
+
+    return params;
   }
 }
