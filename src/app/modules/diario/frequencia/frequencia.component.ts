@@ -53,7 +53,8 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
         this.filtrosService.idDivisao, this.filtrosService.idEtapa, this.filtrosService.divisao.programacaoPedagogicaDivisao?.id,
         this.filtrosService.divisao.aulasLecionadas, this.totalAulasLancadasDiario)
         .subscribe((response) => {
-          if (response.error) {
+          console.log(response)
+          if (response != null && response.error) {
             this.snackBar.open('Mensagem de erro do sistema: ' + response.error.message);
             return;
           }

@@ -40,9 +40,10 @@ export class ModalNovoDiaComponent implements OnInit, OnDestroy {
       this.periodo = res;
     });
 
-    this.diarioService.deveValidarLancamentoFrequenciaDomingo(this.filtrosService.idInstituicao).subscribe(res => {
-      this.deveValidarLancamentoFrequenciaDomingo = res;
-    });
+    // this.diarioService.deveValidarLancamentoFrequenciaDomingo(this.filtrosService.idInstituicao).subscribe(res => {
+    //   this.deveValidarLancamentoFrequenciaDomingo = res.data;
+    // }
+    this.deveValidarLancamentoFrequenciaDomingo = false;
   }
 
   salvarAula(): void {
