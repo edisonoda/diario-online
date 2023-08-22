@@ -156,13 +156,13 @@
                         [ngClass]="{ ativo: (indiceAtivo === i) }" class="text-center">
                         <table>
                             <tr>
-                                <div *ngFor="let f of aluno.frequencia"
+                                <div *ngFor="let f of aluno.frequencia;"
                                     style="border: none; width: 35px; display: inline; white-space: nowrap;"
                                     class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
-                                    <app-botao-chamada [aula]="f" (alunoModificado)="alunoModificado(aluno)"
-                                        (atualizarFaltas)="atualizarFaltas(aluno)"
-                                        [disabled]="f.desabilitado || indiceAtivo !== aula.$$id"
-                                        [hidden]="f.indisponivel || (f.flPresente === null && indiceAtivo !== aula.$$id)">
+                                    <app-botao-chamada *ngIf="f.programacaoDivisaoAulaId == aula.id" [aula]="f"
+                                        (alunoModificado)="alunoModificado(aluno)" (atualizarFaltas)="atualizarFaltas(aluno)"
+                                        [disabled]="f.desabilitado || indiceAtivo !== i"
+                                        [hidden]="f.indisponivel || (f.flPresente === null && indiceAtivo !== i)">
                                     </app-botao-chamada>
                                 </div>
                             </tr>
