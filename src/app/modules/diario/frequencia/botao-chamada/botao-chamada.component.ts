@@ -30,6 +30,7 @@ export class BotaoChamadaComponent implements OnInit, OnDestroy {
 
   // Configuração do que aparece na tela (letra, cor, estilo)
   configAtual() {
+      console.log(this.aula)
       var letra, descricao;
       if (this.aula.flPresente === null || this.aula.flPresente === undefined) {
         letra = '&nbsp;';

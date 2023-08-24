@@ -27,8 +27,8 @@
 
     <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-frequencia-cab">
         <colgroup>
-            <col style="width:10%;">
-            <col style="width:10px">
+            <col style="width:10%">
+            <col style="width:10%">
             <col style="width:45%">
             <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
                 <col *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)">
@@ -38,8 +38,8 @@
         <thead>
             <tr>
                 <th class="text-right" style="width:10%">O</th>
-                <th class="text-center">S</th>
-                <th class="text-left nome-aluno-header">
+                <th class="text-center" style="width:10%">S</th>
+                <th class="text-left nome-aluno-header" style="width:45%">
                     <div>Nome</div>
                     <div class="row adicionar-aula" *ngIf="quantAulasTelaMax > 2">
                         <div class="col-4 d-flex">
@@ -122,8 +122,8 @@
     <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-frequencia-corpo"
         style="border-top:none;">
         <thead>
-            <col style="width:23px">
-            <col style="width:23px">
+            <col style="width:10%">
+            <col style="width:10%">
             <col style="width:45%">
             <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
                 <col *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)">
@@ -132,15 +132,15 @@
         </thead>
         <tbody>
             <tr *ngFor="let aluno of lista">
-                <td class="text-right" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                <td class="text-right" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}" style="width:10%">
                     {{ aluno.nu_ordem }}
                 </td>
                 <td class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}"
-                    [matTooltip]="aluno.situacaoStatus">
+                    [matTooltip]="aluno.situacaoStatus" style="width:10%">
                     {{ aluno.status }}
                 </td>
                 <td id="aluno-id-{{aluno.id}}" class="text-left nome-aluno"
-                    [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                    [ngClass]="{'resolverPendencia': aluno.resolverPendencia}" style="width:45%">
                     {{aluno.nome}}
                     <div *ngIf="aluno.nomeSocial !== null && aluno.nomeSocial !== '' "
                         style="margin-top:-2%; font-size:10px; font-weight:bold;">
