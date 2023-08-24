@@ -12,20 +12,20 @@ export class SessaoService {
     return this._user;
   }
 
-  get token() { return sessionStorage.getItem('token') }
-  get backendServerURL() { return sessionStorage.getItem('backendServerURL') }
-  get logoutURL() { return sessionStorage.getItem('logoutURL') }
-  get idGrupoAcesso() { return sessionStorage.getItem('idGrupoAcesso') }
-  get idInstituicao() { return sessionStorage.getItem('idInstituicao') }
-  get idPeriodoLetivo() { return sessionStorage.getItem('idPeriodoLetivo') }
-  get permissoes() { return sessionStorage.getItem('permissoes') }
+  get token() { return localStorage.getItem('token') }
+  get backendServerURL() { return localStorage.getItem('backendServerURL') }
+  get logoutURL() { return localStorage.getItem('logoutURL') }
+  get idGrupoAcesso() { return localStorage.getItem('idGrupoAcesso') }
+  get idInstituicao() { return localStorage.getItem('idInstituicao') }
+  get idPeriodoLetivo() { return localStorage.getItem('idPeriodoLetivo') }
+  get permissoes() { return localStorage.getItem('permissoes') }
 
   constructor(private http: HttpClient) { }
 
   buscarUser(token: any, backendServerURL: any, idGrupoAcesso: any): Observable<any> {
     console.log(token)
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('idGrupoAcesso', idGrupoAcesso);
+    localStorage.setItem('token', token);
+    localStorage.setItem('idGrupoAcesso', idGrupoAcesso);
 
     return this.http.get(`${backendServerURL}/usuario/`, {
       headers: {
