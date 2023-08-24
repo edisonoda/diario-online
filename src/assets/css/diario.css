@@ -93,8 +93,8 @@ md-toast {
     color: red !important;
 }
 
-table.tabela-alunos .md-errors-spacer:empty { 
-    display: none; 
+table.tabela-alunos .md-errors-spacer:empty {
+    display: none;
 }
 
 #conteudo-principal {
@@ -298,7 +298,6 @@ md-menu-item > .md-button md-icon.icone-menu {
 }
 
 table.tabela-alunos {
-    table-layout: fixed;
     font-size: 1rem;
     border: 1px solid #999999;
     width: 100%;
@@ -550,8 +549,8 @@ input.nota {
 
 .total-diario {
     width: 17px !important;
-    padding-right: 20px !important; 
-    padding: 0 !important; 
+    padding-right: 20px !important;
+    padding: 0 !important;
     margin-left: 2px !important;
     margin-top: -6px !important;
     text-align: center !important;

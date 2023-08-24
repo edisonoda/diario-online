@@ -39,19 +39,19 @@ export class SessaoService {
     this._user = info.user;
 
     console.log(info);
-    sessionStorage.setItem('token', info.token);
-    sessionStorage.setItem('backendServerURL', info.backendServerURL.replace('4200', '8080'));
-    sessionStorage.setItem('logoutURL', info.logoutURL);
-    sessionStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);
-    sessionStorage.setItem('idInstituicao', info.idInstituicao);
-    sessionStorage.setItem('idPeriodoLetivo', info.idPeriodoLetivo);
-    sessionStorage.setItem('permissoes', info.listaPermissao);
+    localStorage.setItem('token', info.token);
+    localStorage.setItem('backendServerURL', info.backendServerURL.replace('4200', '8080'));
+    localStorage.setItem('logoutURL', info.logoutURL);
+    localStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);
+    localStorage.setItem('idInstituicao', info.idInstituicao);
+    localStorage.setItem('idPeriodoLetivo', info.idPeriodoLetivo);
+    localStorage.setItem('permissoes', info.listaPermissao);
   }
 
   logout(): any {
-    // Object.keys(localStorage).forEach(key => {
-    //   localStorage.removeItem(key);
-    // });
+    Object.keys(localStorage).forEach(key => {
+      localStorage.removeItem(key);
+    });
 
     if (this.logoutURL)
       window.location.href = this.logoutURL;

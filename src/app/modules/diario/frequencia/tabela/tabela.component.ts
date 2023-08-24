@@ -72,6 +72,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   initAlunos(): void {
     this.lista.forEach(aluno => {
+      console.log(aluno)
       aluno.frequencia.forEach((freq: any) => {
         freq.desabilitado = !habilitarFrequencia(aluno, freq);
         freq.indisponivel = this.dataAulaIndisponivel(freq.dataAula, aluno.dataEnturmacao, aluno.dataEncerramento, aluno.dataRemanejamento);
@@ -411,6 +412,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   adicionarAulaNovoDia(ev: Event): void {
     const dialogRef = this.dialog.open(ModalNovoDiaComponent, {
+
       minWidth: "300px",
       maxWidth: "800px",
       minHeight: "130px",
@@ -418,6 +420,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
+      console.log(dataAula)
       var dataInformada = new Date(dataAula);
 
       if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
@@ -426,6 +429,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       }
 
       this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
+      console.log(res)
         if (res.error) {
           this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message);
           return;

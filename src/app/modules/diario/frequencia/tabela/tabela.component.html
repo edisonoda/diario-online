@@ -27,8 +27,8 @@
 
     <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-frequencia-cab">
         <colgroup>
-            <col style="width:23px">
-            <col style="width:23px">
+            <col style="width:10%;">
+            <col style="width:10px">
             <col style="width:45%">
             <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
                 <col *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)">
@@ -37,7 +37,7 @@
         </colgroup>
         <thead>
             <tr>
-                <th class="text-right">O</th>
+                <th class="text-right" style="width:10%">O</th>
                 <th class="text-center">S</th>
                 <th class="text-left nome-aluno-header">
                     <div>Nome</div>
@@ -137,7 +137,7 @@
                 </td>
                 <td class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}"
                     [matTooltip]="aluno.situacaoStatus">
-                    {{ aluno.nu_ordem }}
+                    {{ aluno.status }}
                 </td>
                 <td id="aluno-id-{{aluno.id}}" class="text-left nome-aluno"
                     [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
