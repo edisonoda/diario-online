@@ -200,7 +200,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(data => {
       let avaliacoesRest: any = [];
       data.forEach(function (aval: any) {
-        aval.subAvaliacoes.forEach(function (sub: any) {
+        aval.subAvaliacoes?.forEach(function (sub: any) {
           if (sub.flagSubTipo && !sub.isRecuperacao) {
             avaliacoesRest.push({
               "id": sub.id,
@@ -258,22 +258,22 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
         this.habilitaBotaoSubDivisao = true;
       }
       //total fake de aval de conceito
-      if (aval.subAvaliacoes.length > 0 && this.computaConceito) {
+      if (aval.subAvaliacoes?.length > 0 && this.computaConceito) {
         var avalCopy = JSON.parse(JSON.stringify(aval));
         avalCopy.nome = "Total";
         avalCopy.totalConceito = true;
-        aval.subAvaliacoes.push(avalCopy);
+        aval.subAvaliacoes?.push(avalCopy);
       }
       //se nao tem subavaliacao cria uma para atender o layout
-      if (aval.subAvaliacoes.length == 0) {
+      if (!aval.subAvaliacoes?.length) {
         var avalCopy = JSON.parse(JSON.stringify(aval));
         avalCopy.nome = null;
-        aval.subAvaliacoes.push(avalCopy);
+        aval.subAvaliacoes?.push(avalCopy);
       }
 
       var index = 0;
 
-      for (var index = 0; index < aval.subAvaliacoes.length; index++) {
+      for (var index = 0; index < aval.subAvaliacoes?.length; index++) {
         aval.subAvaliacoes[index].isRecuperacao = false;
         if (aval.subAvaliacoes[index] && aval.subAvaliacoes[index].flPermiteRecuperacao === true) {
           var avalCopy = JSON.parse(JSON.stringify(aval.subAvaliacoes[index]));
@@ -368,8 +368,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
 
       var notaAval = 0;
       var qtSubs = 0;
-      aval.subAvaliacoes.forEach((sub: any) => {
-
+      aval.subAvaliacoes?.forEach((sub: any) => {
         if (!sub.isRecuperacao) {
           notaAval = notaAval + this.getNotaSubAvaliacao(notas, sub);
           qtSubs++;
@@ -391,13 +390,11 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   obterSubAvaliacoes() {
     this.subAvaliacoes = [];
     this.avaliacoes.forEach(aval => {
-      aval.subAvaliacoes.forEach((sub: any) => {
+      aval.subAvaliacoes?.forEach((sub: any) => {
         sub.nomeAvaliacao = aval.nome;
         this.subAvaliacoes.push(sub);
       });
     });
-
-    this.subAvaliacoes;
   };
 
   calcularBotoesAtivos(): void {

@@ -56,7 +56,7 @@
                     </th>
 
                     <ng-template ngFor let-aval [ngForOf]="avaliacoes" let-i="index">
-                        <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center" [attr.colspan]="aval.subAvaliacoes.length">
+                        <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center" [attr.colspan]="aval.subAvaliacoes?.length">
                             {{ aval.nome }} {{ aval.notaMaxima ? (aval.notaMaxima) : '' }}
                         </th>
                     </ng-template>
