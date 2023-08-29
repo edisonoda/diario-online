@@ -18,8 +18,12 @@ export class AutenticacaoGuard {
       }
     }
     
-    if (this.sessaoService.logoutURL)
-      window.location.href = this.sessaoService.logoutURL;
+    setTimeout(() => {
+        if (this.sessaoService.logoutURL) {
+        window.location.href = this.sessaoService.logoutURL;
+      }
+    }, 5000);
+
     return false;
   }
 
