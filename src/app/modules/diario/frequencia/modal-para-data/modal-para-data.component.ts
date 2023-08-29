@@ -26,7 +26,8 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
   irParaData(): void {
     if (this.dataSelecionada == undefined || !this.dataSelecionada) {
       this.snackBar.open('A data deve ser informada.', '', {
-        duration: 5000
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
       });
       this.dataValida = false;
       return;
@@ -35,14 +36,16 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
     if (Object.prototype.toString.call(this.dataSelecionada) === "[object Date]") {
       if (isNaN(this.dataSelecionada.getTime())) {
         this.snackBar.open('A data informada não é valida.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
         });
         this.dataValida = false;
       }
       else {
         if (!this.filtroDatasDisponiveis(this.dataSelecionada)) {
           this.snackBar.open('Não existem aulas lecionadas na data informada.', '', {
-            duration: 5000
+            duration: 5000,
+            panelClass: ['md-error-toast-theme']
           });
         } else {
           this.dialogRef.close(this.dataSelecionada);
@@ -50,7 +53,8 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
       }
     } else {
       this.snackBar.open('A data informada não é valida.', '', {
-        duration: 5000
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
       });
     }
   };

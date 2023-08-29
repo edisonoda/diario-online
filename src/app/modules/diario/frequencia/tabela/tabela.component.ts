@@ -293,7 +293,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     this.snackBar.open('Salve antes de prosseguir.', '', {
-      duration: 5000
+      duration: 5000,
+      panelClass: ['md-error-toast-theme']
     });
   }
 
@@ -412,7 +413,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
           this.onResize();
           this.snackBar.open('Aula removida com sucesso.', '', {
-            duration: 5000
+            duration: 5000,
+            panelClass: ['md-success-toast-theme']
           });
         });
       }
@@ -434,20 +436,14 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
       if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
         this.snackBar.open('Número máximo de aulas diárias atingido.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
         });
         return;
       }
 
       this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
       console.log(res)
-        if (res.error) {
-          this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message, '', {
-            duration: 5000
-          });
-          return;
-        }
-
         var i;
         res.data = moment(res.data).format('YYYY-MM-DD');
 
@@ -482,7 +478,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         this.houveModificacao = true;
 
         this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-success-toast-theme']
         });
       });
     });
@@ -514,7 +511,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
             return;
 
           this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.', '', {
-            duration: 5000
+            duration: 5000,
+            panelClass: ['md-success-toast-theme']
           });
         });
     });
@@ -544,7 +542,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           return;
 
         this.snackBar.open('Frequências salvas com sucesso.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-success-toast-theme']
         });
         this.houveModificacao = false;
         this.ativarAula(null, -1, false);
@@ -553,7 +552,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           if (aluno.resolverPendencia) {
             aluno.resolverPendencia = false;
             this.snackBar.open('Pendência resolvida com sucesso.', '', {
-              duration: 5000
+              duration: 5000,
+              panelClass: ['md-success-toast-theme']
             });
           }
           if (aluno.totalFaltaInconsistente) {
@@ -583,7 +583,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
             aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
 
             this.snackBar.open('Total de faltas corrigido com sucesso.', '', {
-              duration: 5000
+              duration: 5000,
+              panelClass: ['md-success-toast-theme']
             });
           });
       }

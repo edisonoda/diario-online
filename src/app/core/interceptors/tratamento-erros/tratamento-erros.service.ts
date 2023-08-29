@@ -23,7 +23,8 @@ export class TratamentoErrosService implements HttpInterceptor {
         tap(evt => {
           if (evt instanceof HttpResponse && evt.body.erro)
               this.snackBar.open(evt.body.erro, '', {
-                duration: 5000
+                duration: 5000,
+                panelClass: ['md-error-toast-theme']
               });
         }),
         catchError(error => {
@@ -33,14 +34,17 @@ export class TratamentoErrosService implements HttpInterceptor {
   }
 
   handleResponseError(error: HttpErrorResponse, request: HttpRequest<any>): Observable<never> {
-    // if (error.status === 401)
-    //   this.sessaoService.logout();
-    // else if (error.status === 403)
-    //   this.sessaoService.logout();
-    // else if (error.status === 419)
-    //   this.sessaoService.logout();
-    // else if (error.status === 440)
-    //   this.sessaoService.logout();
+    if (error.error instanceof Error) {
+      this.snackBar.open(`Ocorreu um erro: ${error.error.message}`, '', {
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
+      });
+    } else {
+      this.snackBar.open(`O servidor retornou um erro: ${error.status} - ${error.error.message}`, '', {
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
+      });
+    }
 
     this.loadingService.setLoading(false, request.url);
 

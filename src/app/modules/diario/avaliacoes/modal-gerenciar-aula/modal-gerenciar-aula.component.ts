@@ -101,14 +101,16 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
 
     if (this.qtMaximoSubDivisoes && tamanho == this.qtMaximoSubDivisoes) {
       this.snackBar.open('O número de SubTipos de Avaliação não pode ser maior que a quantidade máxima permitida: ' + this.qtMaximoSubDivisoes, '', {
-        duration: 5000
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
       });
       return;
     }
 
     if (this.avaliacao.descricao === null || this.avaliacao.descricao === undefined || this.avaliacao.descricao === '') {
       this.snackBar.open('Atenção favor informar a descrição.', '', {
-        duration: 5000
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
       });
       return;
     }
@@ -116,26 +118,30 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
     if (!this.computaConceito) {
       if (this.avaliacao.nota === undefined || this.avaliacao.nota === null) {
         this.snackBar.open('Atenção favor informar a nota máxima.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
         });
         return;
       } else if (this.avaliacao.nota <= 0) {
         this.snackBar.open('Atenção favor informar uma nota maior que zero.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
         });
         return;
       }
 
       if (!this.isTipoCalculoMedia() && this.getSomaAvaliacoes() > this.avaliacoes[this.indexAvaliacaoSelecionada].notaMaxima) {
         this.snackBar.open('Atenção a soma das avaliações deve ser inferior a nota máxima do tipo de avaliação.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
         });
         return;
       }
 
       if (!this.avaliacoes[this.indexAvaliacaoSelecionada].flagPermiteSubTipo && this.avaliacoes[this.indexAvaliacaoSelecionada].temLancamento) {
         this.snackBar.open('Já existem notas lançadas para a avaliação ' + this.avaliacoes[this.indexAvaliacaoSelecionada].nome + '.', '', {
-          duration: 5000
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
         });
         ;
         return;
@@ -218,7 +224,8 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
       somaAvaliacoes != null && somaAvaliacoes !== 0 &&
       somaAvaliacoes !== this.avaliacoes[this.indexAvaliacaoSelecionada].notaMaxima) {
       this.snackBar.open('A soma dos SubTipos de Avaliação deve ser igual à nota máxima do Tipo de Avaliação selecionado.', '', {
-        duration: 5000
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
       });
       return;
     } else {
