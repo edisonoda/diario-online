@@ -157,8 +157,8 @@
                         <table>
                             <tr>
                                 <div *ngFor="let f of aluno.frequencia;"
-                                    style="border: none; display: inline; white-space: nowrap; width: 35px; display: inline; white-space: nowrap;"
-                                    class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
+                                    style="border: none; width: 35px; display: inline-flex; white-space: nowrap;"
+                                    class="text-center justify-content-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                                     <app-botao-chamada *ngIf="f && f.programacaoDivisaoAulaId == aula.id" [aula]="f"
                                         (alunoModificado)="alunoModificado(aluno)" (atualizarFaltas)="atualizarFaltas(aluno)"
                                         [disabled]="f.desabilitado || indiceAtivo !== i"
