@@ -298,6 +298,7 @@ md-menu-item > .md-button md-icon.icone-menu {
 }
 
 table.tabela-alunos {
+    table-layout: fixed;
     font-size: 1rem;
     border: 1px solid #999999;
     width: 100%;

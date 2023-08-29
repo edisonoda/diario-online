@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SessaoService {
+export class  SessaoService {
 
   private _user: any;
   get user() {

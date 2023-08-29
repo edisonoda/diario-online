@@ -47,6 +47,11 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     this.calcularLarguras();
   }
 
+  @HostListener('window:open', ['$event'])
+  onOpen(event?: any) {
+    this.calcularLarguras();
+  }
+
   constructor(
     public dialog: MatDialog,
     private filtrosService: FiltrosService,
@@ -54,6 +59,12 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private snackBar: MatSnackBar
   ) {
+  }
+
+  ngOnInit() {
+    this.filtrosService.obterDivisao().subscribe(res => {
+      this.divisao = res;
+    });
     this.initAlunos();
     this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
       this.numeroMaxDeAulasPorDia = res;
@@ -62,12 +73,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     this.idFreq = this.aulas !== null && this.aulas !== undefined ? this.aulas.length : 0;
     if (this.sessaoService.permissoes)
       this.permissoes = this.sessaoService.permissoes;
-  }
-
-  ngOnInit() {
-    this.filtrosService.obterDivisao().subscribe(res => {
-      this.divisao = res;
-    });
   }
 
   initAlunos(): void {
@@ -366,8 +371,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.diarioService.removerDiaAula(this.filtrosService.instituicao.id, aula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.idEtapa, this.filtrosService.divisao.id).subscribe(res => {
-          if (res.error)
-            return;
 
           this.divisao.aulasLecionadas -= 1;
           this.totalAulasLancadasDiario -= 1;
@@ -404,7 +407,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           });
 
           this.onResize();
-          this.snackBar.open('Aula removida com sucesso.');
+          this.snackBar.open('Aula removida com sucesso.', 'Undo', {duration: 2000});
         });
       }
     });
@@ -495,8 +498,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(dataAula => {
       this.diarioService.salvarPlanoAula(this.filtrosService.instituicao.id, dataAula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, dataAula.conteudo, dataAula.modulo,
         this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
-          if (res.error)
-            return;
 
           this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.');
         });
@@ -521,10 +522,12 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.aulaEditada.data = moment(this.aulaEditada.data, 'YYYY-MM-DD', true).toDate();
 
+    console.log(this.filtrosService)
+
     this.diarioService.salvarDiaAula(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id,
       this.filtrosService.disciplina.id, this.filtrosService.divisao.id, this.aulaEditada, lancamentosFrequencia, this.filtrosService.idEtapa).subscribe(res => {
-        if (res.error)
-          return;
+
+        console.log(res)
 
         this.snackBar.open('Frequências salvas com sucesso.');
         this.houveModificacao = false;
@@ -556,8 +559,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         this.diarioService.corrigirTotalFaltas(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id,
           this.filtrosService.divisao.id, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
           .subscribe(res => {
-            if (res.error)
-              return;
 
             aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
 
