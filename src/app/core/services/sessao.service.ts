@@ -13,6 +13,7 @@ export class SessaoService {
   }
 
   get token() { return localStorage.getItem('token') }
+  get tokenExpire() { return localStorage.getItem('token-expire') }
   get backendServerURL() { return localStorage.getItem('backendServerURL') }
   get logoutURL() { return localStorage.getItem('logoutURL') }
   get idGrupoAcesso() { return localStorage.getItem('idGrupoAcesso') }
@@ -37,9 +38,15 @@ export class SessaoService {
 
   setUserInfo(info: any): void {
     this._user = info.user;
+    const data = new Date();
+    const horasTemporizador = 6;
+    data.setTime(data.getTime() + (horasTemporizador * 60 * 60 * 1000));
 
     console.log(info);
     localStorage.setItem('token', info.token);
+    // Temporizador do token
+    localStorage.setItem('token-expire', data.toString());
+
     localStorage.setItem('backendServerURL', info.backendServerURL.replace('4200', '8080'));
     localStorage.setItem('logoutURL', info.logoutURL);
     localStorage.setItem('idGrupoAcesso', info.idGrupoAcesso);

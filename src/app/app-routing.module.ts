@@ -12,6 +12,7 @@ const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [canActivateLogin],
     children: [
       {
         path: '',
@@ -21,7 +22,6 @@ const routes: Routes = [
       {
         path: 'site/:tab',
         component: TabsComponent,
-        // canActivate: [canActivateLogin],
         loadChildren: () => import('./modules/tabs/tabs.module').then((m) => m.TabsModule)
       },
     ]
