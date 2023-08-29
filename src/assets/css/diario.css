@@ -493,6 +493,7 @@ div.md-toolbar-tools {
 }
 
 div.md-toolbar-tools {
+    align-items: center;
     display: flex;
     font-size: 1.2rem;
     height: inherit;

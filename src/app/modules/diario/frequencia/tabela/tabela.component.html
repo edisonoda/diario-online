@@ -74,7 +74,7 @@
                     </div>
                 </th>
                 <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
-                    <th class="data-aula text-center" [ngClass]="{ ativo: (indiceAtivo === i) }"
+                    <th class="data-aula text-center p-0" [ngClass]="{ ativo: (indiceAtivo === i) }"
                         *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)">
 
 <!--                        <div class="dia-aula" *ngIf="exibirDiaAula">-->
@@ -154,7 +154,7 @@
                 <ng-template ngFor let-aula [ngForOf]="aulas" let-i="index">
                     <td *ngIf="i >= indiceInicial && i < (indiceInicial + quantAulasTelaMax)"
                         [ngClass]="{ ativo: (indiceAtivo === i) }" class="text-center">
-                        <table>
+                        <table class="mx-auto">
                             <tr>
                                 <div *ngFor="let f of aluno.frequencia;"
                                     style="border: none; width: 35px; display: inline; white-space: nowrap;"
