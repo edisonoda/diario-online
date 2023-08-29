@@ -11,7 +11,7 @@
     <div class="container-descricao card-info-diario">
         <mat-form-field class="w-100">
             <mat-label>Data</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="dataSelecionada">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="dataSelecionada" (change)="verificarData()">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -19,7 +19,8 @@
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="irParaData()" class="md-primary" [disabled]="!dataValida">
+    <button mat-button (click)="irParaData()" class="md-primary" [disabled]="!dataValida"
+        [matTooltip]="dataValida ? 'Ir' : 'Não existem aulas lecionadas na data informada.'">
         <mat-icon class="material-icons">today</mat-icon>
         &nbsp;Ir
     </button>

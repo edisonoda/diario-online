@@ -24,6 +24,10 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
   ngOnInit() { }
 
   irParaData(): void {
+    this.dialogRef.close(this.dataSelecionada);
+  };
+
+  verificarData(): void {
     if (this.dataSelecionada == undefined || !this.dataSelecionada) {
       this.snackBar.open('A data deve ser informada.', '', {
         duration: 5000,
@@ -48,7 +52,7 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
             panelClass: ['md-error-toast-theme']
           });
         } else {
-          this.dialogRef.close(this.dataSelecionada);
+          this.dataValida = true;
         }
       }
     } else {
@@ -56,8 +60,9 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
         duration: 5000,
         panelClass: ['md-error-toast-theme']
       });
+      this.dataValida = false;
     }
-  };
+  }
 
   filtroDatasDisponiveis(date: Date): boolean {
     return this.listaDias.some(function (aulaDia, index, _ary) {
