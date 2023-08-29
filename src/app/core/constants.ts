@@ -25,5 +25,3 @@ export const CONFIGURACOES = {
 
 export const CORES = ['liquidGreen', 'yellow', 'blue', 'purple', 'red', 'green', 'brown', 'pink', 'oragenBackground', 'gold'];
 
-export const HORAS_TOKEN = 6;
-

@@ -2,7 +2,6 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './core/auth/auth.component';
 
-import { canActivateLogin } from './core/guards/autenticacao.guard';
 import { TabsComponent } from './modules/tabs/tabs.component';
 
 const routes: Routes = [
@@ -12,7 +11,6 @@ const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [canActivateLogin],
     children: [
       {
         path: '',
