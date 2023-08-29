@@ -48,17 +48,26 @@ export class ModalNovoDiaComponent implements OnInit, OnDestroy {
 
   salvarAula(): void {
     if (!this.dataAula) {
-      this.snackBar.open('A data deve ser informada.');
+      this.snackBar.open('A data deve ser informada.', '', {
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
+      });
       return;
     }
 
     if (this.dataAula > new Date()) {
-      this.snackBar.open('A data informada não pode ser futura.');
+      this.snackBar.open('A data informada não pode ser futura.', '', {
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
+      });
       return;
     }
 
     if (this.dataAula.getDay() == 0 && this.deveValidarLancamentoFrequenciaDomingo) {
-      this.snackBar.open('Selecione uma data diferente de domingo.');
+      this.snackBar.open('Selecione uma data diferente de domingo.', '', {
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
+      });
       return;
     }
 
@@ -66,7 +75,10 @@ export class ModalNovoDiaComponent implements OnInit, OnDestroy {
     var dataFimPeriodoLetivo = moment(this.periodo.dataFim, 'YYYY-MM-DD', true).toDate();
 
     if (this.dataAula < dataInicioPeriodoLetivo || this.dataAula > dataFimPeriodoLetivo) {
-      this.snackBar.open('A data da aula deve estar entre as datas do período letivo (' + moment(dataInicioPeriodoLetivo).format('dd/MM/yyyy') + ' a ' + moment(dataFimPeriodoLetivo).format('dd/MM/yyyy') + ').');
+      this.snackBar.open('A data da aula deve estar entre as datas do período letivo (' + moment(dataInicioPeriodoLetivo).format('dd/MM/yyyy') + ' a ' + moment(dataFimPeriodoLetivo).format('dd/MM/yyyy') + ').', '', {
+        duration: 5000,
+        panelClass: ['md-error-toast-theme']
+      });
       return;
     }
 

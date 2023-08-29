@@ -54,7 +54,8 @@ export class TurmasComponent implements OnInit, OnDestroy {
       this.snackBar.open('Por favor solicite que a secretaria da escola feche o diário. Para realizar os lançamentos nesta turma.', undefined, {
         duration: 5000,
         horizontalPosition: 'end',
-        verticalPosition: 'bottom'
+        verticalPosition: 'bottom',
+        panelClass: ['md-error-toast-theme']
       });
 
     this.filtrosService.idTurma = turma.id;

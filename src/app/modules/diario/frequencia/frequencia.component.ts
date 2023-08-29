@@ -52,16 +52,13 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
         this.filtrosService.idDivisao, this.filtrosService.idEtapa, this.filtrosService.divisao.programacaoPedagogicaDivisao?.id,
         this.filtrosService.divisao.aulasLecionadas, this.totalAulasLancadasDiario)
         .subscribe((response) => {
-          console.log(response)
-          if (response != null && response.error) {
-            this.snackBar.open('Mensagem de erro do sistema: ' + response.error.message);
-            return;
-          }
-
           this.filtrosService.divisao.aulasLecionadas = this.totalAulasLancadasDiario;
           this.possuiDiferencaAulasLecionadas = false;
 
-          this.snackBar.open('Total de aulas lecionadas corrigido com sucesso.');
+          this.snackBar.open('Total de aulas lecionadas corrigido com sucesso.', '', {
+            duration: 5000,
+            panelClass: ['md-success-toast-theme']
+          });
         });
     });
   }

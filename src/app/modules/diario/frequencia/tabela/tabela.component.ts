@@ -59,12 +59,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private snackBar: MatSnackBar
   ) {
-  }
-
-  ngOnInit() {
-    this.filtrosService.obterDivisao().subscribe(res => {
-      this.divisao = res;
-    });
     this.initAlunos();
     this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
       this.numeroMaxDeAulasPorDia = res;
@@ -73,6 +67,12 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     this.idFreq = this.aulas !== null && this.aulas !== undefined ? this.aulas.length : 0;
     if (this.sessaoService.permissoes)
       this.permissoes = this.sessaoService.permissoes;
+  }
+
+  ngOnInit() {
+    this.filtrosService.obterDivisao().subscribe(res => {
+      this.divisao = res;
+    });
   }
 
   initAlunos(): void {
@@ -290,9 +290,16 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   focarPersistencia(): void {
     // Scroll até o btn de salvar
-    // $location.hash('botaoSalvarFrequencia');
+    document.getElementById('botaoSalvarFrequencia')?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
 
-    this.snackBar.open('Salve antes de prosseguir.');
+    this.snackBar.open('Salve antes de prosseguir.', '', {
+      duration: 5000,
+      panelClass: ['md-error-toast-theme']
+    });
   }
 
   adicionarAula(programacaoDivisaoAula: any, indice: number): void {
@@ -371,6 +378,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.diarioService.removerDiaAula(this.filtrosService.instituicao.id, aula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.idEtapa, this.filtrosService.divisao.id).subscribe(res => {
+          if (res.error)
+            return;
 
           this.divisao.aulasLecionadas -= 1;
           this.totalAulasLancadasDiario -= 1;
@@ -407,7 +416,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           });
 
           this.onResize();
-          this.snackBar.open('Aula removida com sucesso.', 'Undo', {duration: 2000});
+          this.snackBar.open('Aula removida com sucesso.');
         });
       }
     });
@@ -427,17 +436,15 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       var dataInformada = new Date(dataAula);
 
       if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
-        this.snackBar.open('Número máximo de aulas diárias atingido.');
+        this.snackBar.open('Número máximo de aulas diárias atingido.', '', {
+          duration: 5000,
+          panelClass: ['md-error-toast-theme']
+        });
         return;
       }
 
       this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
       console.log(res)
-        if (res.error) {
-          this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message);
-          return;
-        }
-
         var i;
         res.data = moment(res.data).format('YYYY-MM-DD');
 
@@ -471,7 +478,10 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
         this.houveModificacao = true;
 
-        this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.');
+        this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.', '', {
+          duration: 5000,
+          panelClass: ['md-success-toast-theme']
+        });
       });
     });
   }
@@ -498,8 +508,13 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(dataAula => {
       this.diarioService.salvarPlanoAula(this.filtrosService.instituicao.id, dataAula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, dataAula.conteudo, dataAula.modulo,
         this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
+          if (res.error)
+            return;
 
-          this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.');
+          this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.', '', {
+            duration: 5000,
+            panelClass: ['md-success-toast-theme']
+          });
         });
     });
   }
@@ -522,21 +537,25 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.aulaEditada.data = moment(this.aulaEditada.data, 'YYYY-MM-DD', true).toDate();
 
-    console.log(this.filtrosService)
-
     this.diarioService.salvarDiaAula(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id,
       this.filtrosService.disciplina.id, this.filtrosService.divisao.id, this.aulaEditada, lancamentosFrequencia, this.filtrosService.idEtapa).subscribe(res => {
+        if (res.error)
+          return;
 
-        console.log(res)
-
-        this.snackBar.open('Frequências salvas com sucesso.');
+        this.snackBar.open('Frequências salvas com sucesso.', '', {
+          duration: 5000,
+          panelClass: ['md-success-toast-theme']
+        });
         this.houveModificacao = false;
         this.ativarAula(null, -1, false);
 
         this.lista.forEach(aluno => {
           if (aluno.resolverPendencia) {
             aluno.resolverPendencia = false;
-            this.snackBar.open('Pendência resolvida com sucesso.');
+            this.snackBar.open('Pendência resolvida com sucesso.', '', {
+              duration: 5000,
+              panelClass: ['md-success-toast-theme']
+            });
           }
           if (aluno.totalFaltaInconsistente) {
             aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
@@ -559,10 +578,15 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         this.diarioService.corrigirTotalFaltas(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id,
           this.filtrosService.divisao.id, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
           .subscribe(res => {
+            if (res.error)
+              return;
 
             aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
 
-            this.snackBar.open('Total de faltas corrigido com sucesso.');
+            this.snackBar.open('Total de faltas corrigido com sucesso.', '', {
+              duration: 5000,
+              panelClass: ['md-success-toast-theme']
+            });
           });
       }
     });
