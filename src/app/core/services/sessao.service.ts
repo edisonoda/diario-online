@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HORAS_TOKEN } from '../constants';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,7 @@ export class SessaoService {
   setUserInfo(info: any): void {
     this._user = info.user;
     const data = new Date();
-    const horasTemporizador = 6;
-    data.setTime(data.getTime() + (horasTemporizador * 60 * 60 * 1000));
+    data.setTime(data.getTime() + (HORAS_TOKEN * 60 * 60 * 1000));
 
     console.log(info);
     localStorage.setItem('token', info.token);
