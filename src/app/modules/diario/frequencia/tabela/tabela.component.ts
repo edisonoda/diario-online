@@ -47,6 +47,11 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     this.calcularLarguras();
   }
 
+  @HostListener('window:open', ['$event'])
+  onOpen(event?: any) {
+    this.calcularLarguras();
+  }
+
   constructor(
     public dialog: MatDialog,
     private filtrosService: FiltrosService,
@@ -65,7 +70,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.calcularLarguras();
     this.filtrosService.obterDivisao().subscribe(res => {
       this.divisao = res;
     });
@@ -412,10 +416,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           });
 
           this.onResize();
-          this.snackBar.open('Aula removida com sucesso.', '', {
-            duration: 5000,
-            panelClass: ['md-success-toast-theme']
-          });
+          this.snackBar.open('Aula removida com sucesso.');
         });
       }
     });

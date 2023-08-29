@@ -17,7 +17,7 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
   totalAulasLancadasDiario: number = 0;
   possuiDiferencaAulasLecionadas: boolean = false;
 
-  divisao: any;
+    divisao: any;
 
   constructor(
     private filtrosService: FiltrosService,
@@ -25,15 +25,15 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
+  }
+
+  ngOnInit() {
     this.filtrosService.obterDivisao().subscribe(divisao => {
       this.divisao = divisao;
 
       if (divisao.aulasPrevistas < 0)
         divisao.aulasPrevistas = 0;
     });
-  }
-
-  ngOnInit() {
   }
 
   aulaLancada(qtd: number): void {
@@ -48,7 +48,6 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
     });
 
     confirm.afterClosed().subscribe(() => {
-      console.log(this.filtrosService)
       this.diarioService.corrigirTotalAulasLecionadas(this.filtrosService.idInstituicao, this.filtrosService.idPeriodoLetivo, this.filtrosService.idTurma, this.filtrosService.idDisciplina,
         this.filtrosService.idDivisao, this.filtrosService.idEtapa, this.filtrosService.divisao.programacaoPedagogicaDivisao?.id,
         this.filtrosService.divisao.aulasLecionadas, this.totalAulasLancadasDiario)

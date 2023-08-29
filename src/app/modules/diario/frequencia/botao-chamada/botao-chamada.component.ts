@@ -19,10 +19,11 @@ export class BotaoChamadaComponent implements OnInit, OnDestroy {
   girando: boolean = false;
 
   constructor() {
-    this.atualizarHtml(this.configAtual());
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.atualizarHtml(this.configAtual());
+  }
 
   proximoEstado() {
     return this.aula.flPresente ? false : true;

@@ -295,6 +295,8 @@ export class DiarioService {
   }
 
   salvarDiaAula(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, programacaoDivisaoAula: any, lancamentosFrequencia: any, idEtapa: any): Observable<any> {
+    console.log(this.sessaoService.token + " ");
+    console.log(this.sessaoService.idGrupoAcesso);
     return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/salvar`, {
       "idPeriodoLetivo": idPeriodoLetivo,
       "idTurma": idTurma,

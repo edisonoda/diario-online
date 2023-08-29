@@ -6,7 +6,7 @@ import { HORAS_TOKEN } from '../constants';
 @Injectable({
   providedIn: 'root'
 })
-export class SessaoService {
+export class  SessaoService {
 
   private _user: any;
   get user() {
