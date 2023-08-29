@@ -1,9 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DiarioService } from 'src/app/core/services/diario.service';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/dialog-confirmacao.component';
+import { DiarioComponent } from '../diario.component';
 
 @Component({
   selector: 'app-frequencia',
@@ -13,19 +14,19 @@ import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/
 export class FrequenciaComponent implements OnInit, OnDestroy {
   @Input() lista: any[] = [];
   @Input() aulas: any[] = [];
+  @Input() diario: MatDialogRef<DiarioComponent>|null = null;
 
   totalAulasLancadasDiario: number = 0;
   possuiDiferencaAulasLecionadas: boolean = false;
 
-    divisao: any;
+  divisao: any;
 
   constructor(
     private filtrosService: FiltrosService,
     private diarioService: DiarioService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.filtrosService.obterDivisao().subscribe(divisao => {

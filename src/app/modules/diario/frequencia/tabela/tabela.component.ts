@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import { DiarioService } from 'src/app/core/services/diario.service';
@@ -9,6 +9,7 @@ import { ModalParaDataComponent } from '../modal-para-data/modal-para-data.compo
 import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/dialog-confirmacao.component';
 import { ModalNovoDiaComponent } from '../modal-novo-dia/modal-novo-dia.component';
 import { SessaoService } from 'src/app/core/services/sessao.service';
+import { DiarioComponent } from '../../diario.component';
 
 @Component({
   selector: 'app-tabela-frequencia',
@@ -19,6 +20,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   @Input() lista: any[] = [];
   @Input() aulas: any[] = [];
   @Input() possuiDiferencaAulasLecionadas: boolean = false;
+  @Input() diario: MatDialogRef<DiarioComponent>|null = null;
 
   @Output() aulaLancadaEmitter: EventEmitter<number> = new EventEmitter();
 
@@ -331,8 +333,18 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    const sub = dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
       this.divisao = result;
+      this.diario?.close();
+
+      this.dialog.open(DiarioComponent, {
+        data: { result },
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%'
+      });
     });
   }
 

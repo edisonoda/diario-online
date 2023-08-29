@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 import { DiarioService } from '../../../core/services/diario.service';
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ModalErroComponent } from "./modal-erro/modal-erro.component";
 import * as CryptoJS from 'crypto-js';
 import { CONSTANTS } from "../../../core/constants";
@@ -11,6 +11,7 @@ import { FiltrosService } from 'src/app/core/services/filtros.service';
 import * as moment from "moment/moment";
 import { ModalGerenciarAulaComponent } from "./modal-gerenciar-aula/modal-gerenciar-aula.component";
 import { ModalTrocaDivisaoComponent } from '../modal-troca-divisao/modal-troca-divisao.component';
+import { DiarioComponent } from '../diario.component';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   @Input() avaliacoes: any[] = [];
   @Input() lista: any[] = [];
   @Input() conceitos: any[] = [];
+  @Input() diario: MatDialogRef<DiarioComponent>|null = null;
 
   subAvaliacoes: any[] = [];
 
@@ -91,6 +93,19 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       data: {
         divisao: this.filtrosService.divisao
       }
+    });
+
+    const sub = dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
+      this.diario?.close();
+
+      this.dialog.open(DiarioComponent, {
+        data: { result },
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%'
+      });
     });
   }
 

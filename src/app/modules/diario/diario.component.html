@@ -41,10 +41,10 @@
     <mat-tab-group [selectedIndex]="tabSelecionada" #tabs="matTabGroup" mat-stretch-tabs="false"
         mat-align-tabs="start" class="mt-3">
         <mat-tab [disabled]="abaFrequencia" label="FREQUÊNCIA">
-            <app-frequencia [lista]="alunos" [aulas]="aulas"></app-frequencia>
+            <app-frequencia [lista]="alunos" [aulas]="aulas" [diario]="dialogRef"></app-frequencia>
         </mat-tab>
         <mat-tab [disabled]="abaAvaliacao" label="AVALIAÇÕES">
-            <app-avaliacoes [avaliacoes]="avaliacoes" [lista]="alunos" [conceitos]="listaConceito"></app-avaliacoes>
+            <app-avaliacoes [avaliacoes]="avaliacoes" [lista]="alunos" [conceitos]="listaConceito" [diario]="dialogRef"></app-avaliacoes>
         </mat-tab>
     </mat-tab-group>
 </div>
