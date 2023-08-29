@@ -54,6 +54,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.calcularLarguras();
   }
 
   focarPersistencia(): void {

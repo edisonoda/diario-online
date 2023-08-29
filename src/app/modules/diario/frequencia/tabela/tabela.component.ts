@@ -65,6 +65,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.calcularLarguras();
     this.filtrosService.obterDivisao().subscribe(res => {
       this.divisao = res;
     });
