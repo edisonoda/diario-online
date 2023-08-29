@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
     templateUrl: './dialog-confirmacao.component.html',
     styleUrls: ['./dialog-confirmacao.component.css'],
     standalone: true,
-    imports: [MatDialogModule, MatInputModule],
+    imports: [MatDialogModule, MatInputModule, A11yModule],
 })
 export class DialogConfirmacao {
     descricao: string;
