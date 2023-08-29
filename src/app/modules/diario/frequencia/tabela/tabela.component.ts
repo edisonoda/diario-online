@@ -334,10 +334,10 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   irParaData(ev: Event): void {
     const dialogRef = this.dialog.open(ModalParaDataComponent, {
-      minWidth: "200px",
-      maxWidth: "300px",
-      minHeight: "80px",
-      maxHeight: "200px",
+      // minWidth: "200px",
+      // maxWidth: "300px",
+      // minHeight: "80px",
+      // maxHeight: "200px",
       data: {
         listaDias: this.aulas.map(a => {
           return a.data;
@@ -423,11 +423,10 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   adicionarAulaNovoDia(ev: Event): void {
     const dialogRef = this.dialog.open(ModalNovoDiaComponent, {
-
-      minWidth: "300px",
-      maxWidth: "800px",
-      minHeight: "130px",
-      maxHeight: "810px",
+      // minWidth: "300px",
+      // maxWidth: "800px",
+      // minHeight: "130px",
+      // maxHeight: "810px",
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
@@ -500,8 +499,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   dialogPlanoAula(ev: Event, aula: any): void {
     const dialogRef = this.dialog.open(ModalNovoDiaComponent, {
-      maxWidth: "500px",
-      maxHeight: "900px",
+      // maxWidth: "500px",
+      // maxHeight: "900px",
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
