@@ -41,7 +41,9 @@ export class ModalPlanoAulaComponent implements OnInit, OnDestroy {
 
   salvarAula(): void {
     if (!this.aula?.conteudo) {
-        this.snackBar.open('O Conteúdo obrigatóriamente deve ser informado.');
+        this.snackBar.open('O Conteúdo obrigatóriamente deve ser informado.', '', {
+          duration: 5000
+        });
         return;
     }
 

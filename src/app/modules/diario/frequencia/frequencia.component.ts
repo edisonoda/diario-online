@@ -55,14 +55,18 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
         .subscribe((response) => {
           console.log(response)
           if (response != null && response.error) {
-            this.snackBar.open('Mensagem de erro do sistema: ' + response.error.message);
+            this.snackBar.open('Mensagem de erro do sistema: ' + response.error.message, '', {
+              duration: 5000
+            });
             return;
           }
 
           this.filtrosService.divisao.aulasLecionadas = this.totalAulasLancadasDiario;
           this.possuiDiferencaAulasLecionadas = false;
 
-          this.snackBar.open('Total de aulas lecionadas corrigido com sucesso.');
+          this.snackBar.open('Total de aulas lecionadas corrigido com sucesso.', '', {
+            duration: 5000
+          });
         });
     });
   }

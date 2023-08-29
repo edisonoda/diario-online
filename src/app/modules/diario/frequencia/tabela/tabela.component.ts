@@ -285,9 +285,15 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   focarPersistencia(): void {
     // Scroll até o btn de salvar
-    // $location.hash('botaoSalvarFrequencia');
+    document.getElementById('botaoSalvarFrequencia')?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
 
-    this.snackBar.open('Salve antes de prosseguir.');
+    this.snackBar.open('Salve antes de prosseguir.', '', {
+      duration: 5000
+    });
   }
 
   adicionarAula(programacaoDivisaoAula: any, indice: number): void {
@@ -404,7 +410,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           });
 
           this.onResize();
-          this.snackBar.open('Aula removida com sucesso.');
+          this.snackBar.open('Aula removida com sucesso.', '', {
+            duration: 5000
+          });
         });
       }
     });
@@ -424,14 +432,18 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       var dataInformada = new Date(dataAula);
 
       if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
-        this.snackBar.open('Número máximo de aulas diárias atingido.');
+        this.snackBar.open('Número máximo de aulas diárias atingido.', '', {
+          duration: 5000
+        });
         return;
       }
 
       this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
       console.log(res)
         if (res.error) {
-          this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message);
+          this.snackBar.open('Mensagem de erro do sistema: ' + res.error.message, '', {
+            duration: 5000
+          });
           return;
         }
 
@@ -468,7 +480,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
         this.houveModificacao = true;
 
-        this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.');
+        this.snackBar.open('Nova aula criada para o dia ' + moment(dataAula).format('dd/MM/yyyy') + '.', '', {
+          duration: 5000
+        });
       });
     });
   }
@@ -498,7 +512,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
           if (res.error)
             return;
 
-          this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.');
+          this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.', '', {
+            duration: 5000
+          });
         });
     });
   }
@@ -526,14 +542,18 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         if (res.error)
           return;
 
-        this.snackBar.open('Frequências salvas com sucesso.');
+        this.snackBar.open('Frequências salvas com sucesso.', '', {
+          duration: 5000
+        });
         this.houveModificacao = false;
         this.ativarAula(null, -1, false);
 
         this.lista.forEach(aluno => {
           if (aluno.resolverPendencia) {
             aluno.resolverPendencia = false;
-            this.snackBar.open('Pendência resolvida com sucesso.');
+            this.snackBar.open('Pendência resolvida com sucesso.', '', {
+              duration: 5000
+            });
           }
           if (aluno.totalFaltaInconsistente) {
             aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario;
@@ -561,7 +581,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
             aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
 
-            this.snackBar.open('Total de faltas corrigido com sucesso.');
+            this.snackBar.open('Total de faltas corrigido com sucesso.', '', {
+              duration: 5000
+            });
           });
       }
     });

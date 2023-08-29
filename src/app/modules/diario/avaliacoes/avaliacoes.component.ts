@@ -57,7 +57,16 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   }
 
   focarPersistencia(): void {
+    // Scroll até o btn de salvar
+    document.getElementById('botaoSalvar')?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
 
+    this.snackBar.open('Salve antes de prosseguir.', '', {
+      duration: 5000
+    });
   }
   mostrarJanelaErro(error: any): void {
     const dialogRef = this.dialog.open(ModalErroComponent, {
@@ -130,12 +139,16 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     this.diarioService.salvarNotas(this.filtrosService.instituicao.id, this.filtrosService.idPeriodoLetivo, this.filtrosService.turma.id,
       this.filtrosService.disciplina.id, this.filtrosService.divisao.id, lancamentosNota, this.filtrosService.turma.etapa.id).subscribe((data) => {
         this.houveModificacao = false;
-        this.snackBar.open('Notas salvas com sucesso.');
+        this.snackBar.open('Notas salvas com sucesso.', '', {
+          duration: 5000
+        });
         this.lista.forEach((aluno) => {
           aluno.modificado = false;
           if (aluno.resolverPendencia) {
             aluno.resolverPendencia = false;
-            this.snackBar.open('Pendência resolvida com sucesso.');
+            this.snackBar.open('Pendência resolvida com sucesso.', '', {
+              duration: 5000
+            });
             document.getElementById('aluno-id-' + aluno.id)?.scrollIntoView({
               behavior: "smooth",
               block: "start",
@@ -204,13 +217,17 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
               this.prepararAvaliacoes();
               this.obterSubAvaliacoes();
               this.calcularLarguras();
-              this.snackBar.open('Avaliações salvas com sucesso.');
+              this.snackBar.open('Avaliações salvas com sucesso.', '', {
+                duration: 5000
+              });
             });
         },
           (error: any) => {
             var data = error.data;
             if (data !== null && data.error !== null && data.error.message !== null) {
-              this.snackBar.open(data.error.message);
+              this.snackBar.open(data.error.message, '', {
+                duration: 5000
+              });
             }
           });
     });
@@ -439,7 +456,9 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       if (vl_nota === undefined || isNaN(Number(vl_nota))) {
         return null;
       } else if (vl_nota > avaliacao.notaMaxima || vl_nota < 0) {
-        this.snackBar.open('Nota inválida');
+        this.snackBar.open('Nota inválida', '', {
+          duration: 5000
+        });
         return null;
       }
       return vl_nota;
