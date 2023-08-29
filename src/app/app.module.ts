@@ -38,6 +38,7 @@ import { InterceptorLoaderModule } from './core/interceptors/loader/loader.modul
 import { GetFiltroModule } from './core/interceptors/get-filtros/get-filtro.module';
 import { LoaderGeralComponent } from './shared/components/loader-geral/loader-geral.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 
 const MY_FORMATS = {
   parse: {
@@ -82,6 +83,7 @@ const MY_FORMATS = {
     MatDialogModule,
     MatMenuModule,
     MatDatepickerModule,
+    MatSelectModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
