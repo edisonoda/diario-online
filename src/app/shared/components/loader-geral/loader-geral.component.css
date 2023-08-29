@@ -7,8 +7,4 @@
   height: 100vh;
   background-color: rgba(71, 55, 78, 0.8);
   z-index: 20000;
-
-  /* Blur */
-  filter: blur(10px);
-  -webkit-filter: blur(10px);
 }
