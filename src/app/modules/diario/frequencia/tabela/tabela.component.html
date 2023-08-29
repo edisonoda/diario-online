@@ -171,12 +171,11 @@
                 </ng-template>
                 <td class="text-center" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
                     <div *ngIf="aluno.frequencia">
-                        <button mat-button class="mat-icon-button total-diario" (click)="corrigirTotalFaltas($event, aluno)"
+                        <span class="total-diario" (click)="corrigirTotalFaltas($event, aluno)"
                             [matTooltip]="aluno.qtdDifRestDiario() !== 0 ? 'Clique para corrigir o total de faltas conforme os lançamento do diário online.' : 'Corrigir Frequência'"
-                            [ngClass]="{'totalDiferente' : !aluno.alunoVeioDeRemanejamento && aluno.qtdDifRestDiario() !== 0 && aluno.status === 'A'}"
-                            [disabled]="aluno.alunoVeioDeRemanejamento || aluno.qtdDifRestDiario() === 0 || aluno.status !== 'A'">
+                            [ngClass]="{'totalDiferente' : !aluno.alunoVeioDeRemanejamento && aluno.qtdDifRestDiario() !== 0 && aluno.status === 'A'}">
                             {{aluno.qtdFaltasVeioRest}}
-                        </button>
+                        </span>
                     </div>
                 </td>
             </tr>

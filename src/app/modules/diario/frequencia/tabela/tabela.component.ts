@@ -566,6 +566,9 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   corrigirTotalFaltas(ev: Event, aluno: any): void {
+    if (aluno.alunoVeioDeRemanejamento || aluno.qtdDifRestDiario() === 0 || aluno.status !== 'A')
+      return;
+
     const dialogRef = this.dialog.open(DialogConfirmacao, {
       data: {
         descricao: 'Deseja realmente alterar o total de ' + aluno.qtdFaltasVeioRest + ' falta(s) para ' + aluno.qtdFaltasDiario + ' falta(s) conforme os lançamentos do Diário Online?'
