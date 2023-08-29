@@ -19,9 +19,7 @@ export class AutenticacaoGuard {
     }
     
     setTimeout(() => {
-        if (this.sessaoService.logoutURL) {
-        window.location.href = this.sessaoService.logoutURL;
-      }
+      this.sessaoService.logout();
     }, 5000);
 
     return false;
