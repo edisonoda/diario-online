@@ -56,16 +56,22 @@ export class DiarioComponent implements OnInit, OnDestroy {
     if (this.filtrosService.idDisciplina) {
       this.filtrosService.obterDisciplina().subscribe(disciplina => {
         this.disciplina = disciplina;
+        this.setDivisao();
+        this.buscarDados();
         this.setAbas();
       });
     }
-
-    this.filtrosService.idDivisao = data.divisao.id;
-    this.filtrosService.divisao = data.divisao;
-    this.divisao = data.divisao;
   }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  setDivisao(): void {
+    this.filtrosService.idDivisao = this.data.divisao.id;
+    this.filtrosService.divisao = this.data.divisao;
+    this.divisao = this.data.divisao;
+  }
+
+  buscarDados(): void {
     this.diarioService.obterAlunos(
       this.filtrosService.idInstituicao,
       this.filtrosService.idPeriodoLetivo,
