@@ -61,7 +61,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private snackBar: MatSnackBar
   ) {
-    this.initAlunos();
     this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
       this.numeroMaxDeAulasPorDia = res;
     });
@@ -74,6 +73,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.filtrosService.obterDivisao().subscribe(res => {
       this.divisao = res;
+      this.initAlunos();
     });
   }
 
