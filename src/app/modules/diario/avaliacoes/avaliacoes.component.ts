@@ -100,7 +100,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       this.diario?.close();
 
       this.dialog.open(DiarioComponent, {
-        data: { result },
+        data: { divisao: result },
         maxWidth: '100vw',
         maxHeight: '100vh',
         height: '100%',
