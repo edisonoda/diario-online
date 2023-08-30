@@ -63,9 +63,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
     this.filtrosService.idDivisao = data.divisao.id;
     this.filtrosService.divisao = data.divisao;
     this.divisao = data.divisao;
-
-    if (this.sessaoService.permissoes)
-      this.permissoes = this.sessaoService.permissoes;
   }
 
   ngOnInit() {
@@ -148,6 +145,15 @@ export class DiarioComponent implements OnInit, OnDestroy {
   }
 
   setAbas(): void {
+    if (this.sessaoService.permissoes) {
+      this.permissoes = this.sessaoService.permissoes;
+      this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') === -1;
+      this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') === -1;
+      
+      if (this.divisao.tipoAvaliacao === 'A')
+        this.abaFrequencia = true;
+    }
+    
     // desabilita lancamento de frequencia
     if (this.disciplina.computaFrequenciaGrupo) {
       this.abaAvaliacao = this.filtrosService.idDisciplina === 0;
