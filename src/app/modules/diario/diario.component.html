@@ -43,10 +43,10 @@
     <mat-tab-group [selectedIndex]="tabSelecionada" #tabs="matTabGroup" mat-stretch-tabs="false"
         mat-align-tabs="start" class="mt-3">
         <mat-tab [disabled]="abaFrequencia" label="FREQUÊNCIA">
-            <app-frequencia *ngIf="!abaFrequencia" [lista]="alunos" [aulas]="aulas" [diario]="dialogRef"></app-frequencia>
+            <app-frequencia *ngIf="!abaFrequencia && frequenciasReady()" [lista]="alunos" [aulas]="aulas" [diario]="dialogRef"></app-frequencia>
         </mat-tab>
         <mat-tab [disabled]="abaAvaliacao" label="AVALIAÇÕES">
-            <app-avaliacoes *ngIf="!abaAvaliacao" [avaliacoes]="avaliacoes" [lista]="alunos" [conceitos]="listaConceito" [diario]="dialogRef"></app-avaliacoes>
+            <app-avaliacoes *ngIf="!abaAvaliacao && avaliacoesReady()" [avaliacoes]="avaliacoes" [lista]="alunos" [conceitos]="listaConceito" [diario]="dialogRef"></app-avaliacoes>
         </mat-tab>
     </mat-tab-group>
 </div>

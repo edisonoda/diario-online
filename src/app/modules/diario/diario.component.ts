@@ -167,6 +167,14 @@ export class DiarioComponent implements OnInit, OnDestroy {
     }
   }
 
+  frequenciasReady(): boolean {
+    return !!(this.alunos.length && this.aulas.length);
+  }
+
+  avaliacoesReady(): boolean {
+    return !!(this.avaliacoes.length && this.alunos.length && this.listaConceito.length);
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
