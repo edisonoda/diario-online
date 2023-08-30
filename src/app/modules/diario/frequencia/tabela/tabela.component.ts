@@ -133,6 +133,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       }
       aluno.totalFaltaInconsistente = aluno.qtdFaltasVeioRest == null || (aluno.qtdFaltasVeioRest !== aluno.qtdFaltasDiario);
     });
+
+    this.calcularLarguras();
   }
 
   alunoModificado(aluno: any): void {
