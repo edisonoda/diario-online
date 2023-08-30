@@ -11,7 +11,7 @@
     <div class="container-descricao card-info-diario">
         <mat-form-field class="w-100">
             <mat-label>Data</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="dataSelecionada" (change)="verificarData()">
+            <input matInput [matDatepicker]="picker" (dateChange)="verificarData($event)">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>

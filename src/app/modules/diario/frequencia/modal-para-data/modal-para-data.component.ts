@@ -1,4 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
@@ -27,8 +28,8 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
     this.dialogRef.close(this.dataSelecionada);
   };
 
-  verificarData(): void {
-    if (this.dataSelecionada == undefined || !this.dataSelecionada) {
+  verificarData(event: MatDatepickerInputEvent<Date>): void {
+    if (event.value == undefined || !event.value) {
       this.snackBar.open('A data deve ser informada.', '', {
         duration: 5000,
         panelClass: ['md-error-toast-theme']
@@ -37,8 +38,8 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (Object.prototype.toString.call(this.dataSelecionada) === "[object Date]") {
-      if (isNaN(this.dataSelecionada.getTime())) {
+    if (Object.prototype.toString.call(event.value) === "[object Date]") {
+      if (isNaN(event.value.getTime())) {
         this.snackBar.open('A data informada não é valida.', '', {
           duration: 5000,
           panelClass: ['md-error-toast-theme']
@@ -46,12 +47,13 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
         this.dataValida = false;
       }
       else {
-        if (!this.filtroDatasDisponiveis(this.dataSelecionada)) {
+        if (!this.filtroDatasDisponiveis(event.value)) {
           this.snackBar.open('Não existem aulas lecionadas na data informada.', '', {
             duration: 5000,
             panelClass: ['md-error-toast-theme']
           });
         } else {
+          this.dataSelecionada = event.value;
           this.dataValida = true;
         }
       }
