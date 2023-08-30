@@ -611,7 +611,15 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   descartarAlteracoes(): void {
-    window.location.reload();
+    this.diario?.close();
+
+    this.dialog.open(DiarioComponent, {
+      data: { divisao: this.divisao },
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%'
+    });
   }
 
   ngOnDestroy(): void { }
