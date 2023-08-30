@@ -74,7 +74,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
     ).subscribe(res => {
-      console.log(res)
       this.alunos = res;
       this.setFaltasAlunos();
     });
@@ -86,7 +85,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.filtrosService.idDivisao,
         this.filtrosService.idEtapa
       ).subscribe(res => {
-        console.log(res)
         this.aulas = res;
         this.totalAulasLancadasDiario = this.aulas.length;
 
@@ -149,11 +147,11 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.permissoes = this.sessaoService.permissoes;
       this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') === -1;
       this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') === -1;
-      
+
       if (this.divisao.tipoAvaliacao === 'A')
         this.abaFrequencia = true;
     }
-    
+
     // desabilita lancamento de frequencia
     if (this.disciplina.computaFrequenciaGrupo) {
       this.abaAvaliacao = this.filtrosService.idDisciplina === 0;

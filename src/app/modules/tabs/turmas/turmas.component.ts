@@ -46,7 +46,6 @@ export class TurmasComponent implements OnInit, OnDestroy {
       this.turmas = res;
       this.turmasF = res;
     });
-    console.log(this.turmas)
   }
 
   turmaClick(turma: any): void {

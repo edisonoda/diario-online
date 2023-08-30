@@ -25,7 +25,6 @@ export class DiarioService {
     //     nome: "Instituição"
     //   }
     // });
-    console.log(this.sessaoService)
 
     return this.http.get(`${this.backendServerURL}instituicao/get`, {
       params: { idInstituicao },
@@ -131,7 +130,6 @@ export class DiarioService {
     //   ]
     // });
 
-    console.log(this.sessaoService)
     return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/`, {
       params: { idPeriodoLetivo },
       headers: {
@@ -295,8 +293,6 @@ export class DiarioService {
   }
 
   salvarDiaAula(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, programacaoDivisaoAula: any, lancamentosFrequencia: any, idEtapa: any): Observable<any> {
-    console.log(this.sessaoService.token + " ");
-    console.log(this.sessaoService.idGrupoAcesso);
     return this.http.post(`${this.backendServerURL}diario/instituicao/${idInstituicao}/frequencia/salvar`, {
       "idPeriodoLetivo": idPeriodoLetivo,
       "idTurma": idTurma,

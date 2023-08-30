@@ -54,7 +54,6 @@ export class TabsComponent implements OnInit, OnDestroy {
   }
 
   atualizarFiltros(): void {
-    console.log(this.sessaoService)
     this.filtrosService.idInstituicao = this.route.snapshot.queryParamMap.get('idInstituicao') ?? this.filtrosService.idInstituicao;
     this.filtrosService.idPeriodoLetivo = this.route.snapshot.queryParamMap.get('idPeriodoLetivo') ?? this.filtrosService .idPeriodoLetivo;
     this.filtrosService.idTurma = this.route.snapshot.queryParamMap.get('turma');

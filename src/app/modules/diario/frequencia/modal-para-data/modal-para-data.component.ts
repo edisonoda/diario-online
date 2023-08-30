@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,7 +22,9 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.listaDias = this.data.listaDias;
+  }
 
   irParaData(): void {
     this.dialogRef.close(this.dataSelecionada);

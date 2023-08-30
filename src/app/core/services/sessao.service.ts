@@ -23,7 +23,6 @@ export class  SessaoService {
   constructor(private http: HttpClient) { }
 
   buscarUser(token: any, backendServerURL: any, idGrupoAcesso: any): Observable<any> {
-    console.log(token)
     localStorage.setItem('token', token);
     localStorage.setItem('idGrupoAcesso', idGrupoAcesso);
 
@@ -38,7 +37,6 @@ export class  SessaoService {
   setUserInfo(info: any): void {
     this._user = info.user;
 
-    console.log(info);
     localStorage.setItem('token', info.token);
     localStorage.setItem('backendServerURL', info.backendServerURL.replace('4200', '8080'));
     localStorage.setItem('logoutURL', info.logoutURL);

@@ -79,7 +79,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
   initAlunos(): void {
     this.lista.forEach(aluno => {
-      console.log(aluno)
       aluno.frequencia.forEach((freq: any) => {
         freq.desabilitado = !habilitarFrequencia(aluno, freq);
         freq.indisponivel = this.dataAulaIndisponivel(freq.dataAula, aluno.dataEnturmacao, aluno.dataEncerramento, aluno.dataRemanejamento);
@@ -445,7 +444,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
-      console.log(dataAula)
       var dataInformada = new Date(dataAula);
 
       if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
@@ -457,7 +455,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       }
 
       this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
-      console.log(res)
         var i;
         res.data = moment(res.data).format('YYYY-MM-DD');
 
