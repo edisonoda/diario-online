@@ -96,16 +96,18 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     });
 
     const sub = dialogRef.afterClosed().subscribe(result => {
-      sub.unsubscribe();
-      this.diario?.close();
-
-      this.dialog.open(DiarioComponent, {
-        data: { divisao: result },
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        height: '100%',
-        width: '100%'
-      });
+      if (result) {
+        sub.unsubscribe();
+        this.diario?.close();
+  
+        this.dialog.open(DiarioComponent, {
+          data: { divisao: result },
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100%',
+          width: '100%'
+        });
+      }
     });
   }
 
