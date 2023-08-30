@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DiarioService } from '../../core/services/diario.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin, merge, of } from 'rxjs';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SessaoService } from 'src/app/core/services/sessao.service';
@@ -15,6 +15,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
 
   abaAvaliacao: boolean = false;
   abaFrequencia: boolean = false;
+  avaliacaoReady: boolean = false;
+  frequenciaReady: boolean = false;
 
   instituicao: any;
   periodo: any;
@@ -72,53 +74,72 @@ export class DiarioComponent implements OnInit, OnDestroy {
   }
 
   buscarDados(): void {
-    this.diarioService.obterAlunos(
+    const $alunos = this.diarioService.obterAlunos(
       this.filtrosService.idInstituicao,
       this.filtrosService.idPeriodoLetivo,
       this.filtrosService.idTurma,
       this.filtrosService.idDisciplina,
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
-    ).subscribe(res => {
-      console.log(res)
-      this.alunos = res;
-      this.setFaltasAlunos();
-    });
-    if (this.filtrosService.divisao.tipoAvaliacao === 'F' || this.filtrosService.divisao.tipoAvaliacao === 'AF') {
+    );
+    const $aulas = this.divisao.tipoAvaliacao === 'F' || this.divisao.tipoAvaliacao === 'AF' ?
       this.diarioService.obterDiasAula(
         this.filtrosService.idInstituicao,
         this.filtrosService.idTurma,
         this.filtrosService.idDisciplina,
         this.filtrosService.idDivisao,
         this.filtrosService.idEtapa
-      ).subscribe(res => {
-        console.log(res)
-        this.aulas = res;
-        this.totalAulasLancadasDiario = this.aulas.length;
+      ) : of([]);
 
-        if (this.divisao)
-          this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
-      });
-    }
-    this.diarioService.obterAvaliacoes(
+    forkJoin([$alunos, $aulas]).subscribe(([resAlunos, resAulas]) => {
+      console.log(resAlunos)
+      this.alunos = resAlunos;
+      this.setFaltasAlunos();
+
+      console.log(resAulas)
+      this.aulas = resAulas;
+      this.totalAulasLancadasDiario = this.aulas.length;
+
+      if (this.divisao)
+        this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
+    });
+
+    forkJoin([$alunos, $aulas]).subscribe(([resAlunos, resAulas]) => {
+      this.frequenciaReady = true;
+
+      console.log(resAlunos)
+      this.alunos = resAlunos;
+      this.setFaltasAlunos();
+
+      console.log(resAulas)
+      this.aulas = resAulas;
+      this.totalAulasLancadasDiario = this.aulas.length;
+
+      if (this.divisao)
+        this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
+    });
+
+    const $avaliacoes = this.diarioService.obterAvaliacoes(
       this.filtrosService.idInstituicao,
       this.filtrosService.idTurma,
       this.filtrosService.idDisciplina,
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
-    ).subscribe(res => {
-      this.avaliacoes = res;
-    });
-    this.diarioService.obterListaConceitoDisciplina(
+    );
+    const $conceitos = this.diarioService.obterListaConceitoDisciplina(
       this.filtrosService.idInstituicao,
       this.filtrosService.idTurma,
       this.filtrosService.idDisciplina,
       this.filtrosService.idEtapa
-    ).subscribe(res => {
-      this.listaConceito = res;
-    });
-    this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
-      this.numeroMaxDeAulasPorDia = res;
+    );
+    const $maxAulas = this.diarioService.buscarNumeroMaxDeAulasPorDia();
+
+    forkJoin([$avaliacoes, $conceitos, $maxAulas]).subscribe(([resAval, resConceitos, resMax]) => {
+      this.avaliacaoReady = true;
+      
+      this.avaliacoes = resAval;
+      this.listaConceito = resConceitos;
+      this.numeroMaxDeAulasPorDia = resMax;
     });
   }
 
@@ -165,14 +186,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.abaAvaliacao = this.filtrosService.idDisciplina === 0;
       this.abaFrequencia = !this.abaAvaliacao;
     }
-  }
-
-  frequenciasReady(): boolean {
-    return !!(this.alunos.length && this.aulas.length);
-  }
-
-  avaliacoesReady(): boolean {
-    return !!(this.avaliacoes.length && this.alunos.length && this.listaConceito.length);
   }
 
   onNoClick(): void {
