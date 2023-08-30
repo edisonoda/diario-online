@@ -56,6 +56,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.obterSubAvaliacoes();
     this.calcularLarguras();
   }
 
@@ -117,8 +118,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     this.subAvaliacoes.filter((av: any) => {
       return !av.isRecuperacao
     }).forEach((aval) => {
-      var listaAlunoNotaAvaliacao = [];
-
       var lancamentoNota: any = {
         "idTipoAvaliacao": aval.id,
         "flagSubTipo": aval.flagSubTipo,
