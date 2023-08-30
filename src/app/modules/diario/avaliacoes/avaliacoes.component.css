@@ -10,3 +10,17 @@
     font-size: 16px;
     text-transform: uppercase;
 }
+
+.d-sm-flex {
+    display: none !important;
+}
+
+@media (min-width: 576px) {
+    .d-sm-flex {
+        display: flex !important;
+    }
+
+    .d-sm-none {
+        display: none !important;
+    }
+}
