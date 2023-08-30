@@ -31,6 +31,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
   totalAulasLancadasDiario: number = 0;
   possuiDiferencaAulasLecionadas: boolean = false;
 
+  permissoes: string = '';
+
   private subs: Subscription[] = [];
 
   constructor(
@@ -61,6 +63,9 @@ export class DiarioComponent implements OnInit, OnDestroy {
     this.filtrosService.idDivisao = data.divisao.id;
     this.filtrosService.divisao = data.divisao;
     this.divisao = data.divisao;
+
+    if (this.sessaoService.permissoes)
+      this.permissoes = this.sessaoService.permissoes;
   }
 
   ngOnInit() {
@@ -147,9 +152,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
     if (this.disciplina.computaFrequenciaGrupo) {
       this.abaAvaliacao = this.filtrosService.idDisciplina === 0;
       this.abaFrequencia = !this.abaAvaliacao;
-    } else {
-      this.abaAvaliacao = this.sessaoService.permissoes?.indexOf("avaliacaoFrequenciaBBean.abrir") === -1;
-      this.abaFrequencia = this.sessaoService.permissoes?.indexOf("frequenciaDiariaBBean.abrir") === -1 || this.filtrosService.divisao.tipoAvaliacao === 'A';
     }
   }
 
