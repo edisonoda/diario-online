@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DiarioService } from '../../core/services/diario.service';
-import { Observable, Subscription, forkJoin, merge, of } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SessaoService } from 'src/app/core/services/sessao.service';
@@ -91,28 +91,15 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.filtrosService.idEtapa
       ) : of([]);
 
-    forkJoin([$alunos, $aulas]).subscribe(([resAlunos, resAulas]) => {
-      console.log(resAlunos)
-      this.alunos = resAlunos;
-      this.setFaltasAlunos();
-
-      console.log(resAulas)
-      this.aulas = resAulas;
-      this.totalAulasLancadasDiario = this.aulas.length;
-
-      if (this.divisao)
-        this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
-    });
-
-    forkJoin([$alunos, $aulas]).subscribe(([resAlunos, resAulas]) => {
+    forkJoin({ alunos: $alunos, aulas: $aulas}).subscribe(res => {
       this.frequenciaReady = true;
 
-      console.log(resAlunos)
-      this.alunos = resAlunos;
+      console.log(res.alunos)
+      this.alunos = res.alunos;
       this.setFaltasAlunos();
 
-      console.log(resAulas)
-      this.aulas = resAulas;
+      console.log(res.aulas)
+      this.aulas = res.aulas;
       this.totalAulasLancadasDiario = this.aulas.length;
 
       if (this.divisao)
@@ -134,12 +121,14 @@ export class DiarioComponent implements OnInit, OnDestroy {
     );
     const $maxAulas = this.diarioService.buscarNumeroMaxDeAulasPorDia();
 
-    forkJoin([$avaliacoes, $conceitos, $maxAulas]).subscribe(([resAval, resConceitos, resMax]) => {
+    forkJoin({ avaliacoes: $avaliacoes, conceitos: $conceitos, max: $maxAulas }).subscribe(res => {
       this.avaliacaoReady = true;
       
-      this.avaliacoes = resAval;
-      this.listaConceito = resConceitos;
-      this.numeroMaxDeAulasPorDia = resMax;
+      this.avaliacoes = res.avaliacoes;
+      this.listaConceito = res.conceitos;
+      this.numeroMaxDeAulasPorDia = res.max;
+
+      console.log(this.avaliacoes);
     });
   }
 
@@ -174,8 +163,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
   setAbas(): void {
     if (this.sessaoService.permissoes) {
       this.permissoes = this.sessaoService.permissoes;
-      this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') === -1;
-      this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') === -1;
+      this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') > -1;
+      this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') > -1;
       
       if (this.divisao.tipoAvaliacao === 'A')
         this.abaFrequencia = true;
