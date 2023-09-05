@@ -11,6 +11,10 @@
     text-transform: uppercase;
 }
 
+::ng-deep .tab-aval .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
 .d-sm-flex {
     display: none !important;
 }
