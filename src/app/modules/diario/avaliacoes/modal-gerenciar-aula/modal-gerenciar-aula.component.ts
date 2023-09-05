@@ -20,11 +20,14 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
     nota: null
   };
 
-  computaConceito: boolean;
-  qtMaximoSubDivisoes: number;
+  computaConceito: boolean = false;
+  qtMaximoSubDivisoes: number = 0;
 
   indexAvaliacaoSelecionada: number = -1;
-  notaMaximaDivisao: number;
+  notaMaximaDivisao: number = 0;
+
+  disciplina: any;
+  divisao: any;
 
   permissoes: any = [];
 
@@ -40,10 +43,22 @@ export class ModalGerenciarAulaComponent implements OnInit, OnDestroy {
     })));
     this.lista = dados.lista;
 
-    this.computaConceito = this.filtrosService.disciplina.tipoMedida === 'CONCEITO';
-    this.qtMaximoSubDivisoes = this.filtrosService.disciplina.qtMaximoSubavaliacoes;
+    if (this.filtrosService.idDisciplina) {
+      this.filtrosService.obterDisciplina().subscribe(disciplina => {
+        this.disciplina = disciplina;
 
-    this.notaMaximaDivisao = this.filtrosService.divisao.notaMaxima;
+        this.computaConceito = this.disciplina.tipoMedida === 'CONCEITO';
+        this.qtMaximoSubDivisoes = this.disciplina.qtMaximoSubavaliacoes;
+      });
+    }
+
+    if (this.filtrosService.idDivisao) {
+      this.filtrosService.obterDivisao().subscribe(divisao => {
+        this.divisao = divisao;
+        this.notaMaximaDivisao = this.divisao.notaMaxima;
+      });
+    }
+
     if (this.avaliacoes[this.indexAvaliacaoSelecionada] && this.isTipoCalculoMedia()) {
       this.avaliacao.nota = this.avaliacoes[this.indexAvaliacaoSelecionada].notaMaxima;
     }

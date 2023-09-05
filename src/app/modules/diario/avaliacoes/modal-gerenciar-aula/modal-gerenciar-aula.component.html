@@ -13,14 +13,14 @@
 <mat-dialog-content>
     <div class="md-dialog-content">
         <div class="container-descricao layout-padding">
-            <div class="row">
+            <div *ngIf="divisao" class="row">
                 <mat-form-field class="col-12 col-md-9">
                     <mat-label>Divisão</mat-label>
-                    <input matInput class="campos-descricao" [(ngModel)]="filtrosService.divisao.nome" disabled>
+                    <input matInput class="campos-descricao" [(ngModel)]="divisao.nome" disabled>
                 </mat-form-field>
                 <mat-form-field class="col-12 col-md-3" *ngIf="!computaConceito">
                     <mat-label>Nota máxima</mat-label>
-                    <input matInput class="campos-descricao" [(ngModel)]="filtrosService.divisao.notaMaxima" disabled>
+                    <input matInput class="campos-descricao" [(ngModel)]="divisao.notaMaxima" disabled>
                 </mat-form-field>
             </div>
             <div class="row">
