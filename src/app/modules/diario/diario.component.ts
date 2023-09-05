@@ -15,8 +15,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
 
   abaAvaliacao: boolean = false;
   abaFrequencia: boolean = false;
-  avaliacaoReady: boolean = false;
-  frequenciaReady: boolean = false;
 
   instituicao: any;
   periodo: any;
@@ -29,6 +27,12 @@ export class DiarioComponent implements OnInit, OnDestroy {
   avaliacoes: any[] = [];
   listaConceito: any[] = [];
   numeroMaxDeAulasPorDia: number = 0;
+
+  alunosReady: boolean = false;
+  aulasReady: boolean = false;
+  avaliacoesReady: boolean = false;
+  listaConceitoReady: boolean = false;
+  numeroMaxDeAulasPorDiaReady: boolean = false;
 
   totalAulasLancadasDiario: number = 0;
   possuiDiferencaAulasLecionadas: boolean = false;
@@ -44,6 +48,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
     private filtrosService: FiltrosService,
     private sessaoService: SessaoService,
   ) {
+
     this.filtrosService.obterInstituicao().subscribe(instituicao => {
       this.instituicao = instituicao;
     });
@@ -55,7 +60,8 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.turma = turma;
       });
     }
-    if (this.filtrosService.idDisciplina) {
+    console.log(this.filtrosService.idDisciplina);
+    if (this.filtrosService.idDisciplina != undefined) {
       this.filtrosService.obterDisciplina().subscribe(disciplina => {
         this.disciplina = disciplina;
         this.setDivisao();
@@ -74,61 +80,70 @@ export class DiarioComponent implements OnInit, OnDestroy {
   }
 
   buscarDados(): void {
-    const $alunos = this.diarioService.obterAlunos(
+    this.diarioService.obterAlunos(
       this.filtrosService.idInstituicao,
       this.filtrosService.idPeriodoLetivo,
       this.filtrosService.idTurma,
       this.filtrosService.idDisciplina,
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
-    );
-    const $aulas = this.divisao.tipoAvaliacao === 'F' || this.divisao.tipoAvaliacao === 'AF' ?
+    ).subscribe(res => {
+      this.alunosReady = true;
+
+      console.log(res)
+      this.alunos = res;
+      this.setFaltasAlunos();
+    });
+
+    console.log(this.divisao.tipoAvaliacao);
+    if (this.filtrosService.idDisciplina == 0) {
       this.diarioService.obterDiasAula(
         this.filtrosService.idInstituicao,
         this.filtrosService.idTurma,
         this.filtrosService.idDisciplina,
         this.filtrosService.idDivisao,
         this.filtrosService.idEtapa
-      ) : of([]);
+      ).subscribe(res => {
+        this.aulasReady = true;
 
-    forkJoin({ alunos: $alunos, aulas: $aulas}).subscribe(res => {
-      this.frequenciaReady = true;
+        console.log(res)
+        this.aulas = res;
+        this.totalAulasLancadasDiario = this.aulas.length;
 
-      console.log(res.alunos)
-      this.alunos = res.alunos;
-      this.setFaltasAlunos();
+        if (this.divisao)
+          this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
+      });
+    } else {
+      this.aulasReady = false;
+    }
 
-      console.log(res.aulas)
-      this.aulas = res.aulas;
-      this.totalAulasLancadasDiario = this.aulas.length;
+    if(this.filtrosService.idDisciplina > 0) {
+      this.diarioService.obterAvaliacoes(
+        this.filtrosService.idInstituicao,
+        this.filtrosService.idTurma,
+        this.filtrosService.idDisciplina,
+        this.filtrosService.idDivisao,
+        this.filtrosService.idEtapa
+      ).subscribe(res => {
+        this.avaliacoesReady = true;
+        this.avaliacoes = res;
 
-      if (this.divisao)
-        this.possuiDiferencaAulasLecionadas = this.totalAulasLancadasDiario !== this.divisao.aulasLecionadas;
+        console.log(this.avaliacoes);
+      });
+
+    }
+    this.diarioService.obterListaConceitoDisciplina(
+      this.filtrosService.idInstituicao,
+      this.filtrosService.idTurma,
+      this.filtrosService.idDisciplina,
+      this.filtrosService.idEtapa
+    ).subscribe(res => {
+      this.listaConceitoReady = true;
+      this.listaConceito = res;
     });
-
-    const $avaliacoes = this.diarioService.obterAvaliacoes(
-      this.filtrosService.idInstituicao,
-      this.filtrosService.idTurma,
-      this.filtrosService.idDisciplina,
-      this.filtrosService.idDivisao,
-      this.filtrosService.idEtapa
-    );
-    const $conceitos = this.diarioService.obterListaConceitoDisciplina(
-      this.filtrosService.idInstituicao,
-      this.filtrosService.idTurma,
-      this.filtrosService.idDisciplina,
-      this.filtrosService.idEtapa
-    );
-    const $maxAulas = this.diarioService.buscarNumeroMaxDeAulasPorDia();
-
-    forkJoin({ avaliacoes: $avaliacoes, conceitos: $conceitos, max: $maxAulas }).subscribe(res => {
-      this.avaliacaoReady = true;
-      
-      this.avaliacoes = res.avaliacoes;
-      this.listaConceito = res.conceitos;
-      this.numeroMaxDeAulasPorDia = res.max;
-
-      console.log(this.avaliacoes);
+    this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
+      this.numeroMaxDeAulasPorDiaReady = true;
+      this.numeroMaxDeAulasPorDia = res;
     });
   }
 
@@ -165,16 +180,26 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.permissoes = this.sessaoService.permissoes;
       this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') > -1;
       this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') > -1;
-      
-      if (this.divisao.tipoAvaliacao === 'A')
+
+      if (this.filtrosService.idDisciplina == 0)
         this.abaFrequencia = true;
     }
-    
+
     // desabilita lancamento de frequencia
     if (this.disciplina.computaFrequenciaGrupo) {
-      this.abaAvaliacao = this.filtrosService.idDisciplina === 0;
+      this.abaAvaliacao = this.filtrosService.idDisciplina > 0;
       this.abaFrequencia = !this.abaAvaliacao;
     }
+
+    this.tabSelecionada = this.abaFrequencia ? 0 : 1;
+  }
+
+  frequenciaReady(): boolean {
+    return this.alunosReady && this.aulasReady;
+  }
+
+  avaliacaoReady(): boolean {
+    return this.avaliacoesReady && this.listaConceitoReady && this.numeroMaxDeAulasPorDiaReady;
   }
 
   onNoClick(): void {

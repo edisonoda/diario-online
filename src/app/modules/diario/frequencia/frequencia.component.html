@@ -7,7 +7,7 @@
         <div class="col-6 d-flex align-items-center justify-content-end">
             <div class="d-flex flex-column justify-content-center">
                 <span class="text-muted">Aulas lecionadas</span>
-                <p class="mb-0">{{ divisao?.aulasLecionadas|notNull }}</p>
+                <p class="mb-0">{{ totalAulasLancadasDiario }}</p>
             </div>
             <button mat-icon-button *ngIf="possuiDiferencaAulasLecionadas"
                 matTooltip="Clique para corrigir o total de aulas lecionadas conforme os lançamento do diário online."

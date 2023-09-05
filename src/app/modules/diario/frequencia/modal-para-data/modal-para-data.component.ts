@@ -22,7 +22,9 @@ export class ModalParaDataComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.listaDias = this.data.listaDias;
+  }
 
   irParaData(): void {
     this.dialogRef.close(this.dataSelecionada);

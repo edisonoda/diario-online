@@ -340,7 +340,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         sub.unsubscribe();
         this.divisao = result;
         this.diario?.close();
-  
+
         this.dialog.open(DiarioComponent, {
           data: { divisao: result },
           maxWidth: '100vw',
@@ -394,8 +394,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.diarioService.removerDiaAula(this.filtrosService.instituicao.id, aula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.idEtapa, this.filtrosService.divisao.id).subscribe(res => {
-          if (res.error)
-            return;
 
           this.divisao.aulasLecionadas -= 1;
           this.totalAulasLancadasDiario -= 1;
@@ -523,8 +521,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(dataAula => {
       this.diarioService.salvarPlanoAula(this.filtrosService.instituicao.id, dataAula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, dataAula.conteudo, dataAula.modulo,
         this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
-          if (res.error)
-            return;
 
           this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.', '', {
             duration: 5000,
@@ -554,8 +550,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.diarioService.salvarDiaAula(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id,
       this.filtrosService.disciplina.id, this.filtrosService.divisao.id, this.aulaEditada, lancamentosFrequencia, this.filtrosService.idEtapa).subscribe(res => {
-        if (res.error)
-          return;
 
         this.snackBar.open('Frequências salvas com sucesso.', '', {
           duration: 5000,
@@ -596,8 +590,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
         this.diarioService.corrigirTotalFaltas(this.filtrosService.instituicao.id, this.filtrosService.periodo.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id,
           this.filtrosService.divisao.id, this.filtrosService.idEtapa, aluno.id, aluno.qtdFaltasVeioRest, aluno.qtdFaltasDiario, aluno.indice)
           .subscribe(res => {
-            if (res.error)
-              return;
 
             aluno.qtdFaltasVeioRest = aluno.qtdFaltasDiario;
 

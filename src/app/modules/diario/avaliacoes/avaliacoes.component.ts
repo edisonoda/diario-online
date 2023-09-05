@@ -28,7 +28,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   subAvaliacoes: any[] = [];
 
   houveModificacao: boolean = false;
-  computaConceito: boolean;
+  computaConceito: boolean = false;
   habilitaBotaoSubDivisao: boolean = false;
   indiceAtivo: number = -1;
 
@@ -49,13 +49,14 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar
   ) {
 
-    this.computaConceito = true
+    this.computaConceito = false;
     if (this.sessaoService.permissoes) {
       this.permissoes = this.sessaoService.permissoes;
     }
   }
 
   ngOnInit() {
+    this.prepararAvaliacoes();
     this.obterSubAvaliacoes();
     this.calcularLarguras();
   }
@@ -100,7 +101,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
       if (result) {
         sub.unsubscribe();
         this.diario?.close();
-  
+
         this.dialog.open(DiarioComponent, {
           data: { divisao: result },
           maxWidth: '100vw',
@@ -406,6 +407,7 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   obterSubAvaliacoes() {
     this.subAvaliacoes = [];
     this.avaliacoes.forEach(aval => {
+      console.log(aval);
       aval.subAvaliacoes?.forEach((sub: any) => {
         sub.nomeAvaliacao = aval.nome;
         this.subAvaliacoes.push(sub);

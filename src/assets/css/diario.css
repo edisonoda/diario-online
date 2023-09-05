@@ -445,34 +445,34 @@ table.tabela-alunos tbody tr:last-child td {
     text-align: right;
 }
 
-md-content.card-overflow {
+.card-overflow {
     overflow: overlay;
 }
 
-md-content.container-descricao {
+.container-descricao {
     overflow: visible;
     background-color: #AAE6AA;
 }
 
-md-content.container-descricao div.linha {
+.container-descricao div.linha {
     padding: 0;
 }
 
-md-content.container-descricao div.linha md-input-container {
+.container-descricao div.linha md-input-container {
     margin-bottom: 0;
     padding-left: 6px;
     padding-right: 6px;
 }
 
-md-content.container-descricao div.linha md-input-container:first-child {
+.container-descricao div.linha md-input-container:first-child {
     padding-left: 2px;
 }
 
-md-content.container-descricao div.linha md-input-container:last-child {
+.container-descricao div.linha md-input-container:last-child {
     padding-right: 2px;
 }
 
-md-content.container-descricao div.linha md-input-container input {
+.container-descricao div.linha md-input-container input {
     font-weight: 400;
     font-size: 1.1rem;
     color: #000 !important;

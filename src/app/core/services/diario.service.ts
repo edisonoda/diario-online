@@ -198,7 +198,7 @@ export class DiarioService {
   }
 
   obterAvaliacoes(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/programacaoaula/instituicao/${idInstituicao}`, {
+    return this.http.get(`${this.sessaoService.backendServerURL}/avaliacao/instituicao/${idInstituicao}`, {
         params: { idTurma, idDisciplina, idDivisao, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,

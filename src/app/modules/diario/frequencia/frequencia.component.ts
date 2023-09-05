@@ -35,6 +35,8 @@ export class FrequenciaComponent implements OnInit, OnDestroy {
       if (divisao.aulasPrevistas < 0)
         divisao.aulasPrevistas = 0;
     });
+
+    this.totalAulasLancadasDiario = this.divisao.programacaoPedagogicaDivisao.listaProgramacaoDivisaoAula.length
   }
 
   aulaLancada(qtd: number): void {

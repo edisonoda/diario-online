@@ -17,15 +17,15 @@
             </button>
         </div>
 
-        <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-aval-nota-cab" style="z-index:1;">
+        <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos" id="tabela-aval-nota-cab" style="z-index:1; table-layout: fixed !important;">
             <colgroup>
                 <col style="width:23px">
                 <col style="width:23px">
                 <col style="width:30%">
                 <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
-                    <col style="width:45px" *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)">
+                    <col style="width:45px" *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" />
                 </ng-template>
-                <col style="width:45px" *ngIf="!computaConceito">
+                <col style="width:45px !important;" *ngIf="!computaConceito">
             </colgroup>
             <thead>
                 <tr style="height:40px;" *ngIf="!(botaoEsquerda || botaoDireita)">
@@ -69,7 +69,7 @@
                         <th *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" class="avaliacao text-center">
                             <div *ngIf="(botaoEsquerda || botaoDireita)">
                                 [{{ sub.nomeAvaliacao }}]
-                            </div>
+                    ç        </div>
                             <div *ngIf="sub.nome">
                                 {{ sub.nome }} {{ sub.notaMaxima ? sub.notaMaxima : ''}}
                             </div>
@@ -107,7 +107,7 @@
 
                        <div *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento" style="margin-top:-3%; font-size:10px; font-weight:bold; color:#8bc34a;">
                             (veio de remanejamento)
-                        </div>
+                       </div>
                     </td>
                     <ng-template ngFor let-sub [ngForOf]="subAvaliacoes" let-i="index">
                         <td *ngIf="i >= indiceInicial && i < (indiceInicial + quantTelaMax)" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
@@ -116,21 +116,21 @@
                                     <ng-template ngFor let-nota [ngForOf]="aluno.notas" let-i="index">
                                         <div *ngIf="nota.id === sub.id || nota.flagNotaSubTipo === sub.flagSubTipo" style="border: none; width: 35px; display: inline; white-space: nowrap;"
                                             class="text-center">
-                                            <mat-form-field>
-                                                <input matInput *ngIf="!sub.isRecuperacao && !computaConceito" type="text" class="nota" [(ngModel)]="nota.vl_nota" min="0" (change)="onchangeNota(sub,nota,aluno,false)"
+                                            <mat-form-field *ngIf="!sub.isRecuperacao && !computaConceito">
+                                                <input matInput type="text" class="nota" [(ngModel)]="nota.vl_nota" min="0" (change)="onchangeNota(sub,nota,aluno,false)"
                                                     [matTooltip]="nota.vl_nota"
                                                     [disabled]="nota.desabilitar || sub.flAvaliacaoFormativa || aluno.alunoVeioDeRemanejamento"/>
                                             </mat-form-field>
 
-                                            <mat-form-field>
-                                                <input matInput *ngIf="sub.isRecuperacao && !computaConceito" type="text" class="nota" [(ngModel)]="nota.vl_nota_recuperacao" min="0"
+                                            <mat-form-field *ngIf="sub.isRecuperacao && !computaConceito">
+                                                <input matInput  type="text" class="nota" [(ngModel)]="nota.vl_nota_recuperacao" min="0"
                                                     (change)="onchangeNota(sub,nota,aluno,true)" [matTooltip]="nota.vl_nota_recuperacao"
                                                     [disabled]="nota.desabilitar || nota.vl_nota === null || nota.vl_nota === undefined || nota.vl_nota == sub.notaMaxima || aluno.alunoVeioDeRemanejamento"/>
                                             </mat-form-field>
 
-                                            <mat-form-field>
+                                            <mat-form-field *ngIf="computaConceito">
                                                 <mat-select [(ngModel)]="nota.idConceito" [disabled]="nota.desabilitar || sub.flAvaliacaoFormativa"
-                                                    (change)="onchangeConceito(sub, nota, aluno)" *ngIf="computaConceito">
+                                                    (change)="onchangeConceito(sub, nota, aluno)" >
                                                     <mat-option *ngFor="let conceito of conceitos" [value]="conceito.id">
                                                         {{conceito.descricaoReduzida}} {{conceito.descricao ? '(' + conceito.descricao + ')' : ''}}
                                                     </mat-option>
@@ -143,17 +143,17 @@
                         </td>
                     </ng-template>
                     <td class="text-right" *ngIf="!computaConceito" [ngClass]="{'resolverPendencia': aluno.resolverPendencia}">
-                        <mat-form-field>
-                            <input matInput *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento"
+                        <mat-form-field *ngIf="aluno.status != 'R' && aluno.alunoVeioDeRemanejamento">
+                            <input matInput
                                 [ngStyle]="aluno.alunoVeioDeRemanejamento && {color:'#8bc34a'}"
                                 [(ngModel)]="aluno.notaTotal" [disabled]="true" [matTooltip]="aluno.notaTotal">
                         </mat-form-field>
-                        <mat-form-field>
-                            <input matInput *ngIf="aluno.status == 'R'" [(ngModel)]="aluno.notaTotal" [disabled]="true"
+                        <mat-form-field *ngIf="aluno.status == 'R'" [(ngModel)]="aluno.notaTotal">
+                            <input matInput  [disabled]="true"
                                 [matTooltip]="aluno.notaTotal">
                         </mat-form-field>
-                        <mat-form-field>
-                            <input matInput *ngIf="aluno.status != 'R' && !aluno.alunoVeioDeRemanejamento"
+                        <mat-form-field *ngIf="aluno.status != 'R' && !aluno.alunoVeioDeRemanejamento">
+                            <input matInput
                                 [(ngModel)]="aluno.totalNotas" [disabled]="true" [matTooltip]="aluno.totalNotas">
                         </mat-form-field>
                     </td>
