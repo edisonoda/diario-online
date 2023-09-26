@@ -37,6 +37,10 @@ export class FiltrosService {
   get idAluno() { return this._idAluno }
   set idAluno(id) { if (id != 'undefined') this._idAluno = id }
 
+  private _tipoPendencia: any;
+  get tipoPendencia() { return this._tipoPendencia }
+  set tipoPendencia(id) { if (id != 'undefined') this._tipoPendencia = id }
+
   private _instituicao: any;
   set instituicao(instituicao: any) { this._instituicao = instituicao }
   get instituicao() { return this._instituicao }
@@ -64,35 +68,36 @@ export class FiltrosService {
   obterInstituicao(): Observable<any> {
     if (this._instituicao)
       return new Observable(sub => sub.next(this._instituicao));
-    
+
     return this.diarioService.obterInstituicao(this._idInstituicao);
   }
 
   obterPeriodo(): Observable<any> {
     if (this._periodo)
       return new Observable(sub => sub.next(this._periodo));
-    
+
     return this.diarioService.obterPeriodo(this._idPeriodoLetivo);
   }
 
   obterTurma(): Observable<any> {
     if (this._turma)
       return new Observable(sub => sub.next(this._turma));
-    
+
     return this.diarioService.obterTurma(this._idTurma, this._idEtapa);
   }
 
   obterDisciplina(): Observable<any> {
     if (this._disciplina)
       return new Observable(sub => sub.next(this._disciplina));
-    
+
     return this.diarioService.obterDisciplina(this._idInstituicao, this._idTurma, this._idDisciplina, this._idEtapa);
   }
 
   obterDivisao(): Observable<any> {
     if (this._divisao)
       return new Observable(sub => sub.next(this._divisao));
-    
+    console.log(this._idDisciplina);
+    console.log(this._idDivisao);
     return this.diarioService.obterDivisao(this._idInstituicao, this._idTurma, this._idDisciplina, this._idDivisao, this._idEtapa);
   }
 }

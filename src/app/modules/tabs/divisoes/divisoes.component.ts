@@ -43,11 +43,10 @@ export class DivisoesComponent implements OnInit, OnDestroy {
   divisaoClick(divisao: any): void {
     this.filtrosService.idDivisao = divisao.id;
     this.filtrosService.divisao = divisao;
-console.log('divisao:' + divisao)
     const dialogRef = this.dialog.open(DiarioComponent, {
       data: { divisao },
-      maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxWidth: '100%',
+      maxHeight: '100%',
       height: '100%',
       width: '100%'
     });

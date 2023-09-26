@@ -13,8 +13,8 @@ import { SessaoService } from 'src/app/core/services/sessao.service';
 export class DiarioComponent implements OnInit, OnDestroy {
   tabSelecionada: number = 0;
 
-  abaAvaliacao: boolean = false;
-  abaFrequencia: boolean = false;
+  abaAvaliacao: boolean = true;
+  abaFrequencia: boolean = true;
 
   instituicao: any;
   periodo: any;
@@ -49,6 +49,22 @@ export class DiarioComponent implements OnInit, OnDestroy {
     private sessaoService: SessaoService,
   ) {
 
+    if (this.filtrosService.idDisciplina != undefined) {
+      this.filtrosService.obterDisciplina().subscribe(disciplina => {
+        this.disciplina = disciplina;
+        this.setDivisao();
+        this.buscarDados();
+        this.setAbas();
+      });
+    }
+    if (this.filtrosService.idDisciplina == 0) {
+      this.abaAvaliacao = false;
+    }
+    // if(this.filtrosService.idDisciplina > 0) {
+    //   if(this.filtrosService.disciplina.frequenciaDiaria == false) {
+    //     this.abaFrequencia = false;
+    //   }
+    // }
     this.filtrosService.obterInstituicao().subscribe(instituicao => {
       this.instituicao = instituicao;
     });
@@ -60,7 +76,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.turma = turma;
       });
     }
-    console.log(this.filtrosService.idDisciplina);
     if (this.filtrosService.idDisciplina != undefined) {
       this.filtrosService.obterDisciplina().subscribe(disciplina => {
         this.disciplina = disciplina;
@@ -71,7 +86,16 @@ export class DiarioComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (this.filtrosService.idDisciplina == 0) {
+      this.abaAvaliacao = false;
+    }
+    // if(this.filtrosService.idDisciplina > 0) {
+    //   if(this.filtrosService.disciplina.frequenciaDiaria == false) {
+    //     this.abaFrequencia = false;
+    //   }
+    // }
+  }
 
   setDivisao(): void {
     this.filtrosService.idDivisao = this.data.divisao.id;
@@ -88,15 +112,15 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
     ).subscribe(res => {
+      console.log(res);
       this.alunosReady = true;
-
-      console.log(res)
       this.alunos = res;
-      this.setFaltasAlunos();
+      if(this.abaFrequencia == true) {
+        this.setFaltasAlunos();
+      }
     });
 
-    console.log(this.divisao.tipoAvaliacao);
-    if (this.filtrosService.idDisciplina == 0) {
+    if (this.filtrosService.idDisciplina) {
       this.diarioService.obterDiasAula(
         this.filtrosService.idInstituicao,
         this.filtrosService.idTurma,
@@ -105,8 +129,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.filtrosService.idEtapa
       ).subscribe(res => {
         this.aulasReady = true;
-
-        console.log(res)
         this.aulas = res;
         this.totalAulasLancadasDiario = this.aulas.length;
 
@@ -117,7 +139,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.aulasReady = false;
     }
 
-    if(this.filtrosService.idDisciplina > 0) {
+    if(this.abaAvaliacao == true) {
       this.diarioService.obterAvaliacoes(
         this.filtrosService.idInstituicao,
         this.filtrosService.idTurma,
@@ -125,22 +147,20 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.filtrosService.idDivisao,
         this.filtrosService.idEtapa
       ).subscribe(res => {
+        console.log(res);
         this.avaliacoesReady = true;
         this.avaliacoes = res;
-
-        console.log(this.avaliacoes);
       });
-
+      this.diarioService.obterListaConceitoDisciplina(
+        this.filtrosService.idInstituicao,
+        this.filtrosService.idTurma,
+        this.filtrosService.idDisciplina,
+        this.filtrosService.idEtapa
+      ).subscribe(res => {
+        this.listaConceitoReady = true;
+        this.listaConceito = res;
+      });
     }
-    this.diarioService.obterListaConceitoDisciplina(
-      this.filtrosService.idInstituicao,
-      this.filtrosService.idTurma,
-      this.filtrosService.idDisciplina,
-      this.filtrosService.idEtapa
-    ).subscribe(res => {
-      this.listaConceitoReady = true;
-      this.listaConceito = res;
-    });
     this.diarioService.buscarNumeroMaxDeAulasPorDia().subscribe(res => {
       this.numeroMaxDeAulasPorDiaReady = true;
       this.numeroMaxDeAulasPorDia = res;
@@ -178,20 +198,25 @@ export class DiarioComponent implements OnInit, OnDestroy {
   setAbas(): void {
     if (this.sessaoService.permissoes) {
       this.permissoes = this.sessaoService.permissoes;
-      this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') > -1;
-      this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') > -1;
-
-      if (this.filtrosService.idDisciplina == 0)
-        this.abaFrequencia = true;
+      //this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') > -1;
+      //this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') > -1;
     }
 
     // desabilita lancamento de frequencia
-    if (this.disciplina.computaFrequenciaGrupo) {
-      this.abaAvaliacao = this.filtrosService.idDisciplina > 0;
-      this.abaFrequencia = !this.abaAvaliacao;
-    }
+    // if (this.disciplina.computaFrequenciaGrupo) {
+    //   this.abaAvaliacao = this.filtrosService.idDisciplina > 0;
+    //   this.abaFrequencia = !this.abaAvaliacao;
+    // }
 
     this.tabSelecionada = this.abaFrequencia ? 0 : 1;
+    if(this.filtrosService.tipoPendencia != undefined) {
+      if(this.filtrosService.tipoPendencia == "F" || this.filtrosService.tipoPendencia == "AF") {
+        this.tabSelecionada = 0;
+      }
+      if(this.filtrosService.tipoPendencia == "A") {
+        this.tabSelecionada = 1;;
+      }
+    }
   }
 
   frequenciaReady(): boolean {

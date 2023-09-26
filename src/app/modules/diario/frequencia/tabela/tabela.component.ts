@@ -10,6 +10,7 @@ import { DialogConfirmacao } from 'src/app/shared/components/dialog-confirmacao/
 import { ModalNovoDiaComponent } from '../modal-novo-dia/modal-novo-dia.component';
 import { SessaoService } from 'src/app/core/services/sessao.service';
 import { DiarioComponent } from '../../diario.component';
+import {ModalPlanoAulaComponent} from "../modal-plano-aula/modal-plano-aula.component";
 
 @Component({
   selector: 'app-tabela-frequencia',
@@ -75,11 +76,16 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       this.divisao = res;
       this.initAlunos();
     });
+    this.lista = this.lista.filter(
+      (aluno, i, arr) => arr.findIndex(t => t.frequencia == aluno.frequencia) == i
+    );
+    this.aulas = this.aulas.filter(
+      (aula, i, arr) => arr.findIndex(t => t.data == aula.data) == i
+    );
   }
 
   initAlunos(): void {
     this.lista.forEach(aluno => {
-      console.log(aluno)
       aluno.frequencia.forEach((freq: any) => {
         freq.desabilitado = !habilitarFrequencia(aluno, freq);
         freq.indisponivel = this.dataAulaIndisponivel(freq.dataAula, aluno.dataEnturmacao, aluno.dataEncerramento, aluno.dataRemanejamento);
@@ -513,9 +519,12 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
   }
 
   dialogPlanoAula(ev: Event, aula: any): void {
-    const dialogRef = this.dialog.open(ModalNovoDiaComponent, {
+    const dialogRef = this.dialog.open(ModalPlanoAulaComponent, {
       // maxWidth: "500px",
       // maxHeight: "900px",
+      data: {
+        aula: aula
+      }
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
@@ -607,8 +616,8 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
 
     this.dialog.open(DiarioComponent, {
       data: { divisao: this.divisao },
-      maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxWidth: '100%',
+      maxHeight: '100%',
       height: '100%',
       width: '100%'
     });

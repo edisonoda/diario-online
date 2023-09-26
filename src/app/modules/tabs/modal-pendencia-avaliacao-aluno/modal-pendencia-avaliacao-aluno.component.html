@@ -1,0 +1,81 @@
+<div mat-dialog-title aria-label="Pendências de Avaliação do Aluno" class="irParaDataModal">
+  <div class="md-toolbar-tools">
+    <h2>
+      Pendências de Avaliação do Aluno
+    </h2>
+    <span class="flex-grow-1"></span>
+    <button mat-icon-button class="md-icon-button" (click)="fecharJanela()">
+      <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-content>
+  <div class="container-descricao card-info-diario">
+    <div class="row linha">
+      <div class="col-12 col-md-4">
+        <span class="text-muted">Turma</span>
+        <p>{{ turma?.nome|notNull }}</p>
+      </div>
+      <div class="col-12 col-md-4">
+        <span class="text-muted">Turno</span>
+        <p>{{ turma?.turno.nome|notNull }}</p>
+      </div>
+      <div class="col-12 col-md-4">
+        <span class="text-muted">Aluno</span>
+        <p>{{ nomeAluno }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row linha">
+    <div class="col-sm">
+      <p></p>
+    </div>
+  </div>
+  <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos tabela-dialog-avaliacao"
+         style="margin-top: 5px">
+    <colgroup>
+      <col width="45%">
+      <col width="45%">
+      <col width="10%">
+    </colgroup>
+    <thead>
+    <tr>
+      <th class="text-center nome-aluno-header">Divisão</th>
+      <th class="text-center nome-aluno-header">Tipo</th>
+      <th class="text-center nome-aluno-header"></th>
+    </tr>
+    </thead>
+  </table>
+  <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos tabela-dialog-avaliacao" id="tabela-pendencias-corpo"
+         style="border-top:none;">
+    <colgroup>
+      <col width="45%">
+      <col width="40%">
+      <col width="10%">9
+    </colgroup>
+    <tbody>
+     <ng-container *ngFor="let pendencia of pendenciasAluno.pendenciaLancamento">
+        <tr>
+           <td class="text-center">
+              <div data-fittext data-fittext-max="13">
+                {{pendencia.nomeDivisao}}
+              </div>
+           </td>
+           <td class="text-center">
+              <div data-fittext data-fittext-max="13">
+                {{pendencia.descricao}}
+              </div>
+           </td>
+           <td class="text-center">
+              <button mat-icon-button class="md-fab md-mini" matTooltip="Corrigir Pendência" (click)="abrirPendenciasAluno(pendencia.idDivisao, pendencia.descricao)">
+                <mat-icon class="material_icons">edit_note</mat-icon>
+              </button>
+           </td>
+        </tr>
+        </ng-container>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="fecharJanela()" class="md-primary">Cancelar</button>
+</div>

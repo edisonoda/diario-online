@@ -8,6 +8,8 @@ import { TabsComponent } from './tabs.component';
 import { TurmasComponent } from './turmas/turmas.component';
 import { DisciplinasComponent } from './disciplinas/disciplinas.component';
 import { DivisoesComponent } from './divisoes/divisoes.component';
+import {ModalPendenciaAvaliacaoComponent} from './modal-pendencia-avaliacao/modal-pendencia-avaliacao.component';
+import {ModalPendenciaAvaliacaoAlunoComponent} from './modal-pendencia-avaliacao-aluno/modal-pendencia-avaliacao-aluno.component';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import {NotNullPipeModule} from "../../shared/pipes/not-null.module";
 
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { MatMenuModule } from '@angular/material/menu';
     TurmasComponent,
     DisciplinasComponent,
     DivisoesComponent,
+    ModalPendenciaAvaliacaoComponent,
+    ModalPendenciaAvaliacaoAlunoComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +51,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSnackBarModule,
     MatDialogModule,
     MatMenuModule,
+    NotNullPipeModule,
   ],
   exports: [TabsComponent]
 })

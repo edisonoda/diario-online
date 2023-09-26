@@ -1,0 +1,111 @@
+<div mat-dialog-title aria-label="Pendências de Avaliação" class="irParaDataModal">
+  <div class="md-toolbar-tools">
+    <h2>
+      Pendências de Avaliação
+    </h2>
+    <span class="flex-grow-1"></span>
+    <button mat-icon-button class="md-icon-button" (click)="fecharJanela()">
+      <mat-icon class="material-icons icone-menu" aria-label="Fechar janela">close</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-content>
+  <div class="container-descricao card-info-diario">
+    <div class="row linha">
+      <div class="col-12 col-md-4">
+        <span class="text-muted">Turma</span>
+        <p>{{ turma?.nome|notNull }}</p>
+      </div>
+      <div class="col-12 col-md-4">
+        <span class="text-muted">Turno</span>
+        <p>{{ turma?.turno.nome|notNull }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row linha">
+    <div class="col-sm">
+      <p>Os seguintes alunos apresentam pendências de avaliação, você pode visualizar as pendências de um determinado
+        aluno clicando na linha correspondente.</p>
+    </div>
+  </div>
+  <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos tabela-dialog-avaliacao"
+         style="margin-top: 5px">
+    <colgroup>
+      <col width="5%">
+      <col width="70%">
+      <col width="30%">
+      <col width="5%">
+    </colgroup>
+    <thead>
+    <tr>
+      <th class="text-center nome-aluno-header">Nº</th>
+      <th class="text-center nome-aluno-header">Nome</th>
+      <th class="text-center nome-aluno-header">Total de Pendências</th>
+      <th class="text-center nome-aluno-header"></th>
+    </tr>
+    </thead>
+  </table>
+  <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos tabela-dialog-avaliacao" id="tabela-pendencias-corpo"
+         style="border-top:none;">
+    <colgroup>
+      <col width="5%">
+      <col width="70%">
+      <col width="30%">
+      <col width="5%">9
+    </colgroup>
+    <tbody>
+     <ng-container *ngFor="let pendencia of pendencias">
+        <tr (click)="carregarPendencias(pendencia.idAluno, pendencia.nomeAluno)">
+              <td class="text-center" [ngClass]="{'resolverPendencia': pendencia.resolverPendencia}">
+                {{ pendencia.ordemAluno }}
+              </td>
+              <td class="text-center" [ngClass]="{'resolverPendencia': pendencia.resolverPendencia}">
+                {{ pendencia.nomeAluno }}
+              </td>
+              <td class="text-center" [ngClass]="{'resolverPendencia': pendencia.resolverPendencia}">
+                {{ pendencia.total }}
+              </td>
+              <td class="text-center" [ngClass]="{'resolverPendencia': pendencia.resolverPendencia}">
+                <button mat-icon-button class="md-fab md-mini" matTooltip="Carregar Pendências do Aluno" (click)="carregarPendencias(pendencia.idAluno, pendencia.nomeAluno)">
+                  <mat-icon class="material-icons">cached</mat-icon>
+                </button>
+              </td>
+          </tr>
+<!--          <tr *ngIf="(abrirAluno && alunoId == pendencia.idAluno && pendenciasDetalhe)" >-->
+<!--            <td>-->
+<!--              <table cellpadding="0" cellspacing="0" border="0" class="tabela-alunos tabela-dialog-avaliacao">-->
+<!--                <thead>-->
+<!--                  <th class="text-center nome-aluno-header">Disciplina</th>-->
+<!--                  <th class="text-center nome-aluno-header">Divisão</th>-->
+<!--                  <th class="text-center nome-aluno-header">Tipo</th>-->
+<!--                  <th class="text-center nome-aluno-header"></th>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                  <tr *ngFor="let lancamento of pendenciasDetalhe.pendenciaLancamento">-->
+<!--                    <td class="text-center">-->
+<!--                      <div data-fittext data-fittext-max="13">-->
+<!--                        {{lancamento.nomeDivisao}}-->
+<!--                      </div>-->
+<!--                    </td>-->
+<!--                    <td class="text-center">-->
+<!--                      <div data-fittext data-fittext-max="13">-->
+<!--                        {{lancamento.descricao}}-->
+<!--                      </div>-->
+<!--                    </td>-->
+<!--                    <td class="text-center">-->
+<!--                      <button mat-icon-button class="md-fab md-mini" matTooltip="Corrigir pendência">-->
+<!--                        <mat-icon class="material-icons">download</mat-icon>-->
+<!--                      </button>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--                </tbody>-->
+<!--              </table>-->
+<!--            </td>-->
+<!--          </tr>-->
+        </ng-container>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="fecharJanela()" class="md-primary">Cancelar</button>
+</div>

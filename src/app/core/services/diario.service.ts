@@ -25,7 +25,6 @@ export class DiarioService {
     //     nome: "Instituição"
     //   }
     // });
-    console.log(this.sessaoService)
 
     return this.http.get(`${this.backendServerURL}instituicao/get`, {
       params: { idInstituicao },
@@ -77,8 +76,8 @@ export class DiarioService {
   }
 
   obterDivisao(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.backendServerURL}disciplina/instituicao/${idInstituicao}/get`, {
-      params: { idTurma, idDisciplina, idDivisao, idEtapa },
+    return this.http.get(`${this.backendServerURL}divisao/instituicao/${idInstituicao}/get`, {
+      params: { idDivisao, idTurma, idDisciplina, idEtapa },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'divisao'),
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -88,7 +87,7 @@ export class DiarioService {
   }
 
   obterAlunos(idInstituicao: any, idPeriodoLetivo: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/aluno/instituicao/${idInstituicao}`, {
+    return this.http.get(`${this.sessaoService.backendServerURL}aluno/instituicao/${idInstituicao}`, {
       params: { idPeriodoLetivo, idTurma, idDisciplina, idDivisao, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -131,7 +130,6 @@ export class DiarioService {
     //   ]
     // });
 
-    console.log(this.sessaoService)
     return this.http.get(`${this.backendServerURL}turma/instituicao/${idInstituicao}/`, {
       params: { idPeriodoLetivo },
       headers: {
@@ -188,7 +186,7 @@ export class DiarioService {
   }
 
   obterDiasAula(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/programacaoaula/instituicao/${idInstituicao}`, {
+    return this.http.get(`${this.sessaoService.backendServerURL}programacaoaula/instituicao/${idInstituicao}`, {
       params: { idTurma, idDisciplina, idDivisao, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -198,7 +196,7 @@ export class DiarioService {
   }
 
   obterAvaliacoes(idInstituicao: any, idTurma: any, idDisciplina: any, idDivisao: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/avaliacao/instituicao/${idInstituicao}`, {
+    return this.http.get(`${this.sessaoService.backendServerURL}avaliacao/instituicao/${idInstituicao}`, {
         params: { idTurma, idDisciplina, idDivisao, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -208,7 +206,7 @@ export class DiarioService {
   }
 
   obterListaConceitoDisciplina(idInstituicao: any, idTurma: any, idDisciplina: any, idEtapa: any): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/disciplina/instituicao/${idInstituicao}/listaConceito`, {
+    return this.http.get(`${this.sessaoService.backendServerURL}disciplina/instituicao/${idInstituicao}/listaConceito`, {
       params: { idTurma, idDisciplina, idEtapa },
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
@@ -218,7 +216,7 @@ export class DiarioService {
   }
 
   buscarNumeroMaxDeAulasPorDia(): Observable<any> {
-    return this.http.get(`${this.sessaoService.backendServerURL}/diario/instituicao/numero-max-aulas-dia`, {
+    return this.http.get(`${this.sessaoService.backendServerURL}diario/instituicao/numero-max-aulas-dia`, {
       headers: {
         'X-Auth-Token': this.sessaoService.token!,
         'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
@@ -400,5 +398,35 @@ export class DiarioService {
     }
 
     return params;
+  }
+
+  obterPendenciasAvaliacao(idInstituicao: any, idTurma: any, idEtapa: any): Observable<any> {
+    return this.http.get(`${this.backendServerURL}pendencias/instituicao/${idInstituicao}/`, {
+      params: { idTurma, idEtapa },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
+  }
+
+  obterTotalPendenciasAvaliacaoDisciplina(idInstituicao: any, idTurma: any, idEtapa: any, idDisciplina:any): Observable<any> {
+    return this.http.get(`${this.backendServerURL}pendencias/instituicao/${idInstituicao}/total/`, {
+      params: { idTurma, idEtapa, idDisciplina },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
+  }
+
+    obterPendenciasAvaliacaoDisciplina(idInstituicao: any, idTurma: any, idEtapa: any, idDisciplina:any, idAluno: any): Observable<any> {
+    return this.http.get(`${this.backendServerURL}pendencias/instituicao/${idInstituicao}/disciplina/`, {
+      params: { idTurma, idEtapa, idDisciplina, idAluno },
+      headers: {
+        'X-Auth-Token': this.sessaoService.token!,
+        'X-Auth-Acess-Group': this.sessaoService.idGrupoAcesso!,
+      }
+    });
   }
 }
