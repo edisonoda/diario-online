@@ -60,11 +60,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
     if (this.filtrosService.idDisciplina == 0) {
       this.abaAvaliacao = false;
     }
-    // if(this.filtrosService.idDisciplina > 0) {
-    //   if(this.filtrosService.disciplina.frequenciaDiaria == false) {
-    //     this.abaFrequencia = false;
-    //   }
-    // }
     this.filtrosService.obterInstituicao().subscribe(instituicao => {
       this.instituicao = instituicao;
     });

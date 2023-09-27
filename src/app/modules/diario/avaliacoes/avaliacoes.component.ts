@@ -362,7 +362,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
     if (aluno.notas.length > 0) {
       aluno.totalNotas = this.getNotaFinal(aluno.notas, aluno.quantidadeCasasDecimais);
     }
-    //scope.$apply();
   };
 
   remanejadoOuVeioDeRemanejamento(aluno: any) {
@@ -458,7 +457,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
 
   selecionarConceito() {
     this.houveModificacao = true;
-    //this.modificado = true;
   };
 
   onchangeNota(avaliacao: any, nota: any, aluno: any, isRecuperacao: any) {

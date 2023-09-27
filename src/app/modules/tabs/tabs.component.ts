@@ -134,21 +134,8 @@ export class TabsComponent implements OnInit, OnDestroy {
           turma: turma
         }
       });
-
-      // dialogRef.afterClosed().subscribe(dataAula => {
-      //   this.diarioService.salvarPlanoAula(this.filtrosService.instituicao.id, dataAula.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, dataAula.conteudo, dataAula.modulo,
-      //     this.filtrosService.idEtapa, dataAula.recuperacaoParalela).subscribe(res => {
-      //
-      //     this.snackBar.open('Diário de Conteúdo atualizado para o dia ' + moment(aula.data).format('dd/MM/yyyy') + '.', '', {
-      //       duration: 5000,
-      //       panelClass: ['md-success-toast-theme']
-      //     });
-      //   });
-      // });
     });
   }
 
-  ngOnDestroy(): void {
-    //this.subs.forEach(sub => sub?.unsubscribe());
-  }
+  ngOnDestroy(): void {}
 }
