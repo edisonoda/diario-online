@@ -50,7 +50,11 @@ export class  SessaoService {
     Object.keys(sessionStorage).forEach(key => {
       sessionStorage.removeItem(key);
     });
-    window.location.href = CONFIGURACOES.LOGOUT_URL;
+    if(this.logoutURL != null) {
+      window.location.href = this.logoutURL;
+    } else {
+      window.location.href = CONFIGURACOES.LOGOUT_URL;
+    }
   }
 
   voltar() {

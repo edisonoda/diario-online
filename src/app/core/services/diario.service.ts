@@ -16,7 +16,11 @@ export class DiarioService {
     private http: HttpClient,
     private sessaoService: SessaoService
   ) {
-    this.backendServerURL = CONFIGURACOES.REST_ADDRESS;
+    if(this.sessaoService.backendServerURL != null) {
+      this.backendServerURL = this.sessaoService.backendServerURL;
+    } else {
+      this.backendServerURL = CONFIGURACOES.REST_ADDRESS;
+    }
   }
 
   obterInstituicao(idInstituicao: any): Observable<any> {
