@@ -20,7 +20,8 @@ export const CRYPTO_CONST = {
 export const CONFIGURACOES = {
     REST_ADDRESS: 'http://localhost:8080/sislame/rest/',
     IS_PRODUCAO: false,
-    DATA_VERSAO: 'PARAM_DATA_BUILD'
+    DATA_VERSAO: 'PARAM_DATA_BUILD',
+    LOGOUT_URL:   'http://localhost:8080/sislame/'
 }
 
 export const CORES = ['liquidGreen', 'yellow', 'blue', 'purple', 'red', 'green', 'brown', 'pink', 'oragenBackground', 'gold'];

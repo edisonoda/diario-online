@@ -4,6 +4,7 @@ import { Subscription, forkJoin, of } from 'rxjs';
 import { FiltrosService } from 'src/app/core/services/filtros.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SessaoService } from 'src/app/core/services/sessao.service';
+import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 
 @Component({
   selector: 'app-diario',
@@ -47,6 +48,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
     private diarioService: DiarioService,
     private filtrosService: FiltrosService,
     private sessaoService: SessaoService,
+    private changeDetector: ChangeDetectorRef,
   ) {
 
     if (this.filtrosService.idDisciplina != undefined) {
@@ -56,9 +58,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.buscarDados();
         this.setAbas();
       });
-    }
-    if (this.filtrosService.idDisciplina == 0) {
-      this.abaAvaliacao = false;
     }
     this.filtrosService.obterInstituicao().subscribe(instituicao => {
       this.instituicao = instituicao;
@@ -82,14 +81,7 @@ export class DiarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.filtrosService.idDisciplina == 0) {
-      this.abaAvaliacao = false;
-    }
-    // if(this.filtrosService.idDisciplina > 0) {
-    //   if(this.filtrosService.disciplina.frequenciaDiaria == false) {
-    //     this.abaFrequencia = false;
-    //   }
-    // }
+   this.setAbas();
   }
 
   setDivisao(): void {
@@ -191,16 +183,15 @@ export class DiarioComponent implements OnInit, OnDestroy {
   setAbas(): void {
     if (this.sessaoService.permissoes) {
       this.permissoes = this.sessaoService.permissoes;
-      //this.abaFrequencia = this.permissoes.indexOf('frequenciaDiariaBBean.abrir') > -1;
-      //this.abaAvaliacao = this.permissoes.indexOf('avaliacaoFrequenciaBBean.abrir') > -1;
     }
-
-    // desabilita lancamento de frequencia
-    // if (this.disciplina.computaFrequenciaGrupo) {
-    //   this.abaAvaliacao = this.filtrosService.idDisciplina > 0;
-    //   this.abaFrequencia = !this.abaAvaliacao;
-    // }
-
+    if (this.filtrosService.idDisciplina == 0) {
+      this.abaAvaliacao = false;
+    }
+    if(this.filtrosService.idDisciplina > 0) {
+      if(this.filtrosService.disciplina.computaFrequenciaGrupo) {
+        this.abaFrequencia = false;
+      }
+    }
     this.tabSelecionada = this.abaFrequencia ? 0 : 1;
     if(this.filtrosService.tipoPendencia != undefined) {
       if(this.filtrosService.tipoPendencia == "F" || this.filtrosService.tipoPendencia == "AF") {
@@ -210,6 +201,10 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.tabSelecionada = 1;;
       }
     }
+  }
+
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
   }
 
   frequenciaReady(): boolean {

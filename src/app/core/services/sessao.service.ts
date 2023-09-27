@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import {CONFIGURACOES} from "../constants";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,6 @@ export class  SessaoService {
   get user() {
     return this._user;
   }
-
   get token() { return localStorage.getItem('token') }
   get backendServerURL() { return localStorage.getItem('backendServerURL') }
   get logoutURL() { return localStorage.getItem('logoutURL') }
@@ -50,10 +50,10 @@ export class  SessaoService {
     Object.keys(localStorage).forEach(key => {
       localStorage.removeItem(key);
     });
+    window.location.href = CONFIGURACOES.LOGOUT_URL;
+  }
 
-    if (this.logoutURL)
-      window.location.href = this.logoutURL;
-    else
-      window.history.back();
+  voltar() {
+    window.history.back();
   }
 }
