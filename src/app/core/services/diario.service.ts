@@ -24,8 +24,8 @@ export class DiarioService {
       params: { idInstituicao },
       context: new HttpContext().set(GET_FILTRO_TOKEN, 'instituicao'),
       headers: {
-        'X-Auth-Token': localStorage.getItem("token")!,
-        'X-Auth-Acess-Group': localStorage.getItem("idGrupoAcesso")!,
+        'X-Auth-Token': sessionStorage.getItem("token")!,
+        'X-Auth-Acess-Group': sessionStorage.getItem("idGrupoAcesso")!,
       }
     });
   }

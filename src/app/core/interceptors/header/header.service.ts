@@ -14,8 +14,8 @@ export class HeaderInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const headers = new HttpHeaders({});
-    const token = localStorage.getItem('token');
-    const grupo = localStorage.getItem('idGrupoAcesso');
+    const token = sessionStorage.getItem('token');
+    const grupo = sessionStorage.getItem('idGrupoAcesso');
 
     if (token)
       headers.set('X-Auth-Token', token);
