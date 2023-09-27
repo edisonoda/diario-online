@@ -24,7 +24,6 @@ export class ModalPendenciaAvaliacaoAlunoComponent implements OnInit, OnDestroy 
     private snackBar: MatSnackBar,
   ) {
     this.pendenciasAluno = data.pendenciasAluno[0];
-    console.log(this.pendenciasAluno);
     this.turma = data.turma;
     this.nomeAluno = data.aluno;
   }
@@ -34,7 +33,6 @@ export class ModalPendenciaAvaliacaoAlunoComponent implements OnInit, OnDestroy 
   abrirPendenciasAluno(idDivisao:any, tipoPendencia: any) {
     this.filtrosService.idDivisao = idDivisao;
     this.filtrosService.obterDivisao().subscribe(divisao => {
-      console.log(divisao);
       if(tipoPendencia == "NOTA OU CONCEITO DO ALUNO NAO INFORMADO"){
         this.filtrosService.tipoPendencia = "A";
       } else{

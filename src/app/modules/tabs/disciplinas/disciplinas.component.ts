@@ -24,7 +24,6 @@ export class DisciplinasComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.diarioService.obterDisciplinas(this.filtrosService.idInstituicao, this.filtrosService.idTurma, this.filtrosService.idEtapa).subscribe(res => {
-      console.log(res);
       if (res.error)
         return;
 

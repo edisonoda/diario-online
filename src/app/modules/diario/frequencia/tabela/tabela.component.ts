@@ -75,10 +75,7 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     this.filtrosService.obterDivisao().subscribe(res => {
       this.divisao = res;
       this.initAlunos();
-    });
-    this.lista = this.lista.filter(
-      (aluno, i, arr) => arr.findIndex(t => t.frequencia == aluno.frequencia) == i
-    );
+    })
     this.aulas = this.aulas.filter(
       (aula, i, arr) => arr.findIndex(t => t.data == aula.data) == i
     );
@@ -451,7 +448,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(dataAula => {
-      console.log(dataAula)
       var dataInformada = new Date(dataAula);
 
       if (this.diaJaAtingiuLimiteDeAula(dataInformada)) {
@@ -463,7 +459,6 @@ export class TabelaFrequenciaComponent implements OnInit, OnDestroy {
       }
 
       this.diarioService.criarNovoDiaAula(this.filtrosService.instituicao.id, this.filtrosService.turma.id, this.filtrosService.disciplina.id, this.filtrosService.divisao.id, dataInformada, this.filtrosService.idEtapa).subscribe(res => {
-      console.log(res)
         var i;
         res.data = moment(res.data).format('YYYY-MM-DD');
 

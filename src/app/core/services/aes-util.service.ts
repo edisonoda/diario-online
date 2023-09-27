@@ -23,7 +23,6 @@ export class AesUtilService {
     var cipherParams = CryptoJS.lib.CipherParams.create({
       ciphertext: CryptoJS.enc.Base64.parse(message)
     });
-    console.log(cipherParams)
     var decrypted = CryptoJS.AES.decrypt(cipherParams, key, {
       iv: CryptoJS.enc.Hex.parse(CONSTANTS.IVSA)
     });

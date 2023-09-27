@@ -96,8 +96,6 @@ export class FiltrosService {
   obterDivisao(): Observable<any> {
     if (this._divisao)
       return new Observable(sub => sub.next(this._divisao));
-    console.log(this._idDisciplina);
-    console.log(this._idDivisao);
     return this.diarioService.obterDivisao(this._idInstituicao, this._idTurma, this._idDisciplina, this._idDivisao, this._idEtapa);
   }
 }

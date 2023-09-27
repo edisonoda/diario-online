@@ -85,7 +85,6 @@ export class TabsComponent implements OnInit, OnDestroy {
     if(this.filtrosService.idDisciplina) {
       this.filtrosService.obterDisciplina().subscribe(res => {
         this.breadcrumb.disciplina = res?.nome;
-        console.log(res);
         this.filtrosService.disciplina = res;
       });
     }

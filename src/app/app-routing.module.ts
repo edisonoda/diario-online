@@ -6,7 +6,7 @@ import { TabsComponent } from './modules/tabs/tabs.component';
 
 const routes: Routes = [
   {
-    path: 'api/sitelogin',
+    path: 'api/login',
     component: AuthComponent,
   },
   {

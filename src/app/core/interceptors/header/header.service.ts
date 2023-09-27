@@ -30,8 +30,6 @@ export class HeaderInterceptor implements HttpInterceptor {
           headers.set(key, lista);
       });
 
-    console.log(headers);
-
     return next.handle(request.clone({
       headers: headers
     }));

@@ -112,7 +112,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
       this.filtrosService.idDivisao,
       this.filtrosService.idEtapa
     ).subscribe(res => {
-      console.log(res);
       this.alunosReady = true;
       this.alunos = res;
       if(this.abaFrequencia == true) {
@@ -147,7 +146,6 @@ export class DiarioComponent implements OnInit, OnDestroy {
         this.filtrosService.idDivisao,
         this.filtrosService.idEtapa
       ).subscribe(res => {
-        console.log(res);
         this.avaliacoesReady = true;
         this.avaliacoes = res;
       });

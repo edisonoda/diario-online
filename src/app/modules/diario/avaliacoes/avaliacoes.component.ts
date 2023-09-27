@@ -407,7 +407,6 @@ export class AvaliacoesComponent implements OnInit, OnDestroy {
   obterSubAvaliacoes() {
     this.subAvaliacoes = [];
     this.avaliacoes.forEach(aval => {
-      console.log(aval);
       aval.subAvaliacoes?.forEach((sub: any) => {
         sub.nomeAvaliacao = aval.nome;
         this.subAvaliacoes.push(sub);
